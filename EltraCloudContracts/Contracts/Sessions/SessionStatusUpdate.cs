@@ -1,5 +1,4 @@
 ﻿using System.Runtime.Serialization;
-using EltraCloudContracts.Contracts.Users;
 
 namespace EltraCloudContracts.Contracts.Sessions
 {
@@ -8,9 +7,6 @@ namespace EltraCloudContracts.Contracts.Sessions
     {
         [DataMember]
         public string SessionUuid { get; set; }
-
-        [DataMember]
-        public UserAuthData AuthData { get; set; }
 
         [DataMember]
         public SessionStatus Status { get; set; }
