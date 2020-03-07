@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace EltraCloudContracts.Contracts.Users
 {
@@ -8,12 +9,17 @@ namespace EltraCloudContracts.Contracts.Users
         #region Properties
 
         [DataMember]
+        [Required]
+        [EmailAddress]
         public string Login { get; set; }
 
         [DataMember]
+        [Required]
         public string Name { get; set; }
 
         [DataMember]
+        [Required]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
         #endregion
