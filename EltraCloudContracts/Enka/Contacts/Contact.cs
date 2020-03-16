@@ -11,22 +11,15 @@ namespace EltraCloudContracts.Enka.Contacts
 
         [DataMember]
         [Required]
-        public string FirstName { get; set; }
+        public string Name { get; set; }        
         [DataMember]
-        [Required]
-        public string LastName { get; set; }
-        [DataMember]
-        public string PhoneStationary { get; set; }
-        [DataMember]
-        public string PhoneMobile { get; set; }
+        public string Phone { get; set; }        
         [DataMember]
         public string Street { get; set; }
         [DataMember]
-        public string HouseNumber { get; set; }
-        [DataMember]
-        public string FlatNumber { get; set; }
-        [DataMember]
         public string City { get; set; }
+        [DataMember]
+        public string Region { get; set; }
         [DataMember]
         public string PostalCode { get; set; }
         [DataMember]
@@ -35,6 +28,7 @@ namespace EltraCloudContracts.Enka.Contacts
         public DateTime Modified { get; set; }
         [DataMember]
         public DateTime Created { get; set; }
+        
         #endregion
     }
 }
