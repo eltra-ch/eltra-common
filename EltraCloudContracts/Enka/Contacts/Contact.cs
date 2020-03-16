@@ -28,7 +28,19 @@ namespace EltraCloudContracts.Enka.Contacts
         public DateTime Modified { get; set; }
         [DataMember]
         public DateTime Created { get; set; }
-        
+
+        #endregion
+
+        #region Methods
+
+        public void RemovePrivatData()
+        {
+            Name = string.Empty;
+            Notice = string.Empty;
+            Phone = string.Empty;
+            Street = string.Empty;
+        }
+
         #endregion
     }
 }
