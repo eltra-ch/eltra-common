@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace ConsoleApp5
+namespace EltraCloudContracts.GeoAdmin
 {
     [DataContract]
     public class GeoStreetResults

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace ConsoleApp5
+namespace EltraCloudContracts.GeoAdmin
 {
     [DataContract(Name = "attrs")]
     public class GeoAttrs
@@ -14,7 +14,7 @@ namespace ConsoleApp5
         [DataMember(Name = "featureId")]
         public string FeatureId { get; set; }
         [DataMember(Name = "lon")]
-        public string Longitude { get; set; }
+        public double Longitude { get; set; }
         [DataMember(Name = "detail")]
         public string Detail { get; set; }
         [DataMember(Name = "rank")]
@@ -22,7 +22,7 @@ namespace ConsoleApp5
         [DataMember(Name = "geom_st_box2d")]
         public string GeomStBox2d { get; set; }
         [DataMember(Name = "lat")]
-        public string Latitude { get; set; }
+        public double Latitude { get; set; }
         [DataMember(Name = "num")]
         public int Num { get; set; }
     }

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace ConsoleApp5
+namespace EltraCloudContracts.GeoAdmin
 {
     [DataContract]
     public class GeoResult
