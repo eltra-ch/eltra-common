@@ -8,11 +8,15 @@ namespace EltraCloudContracts.Enka.Orders
     {
         public Order()
         {
-            Timeout = 4*3600; //4h
+            const double DefaultTimeoutInHours = 4;
+
+            Timeout = (int)TimeSpan.FromHours(DefaultTimeoutInHours).TotalSeconds;
         }
 
         [DataMember]
         public string Uuid { get; set; }
+        [DataMember]
+        public OrderType Type { get; set; }
         [DataMember]
         public OrderStatus Status { get; set; }
         [DataMember]
