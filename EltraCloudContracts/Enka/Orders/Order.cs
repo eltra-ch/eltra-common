@@ -6,12 +6,19 @@ namespace EltraCloudContracts.Enka.Orders
     [DataContract]
     public class Order
     {
+        public Order()
+        {
+            Timeout = 4*3600; //4h
+        }
+
         [DataMember]
         public string Uuid { get; set; }
         [DataMember]
         public OrderStatus Status { get; set; }
         [DataMember]
         public string Notice { get; set; }
+        [DataMember]
+        public int Timeout { get; set; }
         [DataMember]
         public DateTime Modified { get; set; }
         [DataMember]

@@ -19,6 +19,14 @@
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 
+        public bool IsPrivateAddress
+        {
+            get
+            {
+                return CountryCode == "-" || Ip == "127.0.0.1" || Ip == "0.0.0.0";
+            }
+        }
+
         public bool Equals(IpLocation location)
         {
             bool result = true;
