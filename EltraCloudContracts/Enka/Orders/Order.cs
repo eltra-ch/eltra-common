@@ -11,16 +11,17 @@ namespace EltraCloudContracts.Enka.Orders
             const double DefaultTimeoutInHours = 4;
 
             Timeout = (int)TimeSpan.FromHours(DefaultTimeoutInHours).TotalSeconds;
+            Protocol = "json_v1";
         }
 
         [DataMember]
         public string Uuid { get; set; }
         [DataMember]
-        public OrderType Type { get; set; }
-        [DataMember]
         public OrderStatus Status { get; set; }
         [DataMember]
-        public string Notice { get; set; }
+        public string Message { get; set; }
+        [DataMember]
+        public string Protocol { get; set; }
         [DataMember]
         public int Timeout { get; set; }
         [DataMember]
