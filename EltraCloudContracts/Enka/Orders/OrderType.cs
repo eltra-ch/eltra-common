@@ -1,10 +1,21 @@
 ﻿namespace EltraCloudContracts.Enka.Orders
 {
+    /// <summary>
+    /// Order type
+    /// </summary>
     public enum OrderType
     {
-        Undefined,
+        /// <summary>
+        /// Request
+        /// </summary>
+        Request,
+        /// <summary>
+        /// Any
+        /// </summary>
         Any,
-        Offer,
-        Request
+        /// <summary>
+        /// Offer
+        /// </summary>
+        Offer
     }
 }
