@@ -8,10 +8,13 @@ namespace EltraCloudContracts.Enka.Orders
         [DataMember]
         public bool Car { get; set; }
         [DataMember]
-        public bool Shop { get; set; }
-        [DataMember]
         public bool DrugStore { get; set; }
         [DataMember]
+        public string Notice { get; set; }
+        [DataMember]
         public bool Other { get; set; }
+        [DataMember]
+        public bool Shop { get; set; }
+
     }
 }
