@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
@@ -110,22 +111,35 @@ namespace EltraCloudContracts.ObjectDictionary.DeviceDescription
             
             try
             {
-                using (var client = new HttpClient())
+                int maxTryCount = 1;
+                int tryCount = 0;
+                
+                do
                 {
-                    using (var response = await client.GetAsync(url))
+                    tryCount++;
+
+                    using (var client = new HttpClient())
                     {
-                        if (response.IsSuccessStatusCode)
+                        using (var response = await client.GetAsync(url))
                         {
-                            using (var stream = await response.Content.ReadAsStreamAsync())
+                            if (response.IsSuccessStatusCode)
                             {
-                                using (var streamReader = new StreamReader(stream))
+                                using (var stream = await response.Content.ReadAsStreamAsync())
                                 {
-                                    result = await streamReader.ReadToEndAsync();
+                                    using (var streamReader = new StreamReader(stream))
+                                    {
+                                        result = await streamReader.ReadToEndAsync();
+                                    }
                                 }
                             }
-                        }                        
+                            else if(response.StatusCode == HttpStatusCode.Redirect)
+                            {
+                                tryCount = 0;
+                            }
+                        }
                     }
                 }
+                while (tryCount < maxTryCount);
             }
             catch (HttpRequestException e)
             {
