@@ -10,6 +10,8 @@ namespace EltraCloudContracts.Enka.Contacts
         #region Properties
 
         [DataMember]
+        public string Uuid { get; set; }
+        [DataMember]
         [Required]
         public string Name { get; set; }        
         [DataMember]
@@ -39,6 +41,7 @@ namespace EltraCloudContracts.Enka.Contacts
 
         public void RemovePrivatData()
         {
+            Uuid = string.Empty;
             Name = string.Empty;
             Notice = string.Empty;
             Phone = string.Empty;
