@@ -31,6 +31,10 @@
         /// <summary>
         /// Expired
         /// </summary>
-        Expired
+        Expired,
+        /// <summary>
+        /// Confirmed
+        /// </summary>
+        Confirmed
     }
 }
