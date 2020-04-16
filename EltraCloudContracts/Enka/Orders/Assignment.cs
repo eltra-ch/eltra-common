@@ -1,4 +1,5 @@
 ﻿using EltraCloudContracts.Enka.Contacts;
+using System;
 using System.Runtime.Serialization;
 
 namespace EltraCloudContracts.Enka.Orders
@@ -10,5 +11,9 @@ namespace EltraCloudContracts.Enka.Orders
         public Contact CreatedBy { get; set; }
         [DataMember]
         public AssignmentStatus Status { get; set; }
+        [DataMember]
+        public DateTime Created { get; set; }
+        [DataMember]
+        public DateTime Modified { get; set; }
     }
 }
