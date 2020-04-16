@@ -9,6 +9,7 @@ namespace EltraCloudContracts.Enka.Orders
         #region Private fields
 
         private List<Assignment> _entries;
+        private Order _order;
 
         #endregion
 
@@ -16,6 +17,13 @@ namespace EltraCloudContracts.Enka.Orders
 
         public Assignments()
         {
+            MaxCount = 4;
+        }
+
+        public Assignments(Order order)
+        {
+            _order = order;
+
             MaxCount = 4;
         }
 
@@ -38,7 +46,13 @@ namespace EltraCloudContracts.Enka.Orders
 
             if (Entries.Count < MaxCount)
             {
+                if (_order != null)
+                {
+                    assignment.Order = _order;
+                }
+
                 Entries.Add(assignment);
+                
                 result = true;
             }
 
