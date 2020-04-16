@@ -5,6 +5,7 @@
         Undefined,
         Assigned,
         Refused,
-        Accepted
+        Accepted,
+        Finished
     }
 }
