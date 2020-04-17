@@ -43,20 +43,13 @@ namespace EltraCloudContracts.Enka.Contacts
         public void RemovePrivatData()
         {
             Uuid = string.Empty;
-            
-            if(Name.Contains(" "))
-            {
-                int index = Name.IndexOf(' ');
-                if (index > 0)
-                {
-                    Name = Name.Substring(0, index);
-                }
-            }
-            
+
+            LastName = string.Empty;
             Notice = string.Empty;
             Phone = string.Empty;
             Street = string.Empty;
             PostalCode = string.Empty;
+
             Latitude = 0;
             Longitude = 0;
         }
