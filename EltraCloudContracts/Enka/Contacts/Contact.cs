@@ -12,8 +12,9 @@ namespace EltraCloudContracts.Enka.Contacts
         [DataMember]
         public string Uuid { get; set; }
         [DataMember]
-        [Required]
-        public string Name { get; set; }        
+        public string FirstName { get; set; }
+        [DataMember]
+        public string LastName { get; set; }
         [DataMember]
         public string Phone { get; set; }        
         [DataMember]
