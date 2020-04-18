@@ -28,6 +28,8 @@ namespace EltraCloudContracts.Enka.Contacts
         [DataMember]
         public string Notice { get; set; }
         [DataMember]
+        public string Image { get; set; }
+        [DataMember]
         public double Latitude { get; set; }
         [DataMember]
         public double Longitude { get; set; }
