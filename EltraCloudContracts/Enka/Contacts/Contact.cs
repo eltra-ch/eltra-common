@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
 namespace EltraCloudContracts.Enka.Contacts
@@ -27,8 +26,6 @@ namespace EltraCloudContracts.Enka.Contacts
         public string PostalCode { get; set; }
         [DataMember]
         public string Notice { get; set; }
-        [DataMember]
-        public string Image { get; set; }
         [DataMember]
         public double Latitude { get; set; }
         [DataMember]
