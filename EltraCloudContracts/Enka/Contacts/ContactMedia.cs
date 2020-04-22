@@ -13,6 +13,8 @@ namespace EltraCloudContracts.Enka.Contacts
         [DataMember]
         public ContactMediaStatus Status { get; set; }
         [DataMember]
+        public ContactMediaType Type { get; set; }
+        [DataMember]
         public DateTime Created { get; set; }
         [DataMember]
         public DateTime Modified { get; set; }
