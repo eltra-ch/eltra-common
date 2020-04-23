@@ -7,8 +7,6 @@ namespace EltraCloudContracts.Enka.Medias
     public class Media
     {
         [DataMember]
-        public string Uuid { get; set; }
-        [DataMember]
         public MediaType Type { get; set; }
         [DataMember]
         public string Content { get; set; }
