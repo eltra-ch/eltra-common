@@ -14,27 +14,15 @@
         /// </summary>
         Open,
         /// <summary>
-        /// Accepted
+        /// Open
         /// </summary>
         Assigned,
         /// <summary>
         /// Closed
         /// </summary>
         Closed,
-        /// <summary>
-        /// InProgress
-        /// </summary>
-        /// <summary>
-        /// Refused
-        /// </summary>
-        Rejected,
-        /// <summary>
         /// Expired
         /// </summary>
-        Expired,
-        /// <summary>
-        /// Confirmed
-        /// </summary>
-        Confirmed
+        Expired
     }
 }
