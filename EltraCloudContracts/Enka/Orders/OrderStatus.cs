@@ -14,7 +14,7 @@
         /// </summary>
         Open,
         /// <summary>
-        /// Open
+        /// InProgress
         /// </summary>
         Assigned,
         /// <summary>
