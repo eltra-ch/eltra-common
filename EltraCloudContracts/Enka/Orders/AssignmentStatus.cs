@@ -3,10 +3,9 @@
     public enum AssignmentStatus
     {
         Undefined,
-        Pending,
         Assigned,
         Refused,
         Accepted,
-        Finished
+        Unassigned
     }
 }
