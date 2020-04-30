@@ -5,6 +5,7 @@
 	<LangVersion>7.1</LangVersion>
 	<Company>eltra.ch</Company>
 	<Authors>Dawid Sienkiewicz</Authors>
+	<Configurations>Debug;Release;</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
