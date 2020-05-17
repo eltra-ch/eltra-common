@@ -10,8 +10,10 @@ namespace EltraCloudContracts.Enka.Orders
         {
             const double DefaultTimeoutInHours = 4;
 
-            Timeout = (int)TimeSpan.FromHours(DefaultTimeoutInHours).TotalSeconds;
-            Protocol = "json_v1";
+            Start = DateTime.Now;
+            End = Start + TimeSpan.FromHours(DefaultTimeoutInHours);
+
+            Protocol = "json_v2";
         }
 
         [DataMember]
@@ -23,7 +25,9 @@ namespace EltraCloudContracts.Enka.Orders
         [DataMember]
         public string Protocol { get; set; }
         [DataMember]
-        public int Timeout { get; set; }
+        public DateTime Start { get; set; }
+        [DataMember]
+        public DateTime End { get; set; }
         [DataMember]
         public DateTime Modified { get; set; }
         [DataMember]
