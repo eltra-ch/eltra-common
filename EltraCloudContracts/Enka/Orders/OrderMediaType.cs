@@ -3,7 +3,6 @@
     public enum OrderMediaType
     {
         Undefined,
-        Any,
-        FrontEnd
+        Thumbnail
     }
 }
