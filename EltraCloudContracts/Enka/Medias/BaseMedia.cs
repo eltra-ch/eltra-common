@@ -1,5 +1,4 @@
-﻿using EltraCloudContracts.Enka.Contacts;
-using System;
+﻿using System;
 using System.Runtime.Serialization;
 
 namespace EltraCloudContracts.Enka.Medias
@@ -16,6 +15,6 @@ namespace EltraCloudContracts.Enka.Medias
         [DataMember]
         public DateTime Created { get; set; }
         [DataMember]
-        public DateTime Modified { get; set; }
+        public DateTime Modified { get; set; }        
     }
 }

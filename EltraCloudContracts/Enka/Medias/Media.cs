@@ -16,5 +16,17 @@ namespace EltraCloudContracts.Enka.Medias
         public DateTime Created { get; set; }
         [DataMember]
         public DateTime Modified { get; set; }
+
+        public int GetContentLength()
+        {
+            int result = 0;
+
+            if (!string.IsNullOrEmpty(Content))
+            {
+                result = Content.Length;
+            }
+
+            return result;
+        }
     }
 }
