@@ -191,8 +191,8 @@ namespace EltraCloudContracts.ObjectDictionary.DeviceDescription
         public virtual async Task<bool> Read()
         {
             bool result = false;
-
-            if(File.Exists(SourceFile))
+            
+            if (File.Exists(SourceFile))
             {
                 if (string.IsNullOrEmpty(Content))
                 {
