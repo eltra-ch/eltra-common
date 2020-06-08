@@ -120,7 +120,7 @@ namespace EltraCommon.Threads
 
         protected virtual Task Execute()
         {
-            return Task.Run(()=>{ });
+            return Task.CompletedTask;
         }
 
         public virtual void Start()
