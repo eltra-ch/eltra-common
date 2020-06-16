@@ -50,9 +50,17 @@ namespace EltraCloudContracts.ObjectDictionary.Xdd.DeviceDescription.Profiles.Ap
                 }
                 else if (childNode.Name == "Backup")
                 {
+                    if(int.TryParse(childNode.InnerXml, out int backup))
+                    {
+                        Backup = backup;
+                    }
                 }
                 else if (childNode.Name == "Setting")
                 {
+                    if(int.TryParse(childNode.InnerXml, out int setting))
+                    {
+                        Setting = setting;
+                    }
                 }
                 else if (childNode.Name == "Fieldbus1")
                 {
