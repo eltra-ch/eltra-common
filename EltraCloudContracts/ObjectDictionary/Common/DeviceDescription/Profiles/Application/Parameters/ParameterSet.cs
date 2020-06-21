@@ -17,7 +17,7 @@ namespace EltraCloudContracts.ObjectDictionary.Common.DeviceDescription.Profiles
 
         public int Count
         {
-            get => _parameterList.Count;
+            get => ParameterList.Count;
         }
 
         public void Add(Parameter parameter)
