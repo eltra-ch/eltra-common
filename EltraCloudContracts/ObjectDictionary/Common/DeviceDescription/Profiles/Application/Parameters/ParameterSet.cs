@@ -24,5 +24,16 @@ namespace EltraCloudContracts.ObjectDictionary.Common.DeviceDescription.Profiles
         {
             ParameterList.Add(parameter);
         }
+
+        public Parameter Get(int index)
+        {
+            Parameter result = null;
+            if(Count > index)
+            {
+                result = ParameterList[index];
+            }
+
+            return result;
+        }
     }
 }
