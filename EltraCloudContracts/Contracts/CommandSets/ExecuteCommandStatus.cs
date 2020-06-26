@@ -10,9 +10,9 @@ namespace EltraCloudContracts.Contracts.CommandSets
         {
         }
 
-        public ExecuteCommandStatus(ExecuteCommand execCommand)
+        public ExecuteCommandStatus(string sessionUuid, ExecuteCommand execCommand)
         {
-            SessionUuid = execCommand.SessionUuid;
+            SessionUuid = sessionUuid;
             SerialNumber = execCommand.SerialNumber;
             CommandUuid = execCommand.CommandUuid;
             
