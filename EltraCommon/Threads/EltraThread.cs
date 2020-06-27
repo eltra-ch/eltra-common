@@ -58,6 +58,11 @@ namespace EltraCommon.Threads
         {
             return !_stopRequestEvent.WaitOne(0);
         }
+
+        protected bool Wait(int timeout = int.MaxValue)
+        {
+            return _stopRequestEvent.WaitOne(timeout);
+        }
         
         public virtual bool Stop()
         {
