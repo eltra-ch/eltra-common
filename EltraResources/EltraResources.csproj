@@ -3,6 +3,20 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Configurations>Debug;Release;</Configurations>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageId>Eltra.Resources</PackageId>
+    <Authors>Dawid Sienkiewicz</Authors>
+    <Product>Eltra.Resources</Product>
+    <Copyright>Dawid Sienkiewicz</Copyright>
+    <PackageLicenseFile></PackageLicenseFile>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>www.eltra.ch</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/eltra-ch/eltra-sdk</RepositoryUrl>
+	<dependencies>
+		<dependency id="System.ComponentModel.Annotations" version="4.7.0" />
+	</dependencies>
+		
   </PropertyGroup>
 
   <ItemGroup>

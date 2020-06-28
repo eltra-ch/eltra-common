@@ -6,11 +6,31 @@
 	<Company>eltra.ch</Company>
 	<Authors>Dawid Sienkiewicz</Authors>
 	<Configurations>Debug;Release;</Configurations>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+	<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	<Copyright>Dawid Sienkiewicz</Copyright>
+	<PackageProjectUrl>www.eltra.ch</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/eltra-ch/eltra-common</RepositoryUrl>
+	<RepositoryType>git</RepositoryType>
+	<dependencies>
+      <dependency id="Newtonsoft.Json" version="12.0.3" />
+	  <dependency id="System.Drawing.Common" version="4.7.0" />
+    </dependencies>
+	<PackageId>Eltra.Common</PackageId>
+	<Product>Eltra.Common</Product>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

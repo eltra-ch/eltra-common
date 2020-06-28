@@ -4,6 +4,21 @@
     <TargetFramework>netstandard2.0</TargetFramework>
 	<LangVersion>7.1</LangVersion>
 	<Configurations>Debug;Release;</Configurations>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+	<Copyright>Dawid Sienkiewicz</Copyright>
+	<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	<PackageProjectUrl>www.eltra.ch</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/eltra-ch/eltra-sdk</RepositoryUrl>
+	<RepositoryType>GIT</RepositoryType>
+	<Authors>Dawid Sienkiewicz</Authors>
+	<PackageId>Eltra.Contracts</PackageId>
+	<Product>Eltra.Contracts</Product>
+	<dependencies>
+		  <dependency id="System.ComponentModel.Annotations" version="4.7.0"  />
+		  <dependency id="Eltra.Common" version="1.0.0"  />
+		  <dependency id="Eltra.Resources" version="1.0.0"  />
+		</dependencies>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +28,10 @@
     <EmbeddedResource Remove="Test\**" />
     <None Remove="Database\**" />
     <None Remove="Test\**" />
+    <None Include="..\..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
