@@ -35,14 +35,28 @@ namespace EltraCommon.Logger
 
         public string Types
         {
-            get => _types ?? (_types = TypeRange);
+            get => _types ?? (_types = DefaultTypeRange);
             set => _types = value;
         }
 
         public string Outputs
         {
-            get => _outputs ?? (_outputs = OutputRange);
+            get => _outputs ?? (_outputs = DefaultOutputRange);
             set => _outputs = value;
+        }
+
+        public string DefaultTypeRange
+        {
+            get
+            {
+                string result = string.Empty;
+
+                result += LogTypeHelper.TypeToString(LogMsgType.Error);
+                result += ";";
+                result += LogTypeHelper.TypeToString(LogMsgType.Exception);
+                
+                return result;
+            }
         }
 
         public string TypeRange
@@ -58,7 +72,21 @@ namespace EltraCommon.Logger
                 result += LogTypeHelper.TypeToString(LogMsgType.Exception);
                 result += ";";
                 result += LogTypeHelper.TypeToString(LogMsgType.Info);
-                
+                result += ";";
+                result += LogTypeHelper.TypeToString(LogMsgType.Timing);
+                result += ";";
+                result += LogTypeHelper.TypeToString(LogMsgType.Workflow);
+
+                return result;
+            }
+        }
+
+        public string DefaultOutputRange
+        {
+            get
+            {
+                var result = "Console";
+
                 return result;
             }
         }

@@ -19,6 +19,7 @@
     </dependencies>
 	<PackageId>Eltra.Common</PackageId>
 	<Product>Eltra.Common</Product>
+	<Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
