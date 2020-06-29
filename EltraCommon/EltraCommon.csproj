@@ -19,7 +19,7 @@
     </dependencies>
 	<PackageId>Eltra.Common</PackageId>
 	<Product>Eltra.Common</Product>
-	<Version>1.0.1</Version>
+	<Version>1.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>

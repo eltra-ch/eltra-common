@@ -20,7 +20,7 @@ namespace EltraCommon.Logger
 
         public EltraLogger()
         {
-            _types = TypeRange;
+            _types = DefaultTypeRange;
                         
             _logOutputs = new List<ILogOutput>();
 
