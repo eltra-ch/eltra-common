@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using EltraCloudContracts.ObjectDictionary.Common.DeviceDescription.Profiles.Application.DataTypes;
+using EltraCommon.Logger;
 
 namespace EltraCloudContracts.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters
 {
@@ -185,7 +186,6 @@ namespace EltraCloudContracts.ObjectDictionary.Common.DeviceDescription.Profiles
                 var byteArray = BitConverter.GetBytes((bool)(object)value);
 
                 Value = Convert.ToBase64String(byteArray);
-
             }
             else if (typeof(T) == typeof(byte))
             {
@@ -205,39 +205,39 @@ namespace EltraCloudContracts.ObjectDictionary.Common.DeviceDescription.Profiles
 
                 Value = Convert.ToBase64String(byteArray);
             }
-            else if (typeof(T) == typeof(Int16))
+            else if (typeof(T) == typeof(short))
             {
-                var byteArray = BitConverter.GetBytes((Int16)(object)value);
+                var byteArray = BitConverter.GetBytes((short)(object)value);
 
                 Value = Convert.ToBase64String(byteArray);
             }
-            else if (typeof(T) == typeof(Int32))
+            else if (typeof(T) == typeof(int))
             {
-                var byteArray = BitConverter.GetBytes((Int32)(object)value);
+                var byteArray = BitConverter.GetBytes((int)(object)value);
 
                 Value = Convert.ToBase64String(byteArray);
             }
-            else if (typeof(T) == typeof(Int64))
+            else if (typeof(T) == typeof(long))
             {
                 var byteArray = BitConverter.GetBytes((Int64)(object)value);
 
                 Value = Convert.ToBase64String(byteArray);
             }
-            else if (typeof(T) == typeof(UInt16))
+            else if (typeof(T) == typeof(ushort))
             {
-                var byteArray = BitConverter.GetBytes((UInt16)(object)value);
+                var byteArray = BitConverter.GetBytes((ushort)(object)value);
 
                 Value = Convert.ToBase64String(byteArray);
             }
-            else if (typeof(T) == typeof(UInt32))
+            else if (typeof(T) == typeof(uint))
             {
-                var byteArray = BitConverter.GetBytes((UInt32)(object)value);
+                var byteArray = BitConverter.GetBytes((uint)(object)value);
 
                 Value = Convert.ToBase64String(byteArray);
             }
-            else if (typeof(T) == typeof(UInt64))
+            else if (typeof(T) == typeof(ulong))
             {
-                var byteArray = BitConverter.GetBytes((UInt64)(object)value);
+                var byteArray = BitConverter.GetBytes((ulong)(object)value);
 
                 Value = Convert.ToBase64String(byteArray);
             }
@@ -247,7 +247,7 @@ namespace EltraCloudContracts.ObjectDictionary.Common.DeviceDescription.Profiles
 
                 Value = Convert.ToBase64String(byteArray);
             }
-            else if (typeof(T) == typeof(String))
+            else if (typeof(T) == typeof(string))
             {
                 string s = (string)(object)value;
 
@@ -262,6 +262,7 @@ namespace EltraCloudContracts.ObjectDictionary.Common.DeviceDescription.Profiles
             else if (typeof(T) == typeof(DateTime))
             {
                 DateTime dt = (DateTime)(object)value;
+
                 Value = Convert.ToBase64String(BitConverter.GetBytes(dt.Ticks));
             }
             else
@@ -276,138 +277,210 @@ namespace EltraCloudContracts.ObjectDictionary.Common.DeviceDescription.Profiles
         {
             bool result = false;
 
-            if (!string.IsNullOrEmpty(Value))
+            try
             {
-                if (typeof(T) == typeof(bool))
+                if (!string.IsNullOrEmpty(Value))
                 {
-                    var byteArray = Convert.FromBase64String(Value);
-                    if (byteArray.Length > 0)
+                    if (typeof(T) == typeof(bool))
                     {
-                        value = (T)(object)(byteArray[0] > 0);
+                        var byteArray = Convert.FromBase64String(Value);
+                        if (byteArray.Length > 0)
+                        {
+                            value = (T)(object)(byteArray[0] > 0);
+                            result = true;
+                        }
+                    }
+                    else if (typeof(T) == typeof(byte))
+                    {
+                        var byteArray = Convert.FromBase64String(Value);
+                        if (byteArray.Length > 0)
+                        {
+                            value = (T)(object)byteArray[0];
+                            result = true;
+                        }
+                    }
+                    else if (typeof(T) == typeof(sbyte))
+                    {
+                        var byteArray = Convert.FromBase64String(Value);
+                        if (byteArray.Length == sizeof(sbyte))
+                        {
+                            sbyte[] signed = Array.ConvertAll(byteArray, b => unchecked((sbyte)b));
+                            value = (T)(object)signed[0];
+                            result = true;
+                        }
+                    }
+                    else if (typeof(T) == typeof(char))
+                    {
+                        var byteArray = Convert.FromBase64String(Value);
+                        if (byteArray.Length == sizeof(char))
+                        {
+                            value = (T)(object)BitConverter.ToChar(byteArray, 0);
+                            result = true;
+                        }
+                    }
+                    else if (typeof(T) == typeof(short))
+                    {
+                        var byteArray = Convert.FromBase64String(Value);
+                        if (byteArray.Length == sizeof(short))
+                        {
+                            value = (T)(object)BitConverter.ToInt16(byteArray, 0);
+                            result = true;
+                        }
+                        else if (byteArray.Length == sizeof(char))
+                        {
+                            value = (T)(object)(short)BitConverter.ToChar(byteArray, 0);
+                            result = true;
+                        }
+                    }
+                    else if (typeof(T) == typeof(int))
+                    {
+                        var byteArray = Convert.FromBase64String(Value);
+                        if (byteArray.Length == sizeof(int))
+                        {
+                            value = (T)(object)BitConverter.ToInt32(byteArray, 0);
+                            result = true;
+                        }
+                        else if (byteArray.Length == sizeof(short))
+                        {
+                            value = (T)(object)(int)BitConverter.ToInt16(byteArray, 0);
+                            result = true;
+                        }
+                        else if (byteArray.Length == sizeof(char))
+                        {
+                            value = (T)(object)(int)BitConverter.ToChar(byteArray, 0);
+                            result = true;
+                        }
+                    }
+                    else if (typeof(T) == typeof(long))
+                    {
+                        var byteArray = Convert.FromBase64String(Value);
+                        if (byteArray.Length == sizeof(long))
+                        {
+                            value = (T)(object)BitConverter.ToInt64(byteArray, 0);
+                            result = true;
+                        }
+                        else if (byteArray.Length == sizeof(int))
+                        {
+                            value = (T)(object)(long)BitConverter.ToInt32(byteArray, 0);
+                            result = true;
+                        }
+                        else if (byteArray.Length == sizeof(short))
+                        {
+                            value = (T)(object)(long)BitConverter.ToInt16(byteArray, 0);
+                            result = true;
+                        }
+                        else if (byteArray.Length == sizeof(char))
+                        {
+                            value = (T)(object)(long)BitConverter.ToChar(byteArray, 0);
+                            result = true;
+                        }
+                    }
+                    else if (typeof(T) == typeof(ushort))
+                    {
+                        var byteArray = Convert.FromBase64String(Value);
+                        if (byteArray.Length == sizeof(ushort))
+                        {
+                            value = (T)(object)BitConverter.ToUInt16(byteArray, 0);
+                            result = true;
+                        }
+                        else if (byteArray.Length == sizeof(sbyte))
+                        {
+                            value = (T)(object)(ushort)byteArray[0];
+                            result = true;
+                        }
+                    }
+                    else if (typeof(T) == typeof(uint))
+                    {
+                        var byteArray = Convert.FromBase64String(Value);
+                        if (byteArray.Length == sizeof(uint))
+                        {
+                            value = (T)(object)BitConverter.ToUInt32(byteArray, 0);
+                            result = true;
+                        }
+                        else if (byteArray.Length == sizeof(ushort))
+                        {
+                            value = (T)(object)(uint)BitConverter.ToUInt16(byteArray, 0);
+                            result = true;
+                        }
+                        else if (byteArray.Length == sizeof(sbyte))
+                        {
+                            value = (T)(object)(uint)byteArray[0];
+                            result = true;
+                        }
+                    }
+                    else if (typeof(T) == typeof(ulong))
+                    {
+                        var byteArray = Convert.FromBase64String(Value);
+                        if (byteArray.Length == sizeof(ulong))
+                        {
+                            value = (T)(object)BitConverter.ToUInt64(byteArray, 0);
+                            result = true;
+                        }
+                        else if (byteArray.Length == sizeof(uint))
+                        {
+                            value = (T)(object)(ulong)BitConverter.ToUInt32(byteArray, 0);
+                            result = true;
+                        }
+                        else if (byteArray.Length == sizeof(ushort))
+                        {
+                            value = (T)(object)(ulong)BitConverter.ToUInt16(byteArray, 0);
+                            result = true;
+                        }
+                        else if (byteArray.Length == sizeof(sbyte))
+                        {
+                            value = (T)(object)(ulong)byteArray[0];
+                            result = true;
+                        }
+                    }
+                    else if (typeof(T) == typeof(double))
+                    {
+                        var byteArray = Convert.FromBase64String(Value);
+                        if (byteArray.Length == sizeof(double))
+                        {
+                            value = (T)(object)BitConverter.ToDouble(byteArray, 0);
+                            result = true;
+                        }
+                        else if (byteArray.Length == sizeof(float))
+                        {
+                            value = (T)(object)(double)BitConverter.ToDouble(byteArray, 0);
+                            result = true;
+                        }
+                    }
+                    else if (typeof(T) == typeof(string))
+                    {
+                        value = (T)(object)Value;
                         result = true;
                     }
-                }
-                else if (typeof(T) == typeof(byte))
-                {
-                    var byteArray = Convert.FromBase64String(Value);
-                    if (byteArray.Length > 0)
+                    else if (typeof(T) == typeof(byte[]))
                     {
-                        value = (T)(object)byteArray[0];
-                        result = true;
+                        var byteArray = Convert.FromBase64String(Value);
+                        if (byteArray.Length > 0)
+                        {
+                            value = (T)(object)byteArray;
+                            result = true;
+                        }
                     }
-                }
-                else if (typeof(T) == typeof(sbyte))
-                {
-                    var byteArray = Convert.FromBase64String(Value);
-                    if (byteArray.Length > 0)
+                    else if (typeof(T) == typeof(DateTime))
                     {
-                        sbyte[] signed = Array.ConvertAll(byteArray, b => unchecked((sbyte)b));
-                        value = (T)(object)signed[0];
-                        result = true;
-                    }
-                }
-                else if (typeof(T) == typeof(char))
-                {
-                    var byteArray = Convert.FromBase64String(Value);
-                    if (byteArray.Length > 0)
-                    {
-                        value = (T)(object)BitConverter.ToChar(byteArray, 0);
-                        result = true;
-                    }
-                }
-                else if (typeof(T) == typeof(Int16))
-                {
-                    var byteArray = Convert.FromBase64String(Value);
-                    if (byteArray.Length > 0)
-                    {
-                        value = (T)(object)BitConverter.ToInt16(byteArray, 0);
-                        result = true;
-                    }
-                }
-                else if (typeof(T) == typeof(Int32))
-                {
-                    var byteArray = Convert.FromBase64String(Value);
-                    if (byteArray.Length > 0)
-                    {
-                        value = (T)(object)BitConverter.ToInt32(byteArray, 0);
-                        result = true;
-                    }
-                }
-                else if (typeof(T) == typeof(Int64))
-                {
-                    var byteArray = Convert.FromBase64String(Value);
-                    if (byteArray.Length > 0)
-                    {
-                        value = (T)(object)BitConverter.ToInt64(byteArray, 0);
-                        result = true;
-                    }
-                }
-                else if (typeof(T) == typeof(UInt16))
-                {
-                    var byteArray = Convert.FromBase64String(Value);
-                    if (byteArray.Length > 0)
-                    {
-                        value = (T)(object)BitConverter.ToUInt16(byteArray, 0);
-                        result = true;
-                    }
-                }
-                else if (typeof(T) == typeof(UInt32))
-                {
-                    var byteArray = Convert.FromBase64String(Value);
-                    if (byteArray.Length > 0)
-                    {
-                        value = (T)(object)BitConverter.ToUInt32(byteArray, 0);
-                        result = true;
-                    }
-                }
-                else if (typeof(T) == typeof(UInt64))
-                {
-                    var byteArray = Convert.FromBase64String(Value);
-                    if (byteArray.Length > 0)
-                    {
-                        value = (T)(object)BitConverter.ToUInt64(byteArray, 0);
-                        result = true;
-                    }
-                }
-                else if (typeof(T) == typeof(double))
-                {
-                    var byteArray = Convert.FromBase64String(Value);
-                    if (byteArray.Length > 0)
-                    {
-                        value = (T)(object)BitConverter.ToDouble(byteArray, 0);
-                        result = true;
-                    }
-                }
-                else if (typeof(T) == typeof(String))
-                {
-                    value = (T)(object)Value;
-                    result = true;
-                }
-                else if (typeof(T) == typeof(byte[]))
-                {
-                    var byteArray = Convert.FromBase64String(Value);
-                    if (byteArray.Length > 0)
-                    {
-                        value = (T)(object)byteArray;
-                        result = true;
-                    }
-                }
-                else if (typeof(T) == typeof(DateTime))
-                {
-                    var byteArray = Convert.FromBase64String(Value);
-                    if (byteArray.Length > 0)
-                    {
-                        long dateData = BitConverter.ToInt64(byteArray, 0);
+                        var byteArray = Convert.FromBase64String(Value);
+                        if (byteArray.Length == sizeof(long))
+                        {
+                            long dateData = BitConverter.ToInt64(byteArray, 0);
 
-                        var val = DateTime.FromBinary(dateData);
+                            var val = DateTime.FromBinary(dateData);
 
-                        value = (T)(object)val;
+                            value = (T)(object)val;
 
-                        result = true;
+                            result = true;
+                        }
                     }
                 }
             }
-            
+            catch(Exception e)
+            {
+                MsgLogger.Exception($"{GetType().Name} - GetValue", e);
+            }
+                        
             return result;
         }
 

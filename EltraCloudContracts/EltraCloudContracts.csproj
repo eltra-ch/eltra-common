@@ -15,10 +15,11 @@
 	<PackageId>Eltra.Contracts</PackageId>
 	<Product>Eltra.Contracts</Product>
 	<dependencies>
-		  <dependency id="System.ComponentModel.Annotations" version="4.7.0"  />
-		  <dependency id="Eltra.Common" version="1.0.0"  />
-		  <dependency id="Eltra.Resources" version="1.0.0"  />
+		  <dependency id="System.ComponentModel.Annotations" version="4.7.0" />
+		  <dependency id="Eltra.Common" version="1.0.0" />
+		  <dependency id="Eltra.Resources" version="1.0.0" />
 		</dependencies>
+	<Version>1.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
