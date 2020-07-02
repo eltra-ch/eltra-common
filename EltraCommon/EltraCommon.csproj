@@ -18,10 +18,10 @@
 	  <dependency id="System.Drawing.Common" version="4.7.0" />
     </dependencies>
 	<PackageId>Eltra.Common</PackageId>
-	<Product>Eltra.Common</Product>
-	<Version>1.0.2</Version>
+	<Product>Eltra.Common</Product>	
 	<Description>Eltra - CANOpen based IoT Framework - SDK</Description>
 	<PackageTags>CANOpen IoT Eltra OPCUA OPC</PackageTags>
+    <Version>1.0.3</Version>
   </PropertyGroup>
 
   <ItemGroup>
