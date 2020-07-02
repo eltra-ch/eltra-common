@@ -9,10 +9,10 @@
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 	<PackageLicenseFile>LICENSE</PackageLicenseFile>
-	<Copyright>Dawid Sienkiewicz</Copyright>
+	<Copyright>Dawid Sienkiewicz, (c) 2020</Copyright>
 	<PackageProjectUrl>www.eltra.ch</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/eltra-ch/eltra-common</RepositoryUrl>
-	<RepositoryType>git</RepositoryType>
+	<RepositoryType>GIT</RepositoryType>
 	<dependencies>
       <dependency id="Newtonsoft.Json" version="12.0.3" />
 	  <dependency id="System.Drawing.Common" version="4.7.0" />
@@ -20,6 +20,8 @@
 	<PackageId>Eltra.Common</PackageId>
 	<Product>Eltra.Common</Product>
 	<Version>1.0.2</Version>
+	<Description>Eltra - CANOpen based IoT Framework - SDK</Description>
+	<PackageTags>CANOpen IoT Eltra OPCUA OPC</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
