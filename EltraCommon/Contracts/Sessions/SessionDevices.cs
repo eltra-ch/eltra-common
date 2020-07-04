@@ -17,7 +17,7 @@ namespace EltraCommon.Contracts.Sessions
         #region Properties
 
         [DataMember]
-        public string SessionUuid { get; set; }
+        public Session Session { get; set; }
 
         [DataMember]
         public List<EltraDevice> Devices
@@ -36,9 +36,9 @@ namespace EltraCommon.Contracts.Sessions
         {
             bool result = false;
 
-            if (!DeviceExists(device))
+            if (!DeviceExists(device) && Session != null)
             {
-                device.SessionUuid = SessionUuid;
+                device.SessionUuid = Session.Uuid;
 
                 Devices.Add(device);
 
