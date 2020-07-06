@@ -1,10 +1,14 @@
-﻿using System.Runtime.Serialization;
+﻿using EltraCommon.Contracts.Users;
+using System.Runtime.Serialization;
 
 namespace EltraCommon.Contracts.Sessions
 {
     [DataContract]
     public class SessionStatusUpdate
     {
+        [DataMember]
+        public UserAuthData AuthData { get; set; }
+        
         [DataMember]
         public string SessionUuid { get; set; }
 

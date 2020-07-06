@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using EltraCommon.Contracts.Users;
+using System.Runtime.Serialization;
 
 namespace EltraCommon.Contracts.Sessions
 {
@@ -7,5 +8,7 @@ namespace EltraCommon.Contracts.Sessions
     {
         [DataMember]
         public string Uuid { get; set; }
+        [DataMember]
+        public UserAuthData AuthData { get; set; }
     }
 }
