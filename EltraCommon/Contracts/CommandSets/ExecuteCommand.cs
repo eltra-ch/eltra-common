@@ -12,7 +12,10 @@ namespace EltraCommon.Contracts.CommandSets
         public string CommandUuid { get; set; }
 
         [DataMember]
-        public string SessionUuid { get; set; }
+        public string SourceSessionUuid { get; set; }
+
+        [DataMember]
+        public string TargetSessionUuid { get; set; }
 
         [DataMember]
         public ulong SerialNumber { get; set; }
