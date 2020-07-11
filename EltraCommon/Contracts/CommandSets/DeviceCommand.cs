@@ -29,6 +29,11 @@ namespace EltraCommon.Contracts.CommandSets
             SessionDevice = device;
         }
 
+        public DeviceCommand(EltraDevice device)
+        {
+            SessionDevice = new SessionDevice() { Device = device };
+        }
+
         #endregion
 
         #region Properties

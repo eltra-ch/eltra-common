@@ -66,11 +66,11 @@ namespace EltraCommon.Contracts.Sessions
             return result;
         }
 
-        public void RemoveDevice(EltraDevice device)
+        public void RemoveDevice(SessionDevice device)
         {
             foreach (var sessionDevice in SessionDeviceList)
             {
-                if (sessionDevice.Device == device)
+                if (sessionDevice == device)
                 {
                     SessionDeviceList.Remove(sessionDevice);
                     break;
