@@ -36,7 +36,7 @@ namespace EltraCommon.Contracts.CommandSets
                         CommandUuid = _command.Uuid;
                     }
 
-                    var device = _command.Device;
+                    var device = _command.SessionDevice?.Device;
                     if (device != null)
                     {
                         var identification = device.Identification;

@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using EltraCommon.Logger;
 using EltraCommon.Contracts.Devices;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.DataTypes;
+using EltraCommon.Contracts.Sessions;
 
 namespace EltraCommon.Contracts.CommandSets
 {
@@ -23,9 +24,9 @@ namespace EltraCommon.Contracts.CommandSets
         {
         }
 
-        public DeviceCommand(EltraDevice device)
+        public DeviceCommand(SessionDevice device)
         {
-            Device = device;
+            SessionDevice = device;
         }
 
         #endregion
@@ -36,7 +37,7 @@ namespace EltraCommon.Contracts.CommandSets
         public string Uuid { get; set; }
         
         [IgnoreDataMember]
-        public EltraDevice Device { get; set; }
+        public SessionDevice SessionDevice { get; set; }
 
         [DataMember]
         public string Name { get; set; }
@@ -166,9 +167,9 @@ namespace EltraCommon.Contracts.CommandSets
             {
                 if (command != null)
                 {
-                    if (command.Device != null)
+                    if (command.SessionDevice != null)
                     {
-                        Device = command.Device;
+                        SessionDevice = command.SessionDevice;
                     }
 
                     Parameters = command.Parameters;
@@ -252,7 +253,7 @@ namespace EltraCommon.Contracts.CommandSets
 
                     if (clone is DeviceCommand deviceCommand)
                     {
-                        deviceCommand.Device = Device;
+                        deviceCommand.SessionDevice = SessionDevice;
                     }
 
                     result = true;

@@ -10,7 +10,7 @@ namespace EltraCommon.Contracts.Sessions
     {
         #region Private fields
 
-        private List<EltraDevice> _deviceList;
+        private List<SessionDevice> _sessionDeviceList;
         
         #endregion
 
@@ -20,13 +20,13 @@ namespace EltraCommon.Contracts.Sessions
         public Session Session { get; set; }
 
         [DataMember]
-        public List<EltraDevice> Devices
+        public List<SessionDevice> SessionDeviceList
         {
-            get => _deviceList ?? (_deviceList = new List<EltraDevice>());
-            set => _deviceList = value;
+            get => _sessionDeviceList ?? (_sessionDeviceList = new List<SessionDevice>());
+            set => _sessionDeviceList = value;
         }
 
-        public int DevicesCount => Devices.Count;
+        public int DevicesCount => SessionDeviceList.Count;
 
         #endregion
 
@@ -38,9 +38,9 @@ namespace EltraCommon.Contracts.Sessions
 
             if (!DeviceExists(device) && Session != null)
             {
-                device.SessionUuid = Session.Uuid;
+                var sessionDevice = new SessionDevice() { Device = device, SessionUuid = Session.Uuid };
 
-                Devices.Add(device);
+                SessionDeviceList.Add(sessionDevice);
 
                 result = true;
             }
@@ -52,11 +52,13 @@ namespace EltraCommon.Contracts.Sessions
         {
             EltraDevice result = null;
 
-            foreach (var d in Devices)
+            foreach (var sessionDevice in SessionDeviceList)
             {
-                if (d.Identification.SerialNumber == serialNumber)
+                var device = sessionDevice.Device;
+
+                if (device.Identification.SerialNumber == serialNumber)
                 {
-                    result = d;
+                    result = device;
                     break;
                 }
             }
@@ -66,7 +68,14 @@ namespace EltraCommon.Contracts.Sessions
 
         public void RemoveDevice(EltraDevice device)
         {
-            Devices.Remove(device);
+            foreach (var sessionDevice in SessionDeviceList)
+            {
+                if (sessionDevice.Device == device)
+                {
+                    SessionDeviceList.Remove(sessionDevice);
+                    break;
+                }
+            }
         }
 
         private bool DeviceExists(EltraDevice device)

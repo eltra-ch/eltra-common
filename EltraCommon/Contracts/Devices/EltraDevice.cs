@@ -84,9 +84,6 @@ namespace EltraCommon.Contracts.Devices
         #region Properties
 
         [DataMember]
-        public string SessionUuid { get; set; }
-
-        [DataMember]
         public string Family { get; set; }
 
         [DataMember]
