@@ -2,7 +2,6 @@
 using System.Runtime.Serialization;
 using System.Text;
 using EltraCommon.Logger;
-using EltraCommon.Contracts.Devices;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.DataTypes;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters.Events;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Templates;
@@ -11,6 +10,7 @@ using System.Collections.Generic;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Parameters;
 using System.Xml;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Units;
+using EltraCommon.Contracts.Node;
 
 namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters
 {
@@ -26,7 +26,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         #endregion
 
         #region Constructors
-        public Parameter(EltraDevice device, XmlNode source)
+        public Parameter(EltraDeviceNode device, XmlNode source)
             : base(device, source)
         {
             DateTimeFormat = "dd MMM HH:mm:ss";

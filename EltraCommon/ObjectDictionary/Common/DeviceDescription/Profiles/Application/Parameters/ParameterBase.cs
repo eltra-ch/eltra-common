@@ -5,6 +5,7 @@ using System.Xml;
 using EltraCommon.Contracts.Devices;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Common;
 using EltraCommon.Logger;
+using EltraCommon.Contracts.Node;
 
 namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters
 {
@@ -21,7 +22,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
         #region Constructors
 
-        public ParameterBase(EltraDevice device, XmlNode source)
+        public ParameterBase(EltraDeviceNode device, XmlNode source)
         {
             _source = source;
 
@@ -33,7 +34,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         #region Properties
 
         [IgnoreDataMember]
-        public EltraDevice Device { get; }
+        public EltraDeviceNode Device { get; }
 
         [IgnoreDataMember]
         protected XmlNode Source => _source;

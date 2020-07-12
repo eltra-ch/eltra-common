@@ -9,7 +9,7 @@ namespace EltraCommon.Contracts.Parameters
         [DataMember]
         public string SessionUuid { get; set; }
         [DataMember]
-        public ulong SerialNumber { get; set; }
+        public int NodeId { get; set; }
         [DataMember]
         public Parameter Parameter { get; set; }
 }

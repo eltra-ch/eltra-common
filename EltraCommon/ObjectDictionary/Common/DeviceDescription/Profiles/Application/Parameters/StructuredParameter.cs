@@ -1,4 +1,4 @@
-﻿using EltraCommon.Contracts.Devices;
+﻿using EltraCommon.Contracts.Node;
 using System;
 using System.Xml;
 
@@ -6,7 +6,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 {
     public class StructuredParameter : ParameterBase
     {
-        public StructuredParameter(EltraDevice device, XmlNode source) 
+        public StructuredParameter(EltraDeviceNode device, XmlNode source) 
             : base(device, source)
         {
         }

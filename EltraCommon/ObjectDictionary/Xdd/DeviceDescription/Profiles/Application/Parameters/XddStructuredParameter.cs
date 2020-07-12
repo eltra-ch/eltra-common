@@ -1,6 +1,5 @@
-﻿using System;
-using System.Xml;
-
+﻿using System.Xml;
+using EltraCommon.Contracts.Node;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common;
 
@@ -8,7 +7,7 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
 {
     class XddStructuredParameter : StructuredParameter
     {
-        public XddStructuredParameter(Contracts.Devices.EltraDevice device, XmlNode source)
+        public XddStructuredParameter(EltraDeviceNode device, XmlNode source)
             :base(device, source)
         {   
         }

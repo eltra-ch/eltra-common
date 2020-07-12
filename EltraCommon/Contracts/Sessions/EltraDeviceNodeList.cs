@@ -49,13 +49,13 @@ namespace EltraCommon.Contracts.Sessions
             return result;
         }
 
-        public EltraDevice FindDeviceBySerialNumber(ulong serialNumber)
+        public EltraDevice FindDevice(int nodeId)
         {
             EltraDevice result = null;
 
             foreach (var deviceNode in DeviceNodeList)
             {
-                if (deviceNode.Identification.SerialNumber == serialNumber)
+                if (deviceNode.NodeId == nodeId)
                 {
                     result = deviceNode;
                     break;
@@ -77,13 +77,13 @@ namespace EltraCommon.Contracts.Sessions
             }
         }
 
-        private bool DeviceExists(EltraDevice device)
+        private bool DeviceExists(EltraDeviceNode device)
         {
             bool result = false;
 
             if (device?.Identification != null)
             {
-                result = FindDeviceBySerialNumber(device.Identification.SerialNumber) != null;
+                result = FindDevice(device.NodeId) != null;
             }
             
             return result;

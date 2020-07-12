@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Xml;
-using EltraCommon.Contracts.Devices;
+using EltraCommon.Contracts.Node;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles;
 
@@ -12,13 +12,13 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription
         #region Private fields
 
         private XddProfile _profile;
-        private readonly EltraDevice _device;
+        private readonly EltraDeviceNode _device;
 
         #endregion
 
         #region Constructors
 
-        public XddDeviceDescription(EltraDevice device)
+        public XddDeviceDescription(EltraDeviceNode device)
         {
             _device = device;
         }

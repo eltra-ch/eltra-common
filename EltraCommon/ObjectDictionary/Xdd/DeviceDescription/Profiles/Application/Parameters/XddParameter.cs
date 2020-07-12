@@ -6,7 +6,7 @@ using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Un
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Device;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Device.UserLevels;
 using EltraCommon.Logger;
-using EltraCommon.Contracts.Devices;
+using EltraCommon.Contracts.Node;
 
 namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Parameters
 {
@@ -24,7 +24,7 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
 
         #region Constructors
 
-        public XddParameter(EltraDevice device, XmlNode source, XddDeviceManager deviceManager, XddDataTypeList dataTypeList, XddTemplateList templateList)
+        public XddParameter(EltraDeviceNode device, XmlNode source, XddDeviceManager deviceManager, XddDataTypeList dataTypeList, XddTemplateList templateList)
             : base(device, source)
         {
             _deviceManager = deviceManager;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
-
+using EltraCommon.Contracts.Node;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.DataTypes;
@@ -23,13 +23,13 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
         private XddUnitsList _unitsList;
 
         private readonly XddDeviceManager _deviceManager;
-        private readonly Contracts.Devices.EltraDevice _device;
+        private readonly EltraDeviceNode _device;
 
         #endregion
 
         #region Constructors
 
-        public XddParameterList(Contracts.Devices.EltraDevice device, XddDeviceManager deviceManager, XddDataTypeList dataTypeList, XddTemplateList templateList)
+        public XddParameterList(EltraDeviceNode device, XddDeviceManager deviceManager, XddDataTypeList dataTypeList, XddTemplateList templateList)
         {
             _parameterComparer = new ParameterComparer();
 

@@ -13,7 +13,7 @@ namespace EltraCommon.Contracts.CommandSets
         public ExecuteCommandStatus(string sessionUuid, ExecuteCommand execCommand)
         {
             SessionUuid = sessionUuid;
-            SerialNumber = execCommand.SerialNumber;
+            NodeId = execCommand.NodeId;
             CommandUuid = execCommand.CommandUuid;
             
             var command = execCommand.Command;
@@ -36,7 +36,7 @@ namespace EltraCommon.Contracts.CommandSets
         public string SessionUuid { get; set; }
 
         [DataMember]
-        public ulong SerialNumber { get; set; }
+        public int NodeId { get; set; }
 
         [DataMember]
         public string CommandName { get; set; }

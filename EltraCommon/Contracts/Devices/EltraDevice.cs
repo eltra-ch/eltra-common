@@ -298,35 +298,11 @@ namespace EltraCommon.Contracts.Devices
             return result;
         }
 
-        public bool CreateDeviceDescription(DeviceDescriptionFile deviceDescriptionFile)
+        protected virtual bool CreateDeviceDescription(DeviceDescriptionFile deviceDescriptionFile)
         {
-            bool result = false;
-            var content = deviceDescriptionFile?.Content;
-
-            if (content != null)
-            {
-                var deviceDescription = DeviceDescriptionFactory.CreateDeviceDescription(this, deviceDescriptionFile);
-
-                if (deviceDescription.Parse())
-                {
-
-                    DeviceDescription = deviceDescription;
-
-                    result = true;
-                }
-                else
-                {
-                    MsgLogger.WriteError($"{GetType().Name} - CreateDeviceDescription", "Parsing device description failed!");
-                }
-            }
-            else
-            {
-                MsgLogger.WriteError($"{GetType().Name} - CreateDeviceDescription", "Content is empty!");
-            }
-
-            return result;
+            return false;
         }
-
+        
         #endregion
     }
 }

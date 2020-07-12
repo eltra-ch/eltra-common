@@ -1,4 +1,5 @@
 ﻿using EltraCommon.Contracts.Devices;
+using EltraCommon.Contracts.Node;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription;
 using System;
@@ -27,7 +28,7 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription.Factory
             return result;
         }
 
-        public static Dd CreateDeviceDescription(EltraDevice device, DeviceDescriptionFile deviceDescriptionFile)
+        public static Dd CreateDeviceDescription(EltraDeviceNode device, DeviceDescriptionFile deviceDescriptionFile)
         {
             Dd result = null;
             var content = deviceDescriptionFile?.Content;

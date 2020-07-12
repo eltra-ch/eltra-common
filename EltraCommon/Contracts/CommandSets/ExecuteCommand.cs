@@ -18,7 +18,7 @@ namespace EltraCommon.Contracts.CommandSets
         public string TargetSessionUuid { get; set; }
 
         [DataMember]
-        public ulong SerialNumber { get; set; }
+        public int NodeId { get; set; }
 
         [DataMember]
         public DeviceCommand Command
@@ -39,9 +39,7 @@ namespace EltraCommon.Contracts.CommandSets
                     var device = _command.Device;
                     if (device != null)
                     {
-                        var identification = device.Identification;
-
-                        SerialNumber = identification.SerialNumber;
+                        NodeId = device.NodeId;
                     }
                 }
             }
