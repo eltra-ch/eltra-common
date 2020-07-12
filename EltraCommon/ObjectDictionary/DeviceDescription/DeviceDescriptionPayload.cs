@@ -1,4 +1,5 @@
 ﻿using EltraCommon.Contracts.Devices;
+using EltraCommon.Contracts.Node;
 using EltraCommon.Helpers;
 using System;
 using System.Runtime.Serialization;
@@ -20,7 +21,7 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
         {
         }
 
-        public DeviceDescriptionPayload(EltraDevice device)
+        public DeviceDescriptionPayload(EltraDeviceNode device)
         {
             Init(device);
         }
@@ -33,7 +34,10 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
         public string CallerUuid { get; set; }
 
         [DataMember]
-        public ulong SerialNumber { get; set; }
+        public string SessionUuid { get; set; }
+
+        [DataMember]
+        public int NodeId { get; set; }
 
         [DataMember]
         public DeviceVersion Version { get; set; }
@@ -85,11 +89,12 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
 
         #region Methods
 
-        private void Init(EltraDevice device)
+        private void Init(EltraDeviceNode device)
         {
             if (device != null)
             {                
-                SerialNumber = device.Identification.SerialNumber;
+                NodeId = device.NodeId;
+                SessionUuid = device.SessionUuid;
                 PlainContent = device.DeviceDescription?.DataSource;
 
                 if (!string.IsNullOrEmpty(PlainContent))

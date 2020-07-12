@@ -22,7 +22,7 @@ namespace EltraCommon.Contracts.Node
 
         #region Methods
         
-        protected override bool CreateDeviceDescription(DeviceDescriptionFile deviceDescriptionFile)
+        public override bool CreateDeviceDescription(DeviceDescriptionFile deviceDescriptionFile)
         {
             bool result = false;
             var content = deviceDescriptionFile?.Content;

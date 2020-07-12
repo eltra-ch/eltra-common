@@ -298,7 +298,7 @@ namespace EltraCommon.Contracts.Devices
             return result;
         }
 
-        protected virtual bool CreateDeviceDescription(DeviceDescriptionFile deviceDescriptionFile)
+        public virtual bool CreateDeviceDescription(DeviceDescriptionFile deviceDescriptionFile)
         {
             return false;
         }
