@@ -9,8 +9,6 @@ namespace EltraCommon.Contracts.Sessions
         [DataMember]
         public string Uuid { get; set; }
         [DataMember]
-        public int NodeId { get; set; }
-        [DataMember]
         public UserAuthData AuthData { get; set; }
     }
 }
