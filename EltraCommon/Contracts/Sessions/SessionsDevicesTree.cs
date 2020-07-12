@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace EltraCommon.Contracts.Sessions
 {
     [DataContract]
-    public class SessionsDevices
+    public class SessionDeviceSet
     {
         private List<SessionDevices> _sessionDevices;
 

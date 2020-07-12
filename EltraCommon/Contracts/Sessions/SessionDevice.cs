@@ -15,6 +15,9 @@ namespace EltraCommon.Contracts.Sessions
         [DataMember]
         public EltraDevice Device { get; set; }
 
+        [DataMember]
+        public int NodeId { get; set; }
+
         #endregion
     }
 }
