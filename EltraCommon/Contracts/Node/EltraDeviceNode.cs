@@ -2,18 +2,15 @@
 
 using EltraCommon.Contracts.Devices;
 
-namespace EltraCommon.Contracts.Sessions
+namespace EltraCommon.Contracts.Node
 {
     [DataContract]
-    public class SessionDevice
+    public class EltraDeviceNode : EltraDevice
     {
         #region Properties
 
         [DataMember]
         public string SessionUuid { get; set; }
-
-        [DataMember]
-        public EltraDevice Device { get; set; }
 
         [DataMember]
         public int NodeId { get; set; }

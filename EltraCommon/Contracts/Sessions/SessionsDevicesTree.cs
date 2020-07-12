@@ -4,19 +4,19 @@ using System.Runtime.Serialization;
 namespace EltraCommon.Contracts.Sessions
 {
     [DataContract]
-    public class SessionDeviceSet
+    public class EltraDeviceNodeSet
     {
-        private List<SessionDevices> _sessionDevices;
+        private List<EltraDeviceNodeList> _deviceNodeList;
 
         [DataMember]
-        public List<SessionDevices> SessionDevices
+        public List<EltraDeviceNodeList> DeviceNodeList
         {
-            get => _sessionDevices ?? (_sessionDevices = new List<SessionDevices>());
+            get => _deviceNodeList ?? (_deviceNodeList = new List<EltraDeviceNodeList>());
         }
 
-        public void Add(SessionDevices sessionDevices)
+        public void Add(EltraDeviceNodeList sessionDevices)
         {
-            SessionDevices.Add(sessionDevices);
+            DeviceNodeList.Add(sessionDevices);
         }
     }
 }

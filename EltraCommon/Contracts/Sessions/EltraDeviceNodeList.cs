@@ -2,15 +2,16 @@
 using System.Runtime.Serialization;
 
 using EltraCommon.Contracts.Devices;
+using EltraCommon.Contracts.Node;
 
 namespace EltraCommon.Contracts.Sessions
 {
     [DataContract]
-    public class SessionDevices
+    public class EltraDeviceNodeList
     {
         #region Private fields
 
-        private List<SessionDevice> _sessionDeviceList;
+        private List<EltraDeviceNode> _deviceNodeList;
         
         #endregion
 
@@ -20,27 +21,27 @@ namespace EltraCommon.Contracts.Sessions
         public Session Session { get; set; }
 
         [DataMember]
-        public List<SessionDevice> SessionDeviceList
+        public List<EltraDeviceNode> DeviceNodeList
         {
-            get => _sessionDeviceList ?? (_sessionDeviceList = new List<SessionDevice>());
-            set => _sessionDeviceList = value;
+            get => _deviceNodeList ?? (_deviceNodeList = new List<EltraDeviceNode>());
+            set => _deviceNodeList = value;
         }
 
-        public int DevicesCount => SessionDeviceList.Count;
+        public int DevicesCount => DeviceNodeList.Count;
 
         #endregion
 
         #region Methods
 
-        public bool AddDevice(EltraDevice device)
+        public bool AddDevice(EltraDeviceNode deviceNode)
         {
             bool result = false;
 
-            if (!DeviceExists(device) && Session != null)
+            if (!DeviceExists(deviceNode) && Session != null)
             {
-                var sessionDevice = new SessionDevice() { Device = device, SessionUuid = Session.Uuid };
+                deviceNode.SessionUuid = Session.Uuid;
 
-                SessionDeviceList.Add(sessionDevice);
+                DeviceNodeList.Add(deviceNode);
 
                 result = true;
             }
@@ -52,13 +53,11 @@ namespace EltraCommon.Contracts.Sessions
         {
             EltraDevice result = null;
 
-            foreach (var sessionDevice in SessionDeviceList)
+            foreach (var deviceNode in DeviceNodeList)
             {
-                var device = sessionDevice.Device;
-
-                if (device.Identification.SerialNumber == serialNumber)
+                if (deviceNode.Identification.SerialNumber == serialNumber)
                 {
-                    result = device;
+                    result = deviceNode;
                     break;
                 }
             }
@@ -66,13 +65,13 @@ namespace EltraCommon.Contracts.Sessions
             return result;
         }
 
-        public void RemoveDevice(SessionDevice device)
+        public void RemoveDevice(EltraDeviceNode device)
         {
-            foreach (var sessionDevice in SessionDeviceList)
+            foreach (var sessionDevice in DeviceNodeList)
             {
                 if (sessionDevice == device)
                 {
-                    SessionDeviceList.Remove(sessionDevice);
+                    DeviceNodeList.Remove(sessionDevice);
                     break;
                 }
             }
