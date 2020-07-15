@@ -143,7 +143,7 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
             }
             catch (HttpRequestException e)
             {
-                MsgLogger.Exception($"{GetType().Name} - Get", e.InnerException);
+                MsgLogger.Exception($"{GetType().Name} - Get", e.InnerException != null ? e.InnerException : e);
             }
             catch (Exception e)
             {

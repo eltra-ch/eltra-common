@@ -84,7 +84,7 @@ namespace EltraCommon.Os.Windows
                 }
                 catch(SEHException se)
                 {
-                    MsgLogger.Exception($"{GetType().Name} - FreeLibrary", se.InnerException);
+                    MsgLogger.Exception($"{GetType().Name} - FreeLibrary", se.InnerException != null ? se.InnerException : se);
                     result = false;
                 }
                 catch(Exception e)
