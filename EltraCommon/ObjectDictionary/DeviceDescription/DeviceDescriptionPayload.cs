@@ -31,10 +31,10 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
         #region Properties
 
         [DataMember]
-        public string CallerUuid { get; set; }
+        public string CallerId { get; set; }
 
         [DataMember]
-        public string SessionUuid { get; set; }
+        public string ChannelId { get; set; }
 
         [DataMember]
         public int NodeId { get; set; }
@@ -94,7 +94,7 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
             if (device != null)
             {                
                 NodeId = device.NodeId;
-                SessionUuid = device.SessionUuid;
+                ChannelId = device.ChannelId;
                 PlainContent = device.DeviceDescription?.DataSource;
 
                 if (!string.IsNullOrEmpty(PlainContent))

@@ -22,7 +22,7 @@ namespace EltraCommon.Contracts.ToolSet
         #region Properties
 
         [DataMember]
-        public string Uuid { get; set; }
+        public string Id { get; set; }
 
         [IgnoreDataMember]
         public EltraDevice Device { get; set; }

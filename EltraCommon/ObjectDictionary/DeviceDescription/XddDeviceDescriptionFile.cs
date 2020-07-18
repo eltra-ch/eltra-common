@@ -93,7 +93,7 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
         {
             if (uuidAttribute != null)
             {
-                deviceTool.Uuid = uuidAttribute.InnerText;
+                deviceTool.Id = uuidAttribute.InnerText;
 
                 if (nameAttribute != null)
                 {

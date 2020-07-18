@@ -36,18 +36,18 @@ namespace EltraCommon.Contracts.ToolSet
 
         public bool ToolExists(DeviceTool tool)
         {
-            return FindToolByUuid(tool.Uuid) != null;
+            return FindToolById(tool.Id) != null;
         }
 
-        public DeviceTool FindToolByUuid(string uuid)
+        public DeviceTool FindToolById(string id)
         {
             DeviceTool result = null;
 
-            if(!string.IsNullOrEmpty(uuid))
+            if(!string.IsNullOrEmpty(id))
             {
                 foreach (var command in Tools)
                 {
-                    if (command.Uuid.ToLower() == uuid.ToLower())
+                    if (command.Id.ToLower() == id.ToLower())
                     {
                         result = command;
                         break;

@@ -28,9 +28,9 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription.Factory
             return result;
         }
 
-        public static Dd CreateDeviceDescription(EltraDeviceNode device, DeviceDescriptionFile deviceDescriptionFile)
+        public static IDeviceDescription CreateDeviceDescription(EltraDeviceNode device, DeviceDescriptionFile deviceDescriptionFile)
         {
-            Dd result = null;
+            IDeviceDescription result = null;
             var content = deviceDescriptionFile?.Content;
 
             if (content != null && device != null)

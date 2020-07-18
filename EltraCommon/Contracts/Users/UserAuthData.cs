@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace EltraCommon.Contracts.Users
 {
     [DataContract]
-    public class UserAuthData
+    public class UserData
     {
         #region Properties
 
@@ -14,7 +14,6 @@ namespace EltraCommon.Contracts.Users
         public string Login { get; set; }
 
         [DataMember]
-        [Required]
         public string Name { get; set; }
 
         [DataMember]

@@ -34,7 +34,7 @@ namespace EltraCommon.Contracts.CommandSets
         #region Properties
 
         [DataMember]
-        public string Uuid { get; set; }
+        public string Id { get; set; }
         
         [IgnoreDataMember]
         public EltraDeviceNode Device { get; set; }
@@ -56,7 +56,7 @@ namespace EltraCommon.Contracts.CommandSets
 
         #region Methods
 
-        public virtual bool Execute(string sourceUuid)
+        public virtual bool Execute(string sourceId)
         {
             return false;
         }

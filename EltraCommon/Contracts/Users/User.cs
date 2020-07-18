@@ -13,16 +13,16 @@ namespace EltraCommon.Contracts.Users
             Status = UserStatus.Unlocked;
         }
 
-        public User(UserAuthData authData)
+        public User(UserData userData)
         {
-            AuthData = authData;
+            UserData = userData;
             Modified = DateTime.Now;
             Created = DateTime.Now;
             Status = UserStatus.Unlocked;
         }
 
         [DataMember]
-        public UserAuthData AuthData { get; set; }
+        public UserData UserData { get; set; }
 
         [DataMember]
         public UserStatus Status { get; set; }

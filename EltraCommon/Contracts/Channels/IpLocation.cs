@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace EltraCommon.Contracts.Sessions
+namespace EltraCommon.Contracts.Channels
 {
     public class IpLocation
     {

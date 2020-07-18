@@ -13,7 +13,7 @@ namespace EltraCommon.Contracts.Node
         #region Properties
 
         [DataMember]
-        public string SessionUuid { get; set; }
+        public string ChannelId { get; set; }
 
         [DataMember]
         public int NodeId { get; set; }

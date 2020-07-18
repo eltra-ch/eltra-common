@@ -10,19 +10,19 @@ namespace EltraCommon.Contracts.CommandSets
         {
         }
 
-        public ExecuteCommandStatus(string sessionUuid, ExecuteCommand execCommand)
+        public ExecuteCommandStatus(string channelId, ExecuteCommand execCommand)
         {
-            SessionUuid = sessionUuid;
+            ChannelId = channelId;
             NodeId = execCommand.NodeId;
-            CommandUuid = execCommand.CommandUuid;
+            CommandId = execCommand.CommandId;
             
             var command = execCommand.Command;
 
             if (command != null)
             {
-                if (!string.IsNullOrEmpty(command.Uuid))
+                if (!string.IsNullOrEmpty(command.Id))
                 {
-                    CommandUuid = command.Uuid;
+                    CommandId = command.Id;
                 }
 
                 CommandName = command.Name;
@@ -30,10 +30,10 @@ namespace EltraCommon.Contracts.CommandSets
         }
 
         [DataMember]
-        public string CommandUuid { get; set; }
+        public string CommandId { get; set; }
 
         [DataMember]
-        public string SessionUuid { get; set; }
+        public string ChannelId { get; set; }
 
         [DataMember]
         public int NodeId { get; set; }

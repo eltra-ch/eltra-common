@@ -24,7 +24,7 @@ namespace EltraCommon.Contracts.Devices
         private DeviceToolSet _toolSet;
         private DeviceIdentification _deviceIdentification;
         private DeviceStatus _status;
-        private Dd _deviceDescription;
+        private IDeviceDescription _deviceDescription;
 
         #endregion
 
@@ -133,7 +133,7 @@ namespace EltraCommon.Contracts.Devices
         public string Name { get; set; }
 
         [IgnoreDataMember]
-        public Dd DeviceDescription
+        public IDeviceDescription DeviceDescription
         {
             get => _deviceDescription;
             set 
@@ -192,13 +192,13 @@ namespace EltraCommon.Contracts.Devices
             return result;
         }
 
-        public DeviceTool FindTool(string uuid)
+        public DeviceTool FindTool(string toolId)
         {
             DeviceTool result = null;
 
             try
             {
-                result = ToolSet.FindToolByUuid(uuid);
+                result = ToolSet.FindToolById(toolId);
             }
             catch (Exception e)
             {
@@ -210,7 +210,7 @@ namespace EltraCommon.Contracts.Devices
 
         public DeviceTool FindTool(DeviceTool tool)
         {
-            var result = ToolSet.FindToolByUuid(tool.Uuid);
+            var result = ToolSet.FindToolById(tool.Id);
 
             return result;
         }

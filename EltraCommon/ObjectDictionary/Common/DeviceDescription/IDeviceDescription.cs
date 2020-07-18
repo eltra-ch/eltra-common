@@ -4,7 +4,7 @@ using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application
 
 namespace EltraCommon.ObjectDictionary.Common.DeviceDescription
 {
-    public abstract class Dd
+    public abstract class IDeviceDescription
     {
         public List<ParameterBase> Parameters { get; set; }
 

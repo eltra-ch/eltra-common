@@ -9,13 +9,13 @@ namespace EltraCommon.Contracts.CommandSets
         private DeviceCommand _command;
 
         [DataMember]
-        public string CommandUuid { get; set; }
+        public string CommandId { get; set; }
 
         [DataMember]
-        public string SourceSessionUuid { get; set; }
+        public string SourceChannelId { get; set; }
 
         [DataMember]
-        public string TargetSessionUuid { get; set; }
+        public string TargetChannelId { get; set; }
 
         [DataMember]
         public int NodeId { get; set; }
@@ -31,9 +31,9 @@ namespace EltraCommon.Contracts.CommandSets
                 
                 if (_command != null)
                 {
-                    if (!string.IsNullOrEmpty(_command.Uuid))
+                    if (!string.IsNullOrEmpty(_command.Id))
                     {
-                        CommandUuid = _command.Uuid;
+                        CommandId = _command.Id;
                     }
 
                     var device = _command.Device;

@@ -7,7 +7,7 @@ namespace EltraCommon.Contracts.Parameters
     public class ParameterUpdate
     {
         [DataMember]
-        public string SessionUuid { get; set; }
+        public string ChannelId { get; set; }
         [DataMember]
         public int NodeId { get; set; }
         [DataMember]

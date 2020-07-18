@@ -7,7 +7,7 @@ using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles;
 
 namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription
 {
-    public class XddDeviceDescription : Dd
+    public class XddDeviceDescription : IDeviceDescription
     {
         #region Private fields
 

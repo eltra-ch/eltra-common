@@ -39,7 +39,7 @@ namespace EltraCommon.ObjectDictionary.Common
         
         #region Private fields
 
-        private Dd _xdd;
+        private IDeviceDescription _xdd;
 
         #endregion
 
@@ -78,7 +78,7 @@ namespace EltraCommon.ObjectDictionary.Common
             Parameters = parameters;
         }
 
-        protected Dd GetDeviceDescription()
+        protected IDeviceDescription GetDeviceDescription()
         {
             return _xdd;
         }

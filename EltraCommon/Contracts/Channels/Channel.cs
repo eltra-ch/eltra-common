@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Runtime.Serialization;
-
 using EltraCommon.Contracts.Users;
 
-namespace EltraCommon.Contracts.Sessions
+namespace EltraCommon.Contracts.Channels
 {
     [DataContract]
-    public class Session
+    public class Channel
     {
         #region Private fields
 
@@ -19,11 +18,11 @@ namespace EltraCommon.Contracts.Sessions
 
         #region Constructors
 
-        public Session()
+        public Channel()
         {
             Modified = DateTime.Now;
             Created = DateTime.Now;
-            Status = SessionStatus.Offline;
+            Status = ChannelStatus.Offline;
             Timeout = uint.MaxValue;
             UpdateInterval = DefaultUpdateInterval;
         }
@@ -33,7 +32,7 @@ namespace EltraCommon.Contracts.Sessions
         #region Properties
 
         [DataMember]
-        public string Uuid { get; set; }
+        public string Id { get; set; }
 
         [DataMember]
         public User User
@@ -41,9 +40,9 @@ namespace EltraCommon.Contracts.Sessions
             get => _user ?? (_user = new User());
             set => _user = value;
         }
-        
+
         [DataMember]
-        public SessionStatus Status { get; set; }
+        public ChannelStatus Status { get; set; }
 
         [DataMember]
         public IpLocation IpLocation
@@ -63,7 +62,7 @@ namespace EltraCommon.Contracts.Sessions
 
         [DataMember]
         public DateTime Created { get; set; }
-        
+
         #endregion
     }
 }

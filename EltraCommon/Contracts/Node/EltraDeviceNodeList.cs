@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
-
+using EltraCommon.Contracts.Channels;
 using EltraCommon.Contracts.Devices;
-using EltraCommon.Contracts.Node;
 
-namespace EltraCommon.Contracts.Sessions
+namespace EltraCommon.Contracts.Node
 {
     [DataContract]
     public class EltraDeviceNodeList
@@ -18,7 +17,7 @@ namespace EltraCommon.Contracts.Sessions
         #region Properties
 
         [DataMember]
-        public Session Session { get; set; }
+        public Channel Session { get; set; }
 
         [DataMember]
         public List<EltraDeviceNode> DeviceNodeList
@@ -39,7 +38,7 @@ namespace EltraCommon.Contracts.Sessions
 
             if (!DeviceExists(deviceNode) && Session != null)
             {
-                deviceNode.SessionUuid = Session.Uuid;
+                deviceNode.ChannelId = Session.Id;
 
                 DeviceNodeList.Add(deviceNode);
 
