@@ -17,7 +17,7 @@ namespace EltraCommon.Contracts.Node
         #region Properties
 
         [DataMember]
-        public Channel Session { get; set; }
+        public Channel Channel { get; set; }
 
         [DataMember]
         public List<EltraDeviceNode> DeviceNodeList
@@ -36,9 +36,9 @@ namespace EltraCommon.Contracts.Node
         {
             bool result = false;
 
-            if (!DeviceExists(deviceNode) && Session != null)
+            if (!DeviceExists(deviceNode) && Channel != null)
             {
-                deviceNode.ChannelId = Session.Id;
+                deviceNode.ChannelId = Channel.Id;
 
                 DeviceNodeList.Add(deviceNode);
 
