@@ -31,9 +31,6 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
         #region Properties
 
         [DataMember]
-        public string CallerId { get; set; }
-
-        [DataMember]
         public string ChannelId { get; set; }
 
         [DataMember]
