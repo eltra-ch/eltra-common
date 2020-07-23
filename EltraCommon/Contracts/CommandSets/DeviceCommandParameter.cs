@@ -185,8 +185,15 @@ namespace EltraCommon.Contracts.CommandSets
             {
                 if (DataType.Type == TypeCode.Object)
                 {
-                    value = (T) (object) new byte[DataType.SizeInBytes];
-                    result = true;
+                    if (DataType.SizeInBytes > 0)
+                    {
+                        value = (T)(object)new byte[DataType.SizeInBytes];
+                        result = true;
+                    }
+                    else
+                    {
+                        result = false;
+                    }
                 }
             }
 
