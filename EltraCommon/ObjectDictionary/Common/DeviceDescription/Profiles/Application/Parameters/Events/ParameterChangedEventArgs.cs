@@ -1,5 +1,7 @@
 ﻿using System;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters.Events
 {
     public class ParameterChangedEventArgs : EventArgs

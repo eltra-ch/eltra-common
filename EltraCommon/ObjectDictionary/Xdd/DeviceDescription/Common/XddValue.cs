@@ -4,6 +4,8 @@ using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters;
 using EltraCommon.Logger;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common
 {
     public class XddValue

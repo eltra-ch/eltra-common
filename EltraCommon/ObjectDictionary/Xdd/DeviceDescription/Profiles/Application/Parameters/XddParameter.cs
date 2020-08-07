@@ -8,6 +8,8 @@ using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Device.UserLev
 using EltraCommon.Logger;
 using EltraCommon.Contracts.Node;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Parameters
 {
     public class XddParameter : XddParameterBase

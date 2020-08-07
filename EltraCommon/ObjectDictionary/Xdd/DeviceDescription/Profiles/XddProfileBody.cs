@@ -6,6 +6,8 @@ using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Pa
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Device;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Identity;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles
 {
     public class XddProfileBody

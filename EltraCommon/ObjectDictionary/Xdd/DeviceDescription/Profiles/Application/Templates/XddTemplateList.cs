@@ -4,6 +4,8 @@ using System.Xml;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.DataTypes;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Parameters;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Templates
 {
     public class XddTemplateList

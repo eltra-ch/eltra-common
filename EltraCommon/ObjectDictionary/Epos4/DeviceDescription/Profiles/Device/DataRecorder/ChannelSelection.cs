@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Xml;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Epos4.DeviceDescription.Profiles.Device.DataRecorder
 {
     public class ChannelSelection

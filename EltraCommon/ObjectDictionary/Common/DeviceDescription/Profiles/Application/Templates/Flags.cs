@@ -1,6 +1,8 @@
 ﻿using EltraCommon.ObjectDictionary.Common.DeviceDescription.Common;
 using System.Runtime.Serialization;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Templates
 {
     [DataContract]

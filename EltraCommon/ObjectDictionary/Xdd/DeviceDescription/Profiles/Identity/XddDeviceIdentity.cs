@@ -1,6 +1,8 @@
 ﻿using EltraCommon.Contracts.Devices;
 using System.Xml;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Identity
 {
     public class XddDeviceIdentity

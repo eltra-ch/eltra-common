@@ -12,6 +12,8 @@ using System.Xml;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Units;
 using EltraCommon.Contracts.Node;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters
 {
     [DataContract]

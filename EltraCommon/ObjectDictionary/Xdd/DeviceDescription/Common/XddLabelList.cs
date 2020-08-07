@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Xml;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common
 {
     public class XddLabelList

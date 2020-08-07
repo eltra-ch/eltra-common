@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.Logger
 {
     public class EltraLogger : IEltraLogger

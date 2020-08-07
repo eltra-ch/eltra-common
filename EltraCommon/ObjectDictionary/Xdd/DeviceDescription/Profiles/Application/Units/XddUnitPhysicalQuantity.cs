@@ -5,6 +5,8 @@ using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Parameters;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Units
 {
     public class XddUnitPhysicalQuantity

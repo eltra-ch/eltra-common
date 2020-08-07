@@ -2,6 +2,8 @@
 using System.Runtime.Serialization;
 using EltraCommon.Enka.Contacts;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.Enka.Orders
 {
     [DataContract]

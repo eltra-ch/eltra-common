@@ -3,6 +3,8 @@ using EltraCommon.Contracts.Node;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Parameters
 {
     public class XddParameterBase : Parameter

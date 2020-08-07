@@ -6,6 +6,9 @@ using EltraCommon.Logger;
 
 namespace EltraCommon.Threads
 {
+    /// <summary>
+    /// EltraThread
+    /// </summary>
     public class EltraThread
     {
         #region Private fields
@@ -19,6 +22,9 @@ namespace EltraCommon.Threads
 
         #region Constructors
 
+        /// <summary>
+        /// EltraThread
+        /// </summary>
         public EltraThread()
         {
             _stopRequestEvent = new ManualResetEvent(false);
@@ -30,12 +36,18 @@ namespace EltraCommon.Threads
 
         #region Properties
 
+        /// <summary>
+        /// IsRunning
+        /// </summary>
         public bool IsRunning => _running.WaitOne(0);
 
         #endregion
 
         #region Methods
-        
+
+        /// <summary>
+        /// SetRunning
+        /// </summary>
         protected void SetRunning()
         {
             lock (_lock)
@@ -44,26 +56,45 @@ namespace EltraCommon.Threads
             }
         }
 
+        /// <summary>
+        /// SetStopped
+        /// </summary>
         protected void SetStopped()
         {
             _running.Reset();
         }
 
+        /// <summary>
+        /// RequestStop
+        /// </summary>
         protected void RequestStop()
         {
             _stopRequestEvent?.Set();
         }
 
+        /// <summary>
+        /// ShouldRun
+        /// </summary>
+        /// <returns></returns>
         protected bool ShouldRun()
         {
             return !_stopRequestEvent.WaitOne(0);
         }
 
+        /// <summary>
+        /// Wait
+        /// </summary>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
         protected bool Wait(int timeout = int.MaxValue)
         {
             return _stopRequestEvent.WaitOne(timeout);
         }
         
+        /// <summary>
+        /// Stop
+        /// </summary>
+        /// <returns></returns>
         public virtual bool Stop()
         {
             const int minWaitTimeMs = 10;
@@ -123,11 +154,18 @@ namespace EltraCommon.Threads
             SetStopped();
         }
 
+        /// <summary>
+        /// Execute
+        /// </summary>
+        /// <returns></returns>
         protected virtual Task Execute()
         {
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Start
+        /// </summary>
         public virtual void Start()
         {
             int minWaitTime = 1;
@@ -143,6 +181,10 @@ namespace EltraCommon.Threads
             }            
         }
 
+        /// <summary>
+        /// StartAsync
+        /// </summary>
+        /// <returns></returns>
         public Task StartAsync()
         {
             Task result = null;
@@ -158,6 +200,9 @@ namespace EltraCommon.Threads
             return result;
         }
 
+        /// <summary>
+        /// Restart
+        /// </summary>
         public void Restart()
         {
             Stop();

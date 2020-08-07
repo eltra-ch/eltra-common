@@ -1,5 +1,7 @@
 ﻿namespace EltraCommon.Math
 {
+#pragma warning disable 1591
+
     public class Kalman
     {
         #region Private fields

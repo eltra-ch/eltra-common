@@ -25,7 +25,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Users\dsien\source\repos\github\eltra-cloud\xternals\common\EltraCommon\EltraCommon.xml</DocumentationFile>
+    <DocumentationFile>$(ProjectDir)\EltraCommon.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -41,9 +41,7 @@
     </None>
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="if not exist $(ProjectDir)..\..\..\Assemblies (md $(ProjectDir)..\..\..\Assemblies);&#xD;&#xA;xcopy $(TargetPath) $(ProjectDir)..\..\..\Assemblies /Y" Condition=" '$(OS)' == 'Windows_NT' " />
-    <Exec Command="mkdir -p $(ProjectDir)../../../Assemblies;/bin/cp -f $(TargetPath) $(ProjectDir)../../../Assemblies" Condition=" '$(OS)' == 'Unix' " />
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">    
   </Target>
 
 </Project>

@@ -3,6 +3,8 @@ using System.IO;
 using System.IO.Pipes;
 using System.Threading.Tasks;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.Ipc
 {
     public class NpServer

@@ -5,6 +5,8 @@ using EltraCommon.ObjectDictionary.Epos4.DeviceDescription;
 using EltraCommon.ObjectDictionary.Epos4.DeviceDescription.Profiles.Device.DataRecorder;
 using System.Collections.Generic;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Epos4
 {
     public class Epos4ObjectDictionary : XddObjectDictionary

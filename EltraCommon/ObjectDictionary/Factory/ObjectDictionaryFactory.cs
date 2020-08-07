@@ -4,6 +4,8 @@ using EltraCommon.ObjectDictionary.Epos4;
 using EltraCommon.ObjectDictionary.Xdd;
 using System;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Factory
 {
     public class ObjectDictionaryFactory

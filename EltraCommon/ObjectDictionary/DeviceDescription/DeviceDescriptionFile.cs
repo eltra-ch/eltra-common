@@ -10,6 +10,8 @@ using EltraCommon.Helpers;
 using EltraCommon.Logger;
 using Newtonsoft.Json;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.DeviceDescription
 {
     public class DeviceDescriptionFile

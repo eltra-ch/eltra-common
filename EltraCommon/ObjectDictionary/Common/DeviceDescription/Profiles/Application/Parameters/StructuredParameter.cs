@@ -2,6 +2,8 @@
 using System;
 using System.Xml;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters
 {
     public class StructuredParameter : ParameterBase

@@ -4,6 +4,8 @@ using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Pa
 using EltraCommon.ObjectDictionary.Epos4.DeviceDescription.Profiles.Device.DataRecorder;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Device;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Epos4.DeviceDescription.Profiles.Device
 {
     public class Epos4DeviceManager : XddDeviceManager

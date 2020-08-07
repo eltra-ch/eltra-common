@@ -6,6 +6,8 @@ using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Te
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Units;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Device;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application
 {
     public class XddApplicationProcess

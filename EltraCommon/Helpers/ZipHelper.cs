@@ -3,6 +3,8 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.Helpers
 {
     public static class ZipHelper

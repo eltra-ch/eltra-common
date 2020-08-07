@@ -8,30 +8,65 @@ namespace EltraCommon.Dll
 #pragma warning disable CA2101 // Specify marshaling for P/Invoke string arguments
 #pragma warning disable IDE1006 // Naming Styles
 
+    /// <summary>
+    /// EltraDllWrapper
+    /// </summary>
     public class EltraDllWrapper
     {
         #region Constants
 
+        /// <summary>
+        /// RtldNow
+        /// </summary>
         protected const int RtldNow = 2;
+        /// <summary>
+        /// RtldGlobal
+        /// </summary>
         protected const int RtldGlobal = 8;
 
         #endregion
 
         #region System
 
+        /// <summary>
+        /// dlopen
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="flags"></param>
+        /// <returns></returns>
         [DllImport("libdl.so")]
-
+                
         protected static extern IntPtr dlopen(string fileName, int flags);
 
+        /// <summary>
+        /// dlsym
+        /// </summary>
+        /// <param name="handle"></param>
+        /// <param name="symbol"></param>
+        /// <returns></returns>
         [DllImport("libdl.so")]
         protected static extern IntPtr dlsym(IntPtr handle, [MarshalAs(UnmanagedType.LPStr)] string symbol);
 
+        /// <summary>
+        /// dlclose
+        /// </summary>
+        /// <param name="handle"></param>
+        /// <returns></returns>
         [DllImport("libdl.so")]
         protected static extern int dlclose(IntPtr handle);
 
+        /// <summary>
+        /// dlerror
+        /// </summary>
+        /// <returns></returns>
         [DllImport("libdl.so")]
         protected static extern IntPtr dlerror();
 
+        /// <summary>
+        /// GetDllInstance
+        /// </summary>
+        /// <param name="libName"></param>
+        /// <returns></returns>
         protected static IntPtr GetDllInstance(string libName)
         {
             IntPtr dll;
@@ -65,6 +100,12 @@ namespace EltraCommon.Dll
             return dll;
         }
 
+        /// <summary>
+        /// GetProcAddress
+        /// </summary>
+        /// <param name="dllHandle"></param>
+        /// <param name="funcName"></param>
+        /// <returns></returns>
         protected static IntPtr GetProcAddress(IntPtr dllHandle, string funcName)
         {
             IntPtr result;
@@ -83,6 +124,11 @@ namespace EltraCommon.Dll
             return result;
         }
 
+        /// <summary>
+        /// FreeLibrary
+        /// </summary>
+        /// <param name="dllHandle"></param>
+        /// <returns></returns>
         protected static bool FreeLibrary(IntPtr dllHandle)
         {
             bool result;

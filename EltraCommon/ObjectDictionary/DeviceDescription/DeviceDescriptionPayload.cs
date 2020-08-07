@@ -4,6 +4,8 @@ using EltraCommon.Helpers;
 using System;
 using System.Runtime.Serialization;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.DeviceDescription
 {
     [DataContract]

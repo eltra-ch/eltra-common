@@ -1,5 +1,7 @@
 ﻿namespace EltraCommon.Logger
 {
+#pragma warning disable 1591
+
     public enum LogMsgType
     {
         Undefined,

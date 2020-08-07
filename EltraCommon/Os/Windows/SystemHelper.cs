@@ -7,15 +7,27 @@ using EltraCommon.Os.Interface;
 
 namespace EltraCommon.Os.Windows
 {
+    /// <summary>
+    /// SystemHelper
+    /// </summary>
     public class SystemHelper : ISystemHelper
     {
         #region Methods
 
+        /// <summary>
+        /// IsWindows
+        /// </summary>
+        /// <returns></returns>
         public bool IsWindows()
         {
             return true;
         }
 
+        /// <summary>
+        /// GetDllInstance
+        /// </summary>
+        /// <param name="dllFileName"></param>
+        /// <returns></returns>
         public IntPtr GetDllInstance(string dllFileName)
         {
             Assembly asm = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
@@ -45,6 +57,12 @@ namespace EltraCommon.Os.Windows
             return _eposCmdDll;
         }
 
+        /// <summary>
+        /// GetProcAddress
+        /// </summary>
+        /// <param name="dllHandle"></param>
+        /// <param name="funcName"></param>
+        /// <returns></returns>
         public IntPtr GetProcAddress(IntPtr dllHandle, string funcName)
         {
             // Name "_VCM_xxxx@12"
@@ -61,6 +79,10 @@ namespace EltraCommon.Os.Windows
             return result;
         }
 
+        /// <summary>
+        /// Is64BitProcess
+        /// </summary>
+        /// <returns></returns>
         public bool Is64BitProcess()
         {
             if (IntPtr.Size == 8)
@@ -72,6 +94,11 @@ namespace EltraCommon.Os.Windows
             return false;
         }
 
+        /// <summary>
+        /// FreeLibrary
+        /// </summary>
+        /// <param name="dllHandle"></param>
+        /// <returns></returns>
         public bool FreeLibrary(IntPtr dllHandle)
         {
             bool result;

@@ -5,6 +5,8 @@ using EltraCommon.ObjectDictionary.Common.DeviceDescription;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters;
 using EltraCommon.Logger;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Common
 {
     public abstract class DeviceObjectDictionary

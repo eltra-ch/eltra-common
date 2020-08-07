@@ -1,4 +1,6 @@
-﻿namespace EltraCommon.ObjectDictionary.Epos4.Definitions
+﻿#pragma warning disable 1591
+
+namespace EltraCommon.ObjectDictionary.Epos4.Definitions
 {
     public enum Epos4OperationModes
     {

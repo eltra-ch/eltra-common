@@ -5,6 +5,8 @@ using EltraCommon.Contracts.Node;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription
 {
     public class XddDeviceDescription : IDeviceDescription

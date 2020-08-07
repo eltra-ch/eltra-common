@@ -2,6 +2,8 @@
 using System.IO;
 using System.IO.Pipes;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.Ipc
 {
     public class NpClient

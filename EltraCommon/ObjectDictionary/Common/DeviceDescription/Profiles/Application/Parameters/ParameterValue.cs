@@ -3,6 +3,8 @@ using System.Runtime.Serialization;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.DataTypes;
 using EltraCommon.Logger;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters
 {
     [DataContract]

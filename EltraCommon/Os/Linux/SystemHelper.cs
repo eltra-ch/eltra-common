@@ -5,6 +5,9 @@ using EltraCommon.Os.Interface;
 
 namespace EltraCommon.Os.Linux
 {
+    /// <summary>
+    /// SystemHelper
+    /// </summary>
 #pragma warning disable IDE1006 // Naming Styles
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Reviewed. Suppression is OK here.")]
     public class SystemHelper : ISystemHelper
@@ -18,6 +21,9 @@ namespace EltraCommon.Os.Linux
 
         #region Properties
 
+        /// <summary>
+        /// IsLinux
+        /// </summary>
         public static bool IsLinux
         {
             get
@@ -30,6 +36,10 @@ namespace EltraCommon.Os.Linux
 
         #region Methods
 
+        /// <summary>
+        /// IsWindows
+        /// </summary>
+        /// <returns></returns>
         public bool IsWindows()
         {
             return false;
@@ -48,6 +58,11 @@ namespace EltraCommon.Os.Linux
         [DllImport("libdl.so")]
         private static extern IntPtr dlerror();
 
+        /// <summary>
+        /// GetDllInstance
+        /// </summary>
+        /// <param name="dllFileName"></param>
+        /// <returns></returns>
         public IntPtr GetDllInstance(string dllFileName)
         {
             IntPtr dll = dlopen(dllFileName, RtldNow | RtldGlobal);
@@ -77,6 +92,12 @@ namespace EltraCommon.Os.Linux
             return result;
         }
 
+        /// <summary>
+        /// GetProcAddress
+        /// </summary>
+        /// <param name="dllHandle"></param>
+        /// <param name="funcName"></param>
+        /// <returns></returns>
         public IntPtr GetProcAddress(IntPtr dllHandle, string funcName)
         {
             dlerror();
@@ -88,6 +109,11 @@ namespace EltraCommon.Os.Linux
             return res;
         }
 
+        /// <summary>
+        /// FreeLibrary
+        /// </summary>
+        /// <param name="dllHandle"></param>
+        /// <returns></returns>
         public bool FreeLibrary(IntPtr dllHandle)
         {
             var result = dlclose(dllHandle) == 0;
@@ -95,6 +121,10 @@ namespace EltraCommon.Os.Linux
             return result;
         }
 
+        /// <summary>
+        /// Is64BitProcess
+        /// </summary>
+        /// <returns></returns>
         public bool Is64BitProcess()
         {
             return false;

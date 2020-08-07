@@ -1,4 +1,6 @@
-﻿namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Units
+﻿#pragma warning disable 1591
+
+namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Units
 {
     public class Unit
     {

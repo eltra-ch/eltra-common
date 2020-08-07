@@ -4,6 +4,8 @@ using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Pa
 
 namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles
 {
+#pragma warning disable 1591
+
     public class XddProfile
     {
         #region Private fields

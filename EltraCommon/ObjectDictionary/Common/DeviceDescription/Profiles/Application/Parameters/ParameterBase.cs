@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml;
-using EltraCommon.Contracts.Devices;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Common;
 using EltraCommon.Logger;
 using EltraCommon.Contracts.Node;
+
+#pragma warning disable 1591
 
 namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters
 {

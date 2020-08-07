@@ -2,6 +2,8 @@
 using System.IO;
 using System.Reflection;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.Helpers
 {
     public class AppHelper

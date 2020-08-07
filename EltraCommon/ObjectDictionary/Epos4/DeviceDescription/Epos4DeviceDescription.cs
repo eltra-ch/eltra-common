@@ -4,6 +4,8 @@ using EltraCommon.ObjectDictionary.Epos4.DeviceDescription.Profiles;
 using EltraCommon.ObjectDictionary.Epos4.DeviceDescription.Profiles.Device.DataRecorder;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Epos4.DeviceDescription
 {
     public class Epos4DeviceDescription : XddDeviceDescription

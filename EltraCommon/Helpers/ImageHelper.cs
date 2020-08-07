@@ -6,6 +6,9 @@ using System.IO;
 
 namespace EltraEnkaCloudStorage.Helpers
 {
+    /// <summary>
+    /// ImageHelper
+    /// </summary>
     public static class ImageHelper
     {
         private static Size GetThumbnailSize(Image original)
@@ -42,6 +45,11 @@ namespace EltraEnkaCloudStorage.Helpers
             }
         }
 
+        /// <summary>
+        /// GetThumbnail
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
         public static string GetThumbnail(string content)
         {
             string result = string.Empty;

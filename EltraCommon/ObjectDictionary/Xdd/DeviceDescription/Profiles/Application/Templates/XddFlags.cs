@@ -3,6 +3,8 @@
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Common;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Templates;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Templates
 {
     public class XddFlags : Flags

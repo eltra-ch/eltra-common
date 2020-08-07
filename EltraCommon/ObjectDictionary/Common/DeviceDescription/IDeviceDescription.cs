@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters;
+
+#pragma warning disable 1591
 
 namespace EltraCommon.ObjectDictionary.Common.DeviceDescription
 {

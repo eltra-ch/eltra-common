@@ -3,6 +3,8 @@
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Parameters;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Device.UserLevels;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Device
 {
     public class XddDeviceManager

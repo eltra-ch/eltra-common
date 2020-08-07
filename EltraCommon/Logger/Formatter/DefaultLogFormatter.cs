@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.Logger.Formatter
 {
     public class DefaultLogFormatter : ILogFormatter

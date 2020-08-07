@@ -5,6 +5,8 @@ using EltraCommon.ObjectDictionary.Common;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.DataTypes;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Parameters
 {
     public class XddAllowedValues

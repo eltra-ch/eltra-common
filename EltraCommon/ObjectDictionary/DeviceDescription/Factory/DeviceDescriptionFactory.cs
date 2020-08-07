@@ -4,6 +4,8 @@ using EltraCommon.ObjectDictionary.Common.DeviceDescription;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription;
 using System;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.DeviceDescription.Factory
 {
     public static class DeviceDescriptionFactory

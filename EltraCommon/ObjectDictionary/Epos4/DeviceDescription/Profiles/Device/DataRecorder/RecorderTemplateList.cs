@@ -5,6 +5,8 @@ using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Parameters;
 using EltraCommon.ObjectDictionary.Epos4.DeviceDescription.Profiles.Device.DataRecorder.Channels;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Epos4.DeviceDescription.Profiles.Device.DataRecorder
 {
     public class RecorderTemplateList

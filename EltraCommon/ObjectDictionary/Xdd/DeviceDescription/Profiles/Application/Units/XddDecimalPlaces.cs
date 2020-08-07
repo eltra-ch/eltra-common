@@ -1,5 +1,7 @@
 ﻿using System.Xml;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Units
 {
     public class XddDecimalPlaces

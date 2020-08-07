@@ -5,6 +5,8 @@ using EltraCommon.Contracts.Devices;
 using System.Collections.Generic;
 using EltraCommon.Contracts.ToolSet;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.ObjectDictionary.DeviceDescription
 {
     public class XddDeviceDescriptionFile : DeviceDescriptionFile

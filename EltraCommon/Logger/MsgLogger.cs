@@ -8,6 +8,8 @@ using EltraCommon.Logger.Output;
 using System;
 using System.Diagnostics;
 
+#pragma warning disable 1591
+
 namespace EltraCommon.Logger
 {
     public static class MsgLogger
