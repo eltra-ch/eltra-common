@@ -2,15 +2,26 @@
 
 namespace EltraCommon.Contracts.Channels
 {
+    /// <summary>
+    /// Ip location
+    /// </summary>
     public class IpLocation
     {
         private readonly IPAddress _address;
         private string _ip;
 
+        /// <summary>
+        /// IpLocation- default constructor
+        /// </summary>
         public IpLocation()
         {
             Ip = "255.255.255.255";
         }
+
+        /// <summary>
+        /// IpLocation
+        /// </summary>
+        /// <param name="ip">IP address</param>
         public IpLocation(string ip)
         {
             Ip = ip;
@@ -18,6 +29,10 @@ namespace EltraCommon.Contracts.Channels
             UpdatePrivateAddress();
         }
 
+        /// <summary>
+        /// IpLocation
+        /// </summary>
+        /// <param name="address">IP address</param>
         public IpLocation(IPAddress address)
         {
             _address = address;
@@ -27,6 +42,9 @@ namespace EltraCommon.Contracts.Channels
             UpdatePrivateAddress();
         }
 
+        /// <summary>
+        /// IP address as string
+        /// </summary>
         public string Ip 
         { 
             get => _ip; 
@@ -36,13 +54,33 @@ namespace EltraCommon.Contracts.Channels
                 OnIpChanged();
             } 
         }
+        /// <summary>
+        /// Country code
+        /// </summary>
         public string CountryCode { get; set; }
+        /// <summary>
+        /// Country
+        /// </summary>
         public string Country { get; set; }
+        /// <summary>
+        /// Region
+        /// </summary>
         public string Region { get; set; }
+        /// <summary>
+        /// City
+        /// </summary>
         public string City { get; set; }
+        /// <summary>
+        /// Latitude
+        /// </summary>
         public double Latitude { get; set; }
+        /// <summary>
+        /// Longitude
+        /// </summary>
         public double Longitude { get; set; }
-
+        /// <summary>
+        /// Is IP address private
+        /// </summary>
         public bool IsPrivateAddress { get; set; }
         
         private void OnIpChanged()
@@ -63,6 +101,11 @@ namespace EltraCommon.Contracts.Channels
             }
         }
 
+        /// <summary>
+        /// Equals
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
         public bool Equals(IpLocation location)
         {
             bool result = true;

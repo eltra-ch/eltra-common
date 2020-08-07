@@ -4,11 +4,17 @@ using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application
 
 namespace EltraCommon.Contracts.CommandSets
 {
+    /// <summary>
+    /// DeviceCommandParameter
+    /// </summary>
     [DataContract]
     public class DeviceCommandParameter
     {
         #region Constructors
 
+        /// <summary>
+        /// DeviceCommandParameter
+        /// </summary>
         public DeviceCommandParameter()
         {
             Type = ParameterType.In;
@@ -18,15 +24,27 @@ namespace EltraCommon.Contracts.CommandSets
 
         #region Properties
 
+        /// <summary>
+        /// Name
+        /// </summary>
         [DataMember]
         public string Name { get; set; }
 
+        /// <summary>
+        /// Value
+        /// </summary>
         [DataMember]
         public string Value { get; set; }
 
+        /// <summary>
+        /// Type
+        /// </summary>
         [DataMember]
         public ParameterType Type { get; set; }
 
+        /// <summary>
+        /// DataType
+        /// </summary>
         [DataMember]
         public DataType DataType { get; set; }
 
@@ -34,6 +52,12 @@ namespace EltraCommon.Contracts.CommandSets
 
         #region Methods
 
+        /// <summary>
+        /// GetValue
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public bool GetValue<T>(ref T value)
         {
             bool result = false;
@@ -199,7 +223,13 @@ namespace EltraCommon.Contracts.CommandSets
 
             return result;
         }
-        
+
+        /// <summary>
+        /// SetValue
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public bool SetValue<T>(T value)
         {
             bool result = true;
@@ -331,6 +361,11 @@ namespace EltraCommon.Contracts.CommandSets
             return result;
         }
 
+        /// <summary>
+        /// SetDataType
+        /// </summary>
+        /// <param name="dataType"></param>
+        /// <returns></returns>
         public bool SetDataType(DataType dataType)
         {
             bool result = false;
@@ -345,6 +380,11 @@ namespace EltraCommon.Contracts.CommandSets
             return result;
         }
 
+        /// <summary>
+        /// SetDataType
+        /// </summary>
+        /// <param name="typeCode"></param>
+        /// <returns></returns>
         public bool SetDataType(TypeCode typeCode)
         {
             bool result = false;
@@ -357,6 +397,12 @@ namespace EltraCommon.Contracts.CommandSets
 
             return result;
         }
+
+        /// <summary>
+        /// GetDataType
+        /// </summary>
+        /// <param name="typeCode"></param>
+        /// <returns></returns>
         public bool GetDataType(out TypeCode typeCode)
         {
             bool result = false;

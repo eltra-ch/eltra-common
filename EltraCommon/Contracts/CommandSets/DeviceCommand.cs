@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 using EltraCommon.Logger;
-using EltraCommon.Contracts.Devices;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.DataTypes;
 using EltraCommon.Contracts.Node;
 
 namespace EltraCommon.Contracts.CommandSets
 {
+    /// <summary>
+    /// DeviceCommand
+    /// </summary>
     [DataContract]
     public class DeviceCommand
     {
@@ -20,10 +22,17 @@ namespace EltraCommon.Contracts.CommandSets
 
         #region Constructors
 
+        /// <summary>
+        /// DeviceCommand
+        /// </summary>
         public DeviceCommand()
         {
         }
 
+        /// <summary>
+        /// DeviceCommand
+        /// </summary>
+        /// <param name="device">{EltraDeviceNode}</param>
         public DeviceCommand(EltraDeviceNode device)
         {
             Device = device;
@@ -33,18 +42,33 @@ namespace EltraCommon.Contracts.CommandSets
 
         #region Properties
 
+        /// <summary>
+        /// Command Id
+        /// </summary>
         [DataMember]
         public string Id { get; set; }
         
+        /// <summary>
+        /// Device - optional
+        /// </summary>
         [IgnoreDataMember]
         public EltraDeviceNode Device { get; set; }
 
+        /// <summary>
+        /// Name
+        /// </summary>
         [DataMember]
         public string Name { get; set; }
 
+        /// <summary>
+        /// Status
+        /// </summary>
         [DataMember]
         public ExecCommandStatus Status { get; set; }
 
+        /// <summary>
+        /// Parameter list
+        /// </summary>
         [DataMember]
         public List<DeviceCommandParameter> Parameters
         {
@@ -56,11 +80,21 @@ namespace EltraCommon.Contracts.CommandSets
 
         #region Methods
 
+        /// <summary>
+        /// Execute command
+        /// </summary>
+        /// <param name="sourceId"></param>
+        /// <returns></returns>
         public virtual bool Execute(string sourceId)
         {
             return false;
         }
 
+        /// <summary>
+        /// Add parameter to command
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
         public bool AddParameter(DeviceCommandParameter parameter)
         {
             bool result = false;
@@ -74,6 +108,13 @@ namespace EltraCommon.Contracts.CommandSets
             return result;
         }
 
+        /// <summary>
+        /// Add parameter to command
+        /// </summary>
+        /// <param name="parameterName"></param>
+        /// <param name="typeCode"></param>
+        /// <param name="parameterType"></param>
+        /// <returns></returns>
         public bool AddParameter(string parameterName, TypeCode typeCode, ParameterType parameterType = ParameterType.In)
         {
             bool result = false;
@@ -89,6 +130,14 @@ namespace EltraCommon.Contracts.CommandSets
             return result;
         }
 
+        /// <summary>
+        /// SetParameterValue
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="parameterName"></param>
+        /// <param name="parameterValue"></param>
+        /// <param name="parameterType"></param>
+        /// <returns></returns>
         public bool SetParameterValue<T>(string parameterName, T parameterValue, ParameterType parameterType = ParameterType.In)
         {
             bool result = false;
@@ -112,6 +161,11 @@ namespace EltraCommon.Contracts.CommandSets
             return result;
         }
 
+        /// <summary>
+        /// ParameterExists
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
         public bool ParameterExists(DeviceCommandParameter parameter)
         {
             return FindParameterByName(Parameters, parameter.Name) != null;
@@ -133,6 +187,11 @@ namespace EltraCommon.Contracts.CommandSets
             return result;
         }
 
+        /// <summary>
+        /// GetParameter
+        /// </summary>
+        /// <param name="parameterName"></param>
+        /// <returns></returns>
         public DeviceCommandParameter GetParameter(string parameterName)
         {
             DeviceCommandParameter result = null;
@@ -147,6 +206,13 @@ namespace EltraCommon.Contracts.CommandSets
             return result;
         }
 
+        /// <summary>
+        /// GetParameterValue
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="parameterName"></param>
+        /// <param name="parameterValue"></param>
+        /// <returns></returns>
         public bool GetParameterValue<T>(string parameterName, ref T parameterValue)
         {
             bool result = false;
@@ -161,6 +227,10 @@ namespace EltraCommon.Contracts.CommandSets
             return result;
         }
         
+        /// <summary>
+        /// Sync command
+        /// </summary>
+        /// <param name="command"></param>
         public void Sync(DeviceCommand command)
         {
             try
@@ -181,6 +251,12 @@ namespace EltraCommon.Contracts.CommandSets
             }
         }
 
+        /// <summary>
+        /// SetParameterDataType
+        /// </summary>
+        /// <param name="parameterName"></param>
+        /// <param name="dataType"></param>
+        /// <returns></returns>
         public bool SetParameterDataType(string parameterName, DataType dataType)
         {
             bool result = false;
@@ -195,6 +271,12 @@ namespace EltraCommon.Contracts.CommandSets
             return result;
         }
 
+        /// <summary>
+        /// SetParameterDataType
+        /// </summary>
+        /// <param name="parameterName"></param>
+        /// <param name="typeCode"></param>
+        /// <returns></returns>
         public bool SetParameterDataType(string parameterName, TypeCode typeCode)
         {
             bool result = false;
@@ -209,6 +291,12 @@ namespace EltraCommon.Contracts.CommandSets
             return result;
         }
 
+        /// <summary>
+        /// GetParameterDataType
+        /// </summary>
+        /// <param name="parameterName"></param>
+        /// <param name="typeCode"></param>
+        /// <returns></returns>
         public bool GetParameterDataType(string parameterName, out TypeCode typeCode)
         {
             bool result = false;
@@ -224,6 +312,10 @@ namespace EltraCommon.Contracts.CommandSets
             return result;
         }
 
+        /// <summary>
+        /// Clone
+        /// </summary>
+        /// <returns></returns>
         public virtual DeviceCommand Clone()
         {
             Clone(out DeviceCommand result);
@@ -231,6 +323,12 @@ namespace EltraCommon.Contracts.CommandSets
             return result;
         }
 
+        /// <summary>
+        /// Clone
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="clone"></param>
+        /// <returns></returns>
         protected bool Clone<T>(out T clone)
         {
             bool result = false;

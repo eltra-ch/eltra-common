@@ -4,6 +4,9 @@ using EltraCommon.Contracts.Users;
 
 namespace EltraCommon.Contracts.Channels
 {
+    /// <summary>
+    /// Channel
+    /// </summary>
     [DataContract]
     public class Channel
     {
@@ -18,6 +21,9 @@ namespace EltraCommon.Contracts.Channels
 
         #region Constructors
 
+        /// <summary>
+        /// Channel
+        /// </summary>
         public Channel()
         {
             Modified = DateTime.Now;
@@ -31,9 +37,15 @@ namespace EltraCommon.Contracts.Channels
 
         #region Properties
 
+        /// <summary>
+        /// Id
+        /// </summary>
         [DataMember]
         public string Id { get; set; }
 
+        /// <summary>
+        /// User
+        /// </summary>
         [DataMember]
         public User User
         {
@@ -41,9 +53,15 @@ namespace EltraCommon.Contracts.Channels
             set => _user = value;
         }
 
+        /// <summary>
+        /// Status
+        /// </summary>
         [DataMember]
         public ChannelStatus Status { get; set; }
 
+        /// <summary>
+        /// Location
+        /// </summary>
         [DataMember]
         public IpLocation IpLocation
         {
@@ -51,15 +69,27 @@ namespace EltraCommon.Contracts.Channels
             set => _location = value;
         }
 
+        /// <summary>
+        /// Timeout
+        /// </summary>
         [DataMember]
         public uint Timeout { get; set; }
 
+        /// <summary>
+        /// Update interval
+        /// </summary>
         [IgnoreDataMember]
         public uint UpdateInterval { get; set; }
 
+        /// <summary>
+        /// Modified
+        /// </summary>
         [DataMember]
         public DateTime Modified { get; set; }
 
+        /// <summary>
+        /// Created
+        /// </summary>
         [DataMember]
         public DateTime Created { get; set; }
 
