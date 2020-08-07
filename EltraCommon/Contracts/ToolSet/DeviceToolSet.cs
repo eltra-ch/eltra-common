@@ -3,6 +3,9 @@ using System.Runtime.Serialization;
 
 namespace EltraCommon.Contracts.ToolSet
 {
+    /// <summary>
+    /// DeviceToolSet
+    /// </summary>
     [DataContract]
     public class DeviceToolSet
     {
@@ -14,6 +17,9 @@ namespace EltraCommon.Contracts.ToolSet
 
         #region Properties
 
+        /// <summary>
+        /// Tools
+        /// </summary>
         [DataMember]
         public List<DeviceTool> Tools => _tools ?? (_tools = new List<DeviceTool>());
 
@@ -21,6 +27,11 @@ namespace EltraCommon.Contracts.ToolSet
 
         #region Methods
 
+        /// <summary>
+        /// AddTool
+        /// </summary>
+        /// <param name="tool"></param>
+        /// <returns></returns>
         public bool AddTool(DeviceTool tool)
         {
             bool result = false;
@@ -34,11 +45,21 @@ namespace EltraCommon.Contracts.ToolSet
             return result;
         }
 
+        /// <summary>
+        /// ToolExists
+        /// </summary>
+        /// <param name="tool"></param>
+        /// <returns></returns>
         public bool ToolExists(DeviceTool tool)
         {
             return FindToolById(tool.Id) != null;
         }
 
+        /// <summary>
+        /// FindToolById
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public DeviceTool FindToolById(string id)
         {
             DeviceTool result = null;

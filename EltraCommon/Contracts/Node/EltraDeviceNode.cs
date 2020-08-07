@@ -7,21 +7,35 @@ using EltraCommon.ObjectDictionary.DeviceDescription.Factory;
 
 namespace EltraCommon.Contracts.Node
 {
+    /// <summary>
+    /// EltraDeviceNode
+    /// </summary>
     [DataContract]
     public class EltraDeviceNode : EltraDevice
     {
         #region Properties
 
+        /// <summary>
+        /// ChannelId
+        /// </summary>
         [DataMember]
         public string ChannelId { get; set; }
 
+        /// <summary>
+        /// NodeId
+        /// </summary>
         [DataMember]
         public int NodeId { get; set; }
 
         #endregion
 
         #region Methods
-        
+
+        /// <summary>
+        /// CreateDeviceDescription
+        /// </summary>
+        /// <param name="deviceDescriptionFile"></param>
+        /// <returns></returns>
         public override bool CreateDeviceDescription(DeviceDescriptionFile deviceDescriptionFile)
         {
             bool result = false;

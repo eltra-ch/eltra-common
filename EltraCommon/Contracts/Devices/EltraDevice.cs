@@ -14,6 +14,9 @@ using System.Threading.Tasks;
 
 namespace EltraCommon.Contracts.Devices
 {
+    /// <summary>
+    /// EltraDevice
+    /// </summary>
     [DataContract]
     public class EltraDevice
     {
@@ -30,6 +33,9 @@ namespace EltraCommon.Contracts.Devices
 
         #region Constructors
 
+        /// <summary>
+        /// EltraDevice
+        /// </summary>
         public EltraDevice()
         {
             Modified = DateTime.Now;
@@ -40,8 +46,14 @@ namespace EltraCommon.Contracts.Devices
 
         #region Events
 
+        /// <summary>
+        /// StatusChanged
+        /// </summary>
         public event EventHandler StatusChanged;
 
+        /// <summary>
+        /// OnStatusChanged
+        /// </summary>
         protected virtual void OnStatusChanged()
         {
             StatusChanged?.Invoke(this, new EventArgs());
@@ -83,9 +95,15 @@ namespace EltraCommon.Contracts.Devices
 
         #region Properties
 
+        /// <summary>
+        /// Family
+        /// </summary>
         [DataMember]
         public string Family { get; set; }
 
+        /// <summary>
+        /// Identification
+        /// </summary>
         [DataMember]
         public DeviceIdentification Identification
         {
@@ -93,6 +111,9 @@ namespace EltraCommon.Contracts.Devices
             set => _deviceIdentification = value;
         }
 
+        /// <summary>
+        /// Version
+        /// </summary>
         [DataMember]
         public DeviceVersion Version
         {
@@ -100,12 +121,21 @@ namespace EltraCommon.Contracts.Devices
             set => _version = value;
         }
 
+        /// <summary>
+        /// CommandSet
+        /// </summary>
         [DataMember]
         public DeviceCommandSet CommandSet => _commandSet ?? (_commandSet = new DeviceCommandSet());
 
+        /// <summary>
+        /// ToolSet
+        /// </summary>
         [DataMember]
         public DeviceToolSet ToolSet => _toolSet ?? (_toolSet = new DeviceToolSet());
 
+        /// <summary>
+        /// Status
+        /// </summary>
         [DataMember]
         public DeviceStatus Status
         {
@@ -120,18 +150,33 @@ namespace EltraCommon.Contracts.Devices
             }
         }
 
+        /// <summary>
+        /// Modified
+        /// </summary>
         [DataMember]
         public DateTime Modified { get; set; }
 
+        /// <summary>
+        /// Created
+        /// </summary>
         [DataMember]
         public DateTime Created { get; set; }
 
+        /// <summary>
+        /// ObjectDictionary - optional
+        /// </summary>
         [IgnoreDataMember]
         public DeviceObjectDictionary ObjectDictionary { get; set; }
 
+        /// <summary>
+        /// Name
+        /// </summary>
         [DataMember]
         public string Name { get; set; }
 
+        /// <summary>
+        /// DeviceDescription - optional
+        /// </summary>
         [IgnoreDataMember]
         public IDeviceDescription DeviceDescription
         {
@@ -146,6 +191,9 @@ namespace EltraCommon.Contracts.Devices
             }
         }
 
+        /// <summary>
+        /// ProductPicture - optional
+        /// </summary>
         [IgnoreDataMember]
         public string ProductPicture { get; set; }
 
@@ -153,13 +201,23 @@ namespace EltraCommon.Contracts.Devices
 
         #region Methods
 
+        /// <summary>
+        /// Add command
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
         public bool AddCommand(DeviceCommand command)
         {
             bool result = CommandSet.AddCommand(command);
 
             return result;
         }
-        
+
+        /// <summary>
+        /// FindCommand
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
         public DeviceCommand FindCommand(DeviceCommand command)
         {
             var result = CommandSet.FindCommandByName(command.Name);
@@ -167,6 +225,11 @@ namespace EltraCommon.Contracts.Devices
             return result;
         }
 
+        /// <summary>
+        /// FindCommand
+        /// </summary>
+        /// <param name="commandName"></param>
+        /// <returns></returns>
         public DeviceCommand FindCommand(string commandName)
         {
             DeviceCommand result = null;
@@ -183,6 +246,11 @@ namespace EltraCommon.Contracts.Devices
             return result;
         }
 
+        /// <summary>
+        /// AddTool
+        /// </summary>
+        /// <param name="tool"></param>
+        /// <returns></returns>
         public bool AddTool(DeviceTool tool)
         {
             tool.Device = this;
@@ -192,6 +260,11 @@ namespace EltraCommon.Contracts.Devices
             return result;
         }
 
+        /// <summary>
+        /// FindTool
+        /// </summary>
+        /// <param name="toolId"></param>
+        /// <returns></returns>
         public DeviceTool FindTool(string toolId)
         {
             DeviceTool result = null;
@@ -208,6 +281,11 @@ namespace EltraCommon.Contracts.Devices
             return result;
         }
 
+        /// <summary>
+        /// FindTool
+        /// </summary>
+        /// <param name="tool"></param>
+        /// <returns></returns>
         public DeviceTool FindTool(DeviceTool tool)
         {
             var result = ToolSet.FindToolById(tool.Id);
@@ -215,10 +293,17 @@ namespace EltraCommon.Contracts.Devices
             return result;
         }
 
+        /// <summary>
+        /// RunAsync
+        /// </summary>
         public virtual void RunAsync()
         {
         }
 
+        /// <summary>
+        /// ReadDeviceDescriptionFile
+        /// </summary>
+        /// <returns></returns>
         public virtual async Task<bool> ReadDeviceDescriptionFile()
         {
             var deviceDescriptionFile = DeviceDescriptionFactory.CreateDeviceDescriptionFile(this);
@@ -226,6 +311,11 @@ namespace EltraCommon.Contracts.Devices
             return await ReadDeviceDescriptionFile(deviceDescriptionFile);
         }
 
+        /// <summary>
+        /// ReadDeviceDescriptionFile
+        /// </summary>
+        /// <param name="deviceDescriptionFile"></param>
+        /// <returns></returns>
         public async Task<bool> ReadDeviceDescriptionFile(DeviceDescriptionFile deviceDescriptionFile)
         {
             bool result = false;
@@ -274,6 +364,11 @@ namespace EltraCommon.Contracts.Devices
             return result;
         }
 
+        /// <summary>
+        /// SearchParameter
+        /// </summary>
+        /// <param name="uniqueId"></param>
+        /// <returns></returns>
         public ParameterBase SearchParameter(string uniqueId)
         {
             ParameterBase result = null;
@@ -286,6 +381,12 @@ namespace EltraCommon.Contracts.Devices
             return result;
         }
 
+        /// <summary>
+        /// SearchParameter
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="subIndex"></param>
+        /// <returns></returns>
         public ParameterBase SearchParameter(ushort index, byte subIndex)
         {
             ParameterBase result = null;
@@ -298,6 +399,11 @@ namespace EltraCommon.Contracts.Devices
             return result;
         }
 
+        /// <summary>
+        /// CreateDeviceDescription
+        /// </summary>
+        /// <param name="deviceDescriptionFile"></param>
+        /// <returns></returns>
         public virtual bool CreateDeviceDescription(DeviceDescriptionFile deviceDescriptionFile)
         {
             return false;

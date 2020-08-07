@@ -1,14 +1,25 @@
 ﻿namespace EltraCommon.Contracts.Results
 {
+    /// <summary>
+    /// ErrorCodes
+    /// </summary>
     public enum ErrorCodes
     {
+        /// <summary>
+        /// Undefined
+        /// </summary>
         Undefined,
+        /// <summary>
+        /// Success
+        /// </summary>
         Success,
+        /// <summary>
+        /// Failure
+        /// </summary>
         Failure,
-        DeviceLocked,
-        DeviceLockFailed,
-        DeviceNotLocked,
-        DeviceUnlockFailed,
+        /// <summary>
+        /// Forbid
+        /// </summary>
         Forbid
     }
 }

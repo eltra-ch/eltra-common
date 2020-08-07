@@ -3,19 +3,31 @@ using System.Runtime.Serialization;
 
 namespace EltraCommon.Contracts.Users
 {
+    /// <summary>
+    /// UserData
+    /// </summary>
     [DataContract]
     public class UserData
     {
         #region Properties
 
+        /// <summary>
+        /// Login
+        /// </summary>
         [DataMember]
         [Required]
         [EmailAddress]
         public string Login { get; set; }
 
+        /// <summary>
+        /// Name
+        /// </summary>
         [DataMember]
         public string Name { get; set; }
 
+        /// <summary>
+        /// Password
+        /// </summary>
         [DataMember]
         [Required]
         [DataType(DataType.Password)]

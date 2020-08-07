@@ -5,20 +5,29 @@ using EltraCommon.Contracts.Devices;
 
 namespace EltraCommon.Contracts.Node
 {
+    /// <summary>
+    /// EltraDeviceNodeList
+    /// </summary>
     [DataContract]
     public class EltraDeviceNodeList
     {
         #region Private fields
 
         private List<EltraDeviceNode> _deviceNodeList;
-        
+
         #endregion
 
         #region Properties
 
+        /// <summary>
+        /// Channel
+        /// </summary>
         [DataMember]
         public Channel Channel { get; set; }
 
+        /// <summary>
+        /// DeviceNodeList
+        /// </summary>
         [DataMember]
         public List<EltraDeviceNode> DeviceNodeList
         {
@@ -26,12 +35,20 @@ namespace EltraCommon.Contracts.Node
             set => _deviceNodeList = value;
         }
 
+        /// <summary>
+        /// DevicesCount
+        /// </summary>
         public int DevicesCount => DeviceNodeList.Count;
 
         #endregion
 
         #region Methods
 
+        /// <summary>
+        /// AddDevice
+        /// </summary>
+        /// <param name="deviceNode"></param>
+        /// <returns></returns>
         public bool AddDevice(EltraDeviceNode deviceNode)
         {
             bool result = false;
@@ -48,6 +65,11 @@ namespace EltraCommon.Contracts.Node
             return result;
         }
 
+        /// <summary>
+        /// FindDevice
+        /// </summary>
+        /// <param name="nodeId"></param>
+        /// <returns></returns>
         public EltraDevice FindDevice(int nodeId)
         {
             EltraDevice result = null;
@@ -64,6 +86,10 @@ namespace EltraCommon.Contracts.Node
             return result;
         }
 
+        /// <summary>
+        /// RemoveDevice
+        /// </summary>
+        /// <param name="device"></param>
         public void RemoveDevice(EltraDeviceNode device)
         {
             foreach (var sessionDevice in DeviceNodeList)
