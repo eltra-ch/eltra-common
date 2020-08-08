@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using EltraCommon.Contracts.Location;
 using EltraCommon.Contracts.Users;
 
 namespace EltraCommon.Contracts.Channels

@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace EltraCommon.Contracts.Channels
+namespace EltraCommon.Contracts.Location
 {
     /// <summary>
     /// Ip location
@@ -25,7 +25,7 @@ namespace EltraCommon.Contracts.Channels
         public IpLocation(string ip)
         {
             Ip = ip;
-            
+
             UpdatePrivateAddress();
         }
 
@@ -45,14 +45,14 @@ namespace EltraCommon.Contracts.Channels
         /// <summary>
         /// IP address as string
         /// </summary>
-        public string Ip 
-        { 
-            get => _ip; 
-            set 
+        public string Ip
+        {
+            get => _ip;
+            set
             {
                 _ip = value;
                 OnIpChanged();
-            } 
+            }
         }
         /// <summary>
         /// Country code
@@ -82,7 +82,7 @@ namespace EltraCommon.Contracts.Channels
         /// Is IP address private
         /// </summary>
         public bool IsPrivateAddress { get; set; }
-        
+
         private void OnIpChanged()
         {
             UpdatePrivateAddress();
@@ -92,7 +92,7 @@ namespace EltraCommon.Contracts.Channels
         {
             IsPrivateAddress = CountryCode == "-" || Ip == "127.0.0.1" || Ip == "0.0.0.0";
 
-            if(!IsPrivateAddress && _address!=null)
+            if (!IsPrivateAddress && _address != null)
             {
                 if (_address.Equals(IPAddress.IPv6Loopback))
                 {
@@ -109,8 +109,8 @@ namespace EltraCommon.Contracts.Channels
         public bool Equals(IpLocation location)
         {
             bool result = true;
-            
-            if(location.Ip != Ip)
+
+            if (location.Ip != Ip)
             {
                 result = false;
             }
