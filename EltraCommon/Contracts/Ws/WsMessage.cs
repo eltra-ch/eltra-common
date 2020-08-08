@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EltraCommon.Contracts.Users;
+using System;
 using System.Runtime.Serialization;
 
 namespace EltraCommon.Contracts.Ws
@@ -40,6 +41,12 @@ namespace EltraCommon.Contracts.Ws
         /// </summary>
         [DataMember]
         public DateTime Timestamp { get; set; }
+
+        /// <summary>
+        /// User authorization data
+        /// </summary>
+        [DataMember]
+        public UserData Identity { get; set; }
 
         /// <summary>
         /// Equals

@@ -10,12 +10,6 @@ namespace EltraCommon.Contracts.Channels
     public class ChannelStatusUpdate
     {
         /// <summary>
-        /// User authorization data
-        /// </summary>
-        [DataMember]
-        public UserData UserData { get; set; }
-
-        /// <summary>
         /// Channel id
         /// </summary>
         [DataMember]
