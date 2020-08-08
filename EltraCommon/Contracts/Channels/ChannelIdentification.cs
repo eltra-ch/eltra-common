@@ -14,10 +14,5 @@ namespace EltraCommon.Contracts.Channels
         /// </summary>
         [DataMember]
         public string Id { get; set; }
-        /// <summary>
-        /// User authorization data
-        /// </summary>
-        [DataMember]
-        public UserData UserData { get; set; }
     }
 }
