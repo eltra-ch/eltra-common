@@ -1,10 +1,12 @@
 ﻿using System.Net;
+using System.Runtime.Serialization;
 
 namespace EltraCommon.Contracts.Location
 {
     /// <summary>
-    /// Ip location
+    /// IpLocation
     /// </summary>
+    [DataContract]
     public class IpLocation
     {
         private readonly IPAddress _address;
@@ -45,6 +47,7 @@ namespace EltraCommon.Contracts.Location
         /// <summary>
         /// IP address as string
         /// </summary>
+        [DataMember]
         public string Ip
         {
             get => _ip;
@@ -57,30 +60,37 @@ namespace EltraCommon.Contracts.Location
         /// <summary>
         /// Country code
         /// </summary>
+        [DataMember]
         public string CountryCode { get; set; }
         /// <summary>
         /// Country
         /// </summary>
+        [DataMember]
         public string Country { get; set; }
         /// <summary>
         /// Region
         /// </summary>
+        [DataMember]
         public string Region { get; set; }
         /// <summary>
         /// City
         /// </summary>
+        [DataMember]
         public string City { get; set; }
         /// <summary>
         /// Latitude
         /// </summary>
+        [DataMember]
         public double Latitude { get; set; }
         /// <summary>
         /// Longitude
         /// </summary>
+        [DataMember]
         public double Longitude { get; set; }
         /// <summary>
         /// Is IP address private
         /// </summary>
+        [IgnoreDataMember]
         public bool IsPrivateAddress { get; set; }
 
         private void OnIpChanged()
