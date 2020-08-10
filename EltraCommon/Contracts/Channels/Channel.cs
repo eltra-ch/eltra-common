@@ -15,7 +15,7 @@ namespace EltraCommon.Contracts.Channels
 
         private const uint DefaultUpdateInterval = 30;
 
-        private User _user;
+        private string _userName;
         private IpLocation _location;
 
         #endregion
@@ -45,13 +45,13 @@ namespace EltraCommon.Contracts.Channels
         public string Id { get; set; }
 
         /// <summary>
-        /// User
+        /// Channel User Name
         /// </summary>
         [DataMember]
-        public User User
+        public string UserName
         {
-            get => _user ?? (_user = new User());
-            set => _user = value;
+            get => _userName ?? (_userName = string.Empty);
+            set => _userName = value;
         }
 
         /// <summary>
