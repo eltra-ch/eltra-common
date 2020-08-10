@@ -129,6 +129,11 @@ namespace EltraCommon.Logger
             Engine.WriteFlow(string.Empty, msg);
         }
 
+        public static void WriteFlow(string source, string msg)
+        {
+            Engine.WriteFlow(source, msg);
+        }
+
         public static void Write(string source, string msg)
         {
             var nl = Engine.NewLine;
