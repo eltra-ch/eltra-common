@@ -32,6 +32,12 @@ namespace EltraCommon.Contracts.Users
         }
 
         /// <summary>
+        /// UniqueId
+        /// </summary>
+        [IgnoreDataMember]
+        public string UniqueId { get; set; }
+
+        /// <summary>
         /// UserData
         /// </summary>
         [DataMember]
