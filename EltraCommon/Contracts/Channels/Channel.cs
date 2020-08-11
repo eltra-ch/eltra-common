@@ -64,7 +64,7 @@ namespace EltraCommon.Contracts.Channels
         /// Location
         /// </summary>
         [DataMember]
-        public IpLocation IpLocation
+        public IpLocation Location
         {
             get => _location ?? (_location = new IpLocation());
             set => _location = value;
