@@ -7,7 +7,7 @@ namespace EltraCommon.Contracts.Location
     /// IpLocation
     /// </summary>
     [DataContract]
-    public class IpLocation
+    public class IpLocation : GeoLocation
     {
         private readonly IPAddress _address;
         private string _ip;
@@ -57,36 +57,7 @@ namespace EltraCommon.Contracts.Location
                 OnIpChanged();
             }
         }
-        /// <summary>
-        /// Country code
-        /// </summary>
-        [DataMember]
-        public string CountryCode { get; set; }
-        /// <summary>
-        /// Country
-        /// </summary>
-        [DataMember]
-        public string Country { get; set; }
-        /// <summary>
-        /// Region
-        /// </summary>
-        [DataMember]
-        public string Region { get; set; }
-        /// <summary>
-        /// City
-        /// </summary>
-        [DataMember]
-        public string City { get; set; }
-        /// <summary>
-        /// Latitude
-        /// </summary>
-        [DataMember]
-        public double Latitude { get; set; }
-        /// <summary>
-        /// Longitude
-        /// </summary>
-        [DataMember]
-        public double Longitude { get; set; }
+        
         /// <summary>
         /// Is IP address private
         /// </summary>
@@ -116,41 +87,11 @@ namespace EltraCommon.Contracts.Location
         /// </summary>
         /// <param name="location"></param>
         /// <returns></returns>
-        public bool Equals(IpLocation location)
+        public override bool Equals(GeoLocation location)
         {
-            bool result = true;
+            bool result = base.Equals(location);
 
-            if (location.Ip != Ip)
-            {
-                result = false;
-            }
-
-            if (result && location.CountryCode != CountryCode)
-            {
-                result = false;
-            }
-
-            if (result && location.Country != Country)
-            {
-                result = false;
-            }
-
-            if (result && location.Region != Region)
-            {
-                result = false;
-            }
-
-            if (result && location.City != City)
-            {
-                result = false;
-            }
-
-            if (result && location.Latitude != Latitude)
-            {
-                result = false;
-            }
-
-            if (result && location.Longitude != Longitude)
+            if (location is IpLocation ipLocation && ipLocation.Ip != Ip)
             {
                 result = false;
             }

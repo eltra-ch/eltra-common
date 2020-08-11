@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using EltraCommon.Contracts.Location;
-using EltraCommon.Contracts.Users;
 
 namespace EltraCommon.Contracts.Channels
 {
@@ -16,7 +15,7 @@ namespace EltraCommon.Contracts.Channels
         private const uint DefaultUpdateInterval = 30;
 
         private string _userName;
-        private IpLocation _location;
+        private GeoLocation _location;
 
         #endregion
 
@@ -64,9 +63,9 @@ namespace EltraCommon.Contracts.Channels
         /// Location
         /// </summary>
         [DataMember]
-        public IpLocation Location
+        public GeoLocation Location
         {
-            get => _location ?? (_location = new IpLocation());
+            get => _location ?? (_location = new GeoLocation());
             set => _location = value;
         }
 
