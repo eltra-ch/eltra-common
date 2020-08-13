@@ -8,7 +8,7 @@ namespace EltraCommon.Contracts.Channels
     /// Channel
     /// </summary>
     [DataContract]
-    public class Channel
+    public class Channel : ChannelBase
     {
         #region Private fields
 
@@ -29,19 +29,30 @@ namespace EltraCommon.Contracts.Channels
             Modified = DateTime.Now;
             Created = DateTime.Now;
             Status = ChannelStatus.Offline;
+
             Timeout = uint.MaxValue;
+            UpdateInterval = DefaultUpdateInterval;
+        }
+
+        /// <summary>
+        /// Channel
+        /// </summary>
+        /// <param name="channelBase"></param>
+        public Channel(ChannelBase channelBase)
+        {
+            Modified = DateTime.Now;
+            Created = DateTime.Now;
+            Status = ChannelStatus.Offline;
+
+            Id = channelBase.Id;
+            Timeout = channelBase.Timeout;
+
             UpdateInterval = DefaultUpdateInterval;
         }
 
         #endregion
 
         #region Properties
-
-        /// <summary>
-        /// Id
-        /// </summary>
-        [DataMember]
-        public string Id { get; set; }
 
         /// <summary>
         /// Channel User Name
@@ -68,12 +79,6 @@ namespace EltraCommon.Contracts.Channels
             get => _location ?? (_location = new GeoLocation());
             set => _location = value;
         }
-
-        /// <summary>
-        /// Timeout
-        /// </summary>
-        [DataMember]
-        public uint Timeout { get; set; }
 
         /// <summary>
         /// Update interval

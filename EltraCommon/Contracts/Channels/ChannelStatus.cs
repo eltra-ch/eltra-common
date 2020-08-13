@@ -16,6 +16,10 @@
         /// <summary>
         /// Online
         /// </summary>
-        Online
+        Online,
+        /// <summary>
+        /// NotAvailable
+        /// </summary>
+        NotAvailable
     }
 }
