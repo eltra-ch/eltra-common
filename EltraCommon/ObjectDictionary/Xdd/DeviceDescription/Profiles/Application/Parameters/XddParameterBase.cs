@@ -1,5 +1,5 @@
 ﻿using System.Xml;
-using EltraCommon.Contracts.Node;
+using EltraCommon.Contracts.Devices;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common;
 
@@ -9,7 +9,7 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
 {
     public class XddParameterBase : Parameter
     {
-        public XddParameterBase(EltraDeviceNode device, XmlNode source)
+        public XddParameterBase(EltraDevice device, XmlNode source)
             : base(device, source)
         {            
         }

@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using EltraCommon.Logger;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.DataTypes;
 using EltraCommon.Contracts.Node;
+using EltraCommon.Contracts.Devices;
 
 namespace EltraCommon.Contracts.CommandSets
 {
@@ -32,8 +33,8 @@ namespace EltraCommon.Contracts.CommandSets
         /// <summary>
         /// DeviceCommand
         /// </summary>
-        /// <param name="device">{EltraDeviceNode}</param>
-        public DeviceCommand(EltraDeviceNode device)
+        /// <param name="device">{EltraDevice}</param>
+        public DeviceCommand(EltraDevice device)
         {
             Device = device;
         }
@@ -52,7 +53,7 @@ namespace EltraCommon.Contracts.CommandSets
         /// Device - optional
         /// </summary>
         [IgnoreDataMember]
-        public EltraDeviceNode Device { get; set; }
+        public EltraDevice Device { get; set; }
 
         /// <summary>
         /// Name

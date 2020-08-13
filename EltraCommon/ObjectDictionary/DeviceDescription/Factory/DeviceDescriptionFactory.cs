@@ -30,7 +30,7 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription.Factory
             return result;
         }
 
-        public static IDeviceDescription CreateDeviceDescription(EltraDeviceNode device, DeviceDescriptionFile deviceDescriptionFile)
+        public static IDeviceDescription CreateDeviceDescription(EltraDevice device, DeviceDescriptionFile deviceDescriptionFile)
         {
             IDeviceDescription result = null;
             var content = deviceDescriptionFile?.Content;

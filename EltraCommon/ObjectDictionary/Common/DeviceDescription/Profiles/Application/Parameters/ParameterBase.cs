@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 using System.Xml;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Common;
 using EltraCommon.Logger;
-using EltraCommon.Contracts.Node;
+using EltraCommon.Contracts.Devices;
 
 #pragma warning disable 1591
 
@@ -23,7 +23,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
         #region Constructors
 
-        public ParameterBase(EltraDeviceNode device, XmlNode source)
+        public ParameterBase(EltraDevice device, XmlNode source)
         {
             _source = source;
 
@@ -35,7 +35,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         #region Properties
 
         [IgnoreDataMember]
-        public EltraDeviceNode Device { get; }
+        public EltraDevice Device { get; }
 
         [IgnoreDataMember]
         protected XmlNode Source => _source;

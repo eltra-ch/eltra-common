@@ -1,5 +1,5 @@
 ﻿using System.Xml;
-using EltraCommon.Contracts.Node;
+using EltraCommon.Contracts.Devices;
 using EltraCommon.ObjectDictionary.Epos4.DeviceDescription.Profiles.Device;
 using EltraCommon.ObjectDictionary.Epos4.DeviceDescription.Profiles.Device.DataRecorder;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles;
@@ -10,7 +10,7 @@ namespace EltraCommon.ObjectDictionary.Epos4.DeviceDescription.Profiles
     {
         #region Constructors
 
-        public Epos4ProfileBody(EltraDeviceNode device)
+        public Epos4ProfileBody(EltraDevice device)
             : base(device)
         {
             

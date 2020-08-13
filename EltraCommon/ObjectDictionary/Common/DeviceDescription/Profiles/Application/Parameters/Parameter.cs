@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Parameters;
 using System.Xml;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Units;
-using EltraCommon.Contracts.Node;
+using EltraCommon.Contracts.Devices;
 
 #pragma warning disable 1591
 
@@ -28,7 +28,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         #endregion
 
         #region Constructors
-        public Parameter(EltraDeviceNode device, XmlNode source)
+        public Parameter(EltraDevice device, XmlNode source)
             : base(device, source)
         {
             DateTimeFormat = "dd MMM HH:mm:ss";

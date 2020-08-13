@@ -7,6 +7,7 @@ using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Device;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Device.UserLevels;
 using EltraCommon.Logger;
 using EltraCommon.Contracts.Node;
+using EltraCommon.Contracts.Devices;
 
 #pragma warning disable 1591
 
@@ -26,7 +27,7 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
 
         #region Constructors
 
-        public XddParameter(EltraDeviceNode device, XmlNode source, XddDeviceManager deviceManager, XddDataTypeList dataTypeList, XddTemplateList templateList)
+        public XddParameter(EltraDevice device, XmlNode source, XddDeviceManager deviceManager, XddDataTypeList dataTypeList, XddTemplateList templateList)
             : base(device, source)
         {
             _deviceManager = deviceManager;

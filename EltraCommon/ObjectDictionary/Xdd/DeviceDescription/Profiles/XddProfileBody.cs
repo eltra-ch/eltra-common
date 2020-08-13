@@ -1,6 +1,5 @@
 ﻿using System.Xml;
 using EltraCommon.Contracts.Devices;
-using EltraCommon.Contracts.Node;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Parameters;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Device;
@@ -17,13 +16,13 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles
         private XddDeviceIdentity _deviceIdentity;
         private XddApplicationProcess _applicationProcess;
         private XddDeviceManager _deviceManager;
-        private readonly EltraDeviceNode _device;
+        private readonly EltraDevice _device;
 
         #endregion
 
         #region Constructors
 
-        public XddProfileBody(EltraDeviceNode device)
+        public XddProfileBody(EltraDevice device)
         {
             _device = device;
         }

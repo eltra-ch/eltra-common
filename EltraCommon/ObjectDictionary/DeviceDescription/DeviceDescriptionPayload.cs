@@ -1,5 +1,4 @@
 ﻿using EltraCommon.Contracts.Devices;
-using EltraCommon.Contracts.Node;
 using EltraCommon.Helpers;
 using System;
 using System.Runtime.Serialization;
@@ -23,7 +22,7 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
         {
         }
 
-        public DeviceDescriptionPayload(EltraDeviceNode device)
+        public DeviceDescriptionPayload(EltraDevice device)
         {
             Init(device);
         }
@@ -88,7 +87,7 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
 
         #region Methods
 
-        private void Init(EltraDeviceNode device)
+        private void Init(EltraDevice device)
         {
             if (device != null)
             {                

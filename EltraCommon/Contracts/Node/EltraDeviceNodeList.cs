@@ -13,7 +13,7 @@ namespace EltraCommon.Contracts.Node
     {
         #region Private fields
 
-        private List<EltraDeviceNode> _deviceNodeList;
+        private List<EltraDevice> _deviceNodeList;
 
         #endregion
 
@@ -29,9 +29,9 @@ namespace EltraCommon.Contracts.Node
         /// DeviceNodeList
         /// </summary>
         [DataMember]
-        public List<EltraDeviceNode> DeviceNodeList
+        public List<EltraDevice> DeviceNodeList
         {
-            get => _deviceNodeList ?? (_deviceNodeList = new List<EltraDeviceNode>());
+            get => _deviceNodeList ?? (_deviceNodeList = new List<EltraDevice>());
             set => _deviceNodeList = value;
         }
 
@@ -49,7 +49,7 @@ namespace EltraCommon.Contracts.Node
         /// </summary>
         /// <param name="deviceNode"></param>
         /// <returns></returns>
-        public bool AddDevice(EltraDeviceNode deviceNode)
+        public bool AddDevice(EltraDevice deviceNode)
         {
             bool result = false;
 
@@ -90,7 +90,7 @@ namespace EltraCommon.Contracts.Node
         /// RemoveDevice
         /// </summary>
         /// <param name="device"></param>
-        public void RemoveDevice(EltraDeviceNode device)
+        public void RemoveDevice(EltraDevice device)
         {
             foreach (var sessionDevice in DeviceNodeList)
             {
@@ -102,7 +102,7 @@ namespace EltraCommon.Contracts.Node
             }
         }
 
-        private bool DeviceExists(EltraDeviceNode device)
+        private bool DeviceExists(EltraDevice device)
         {
             bool result = false;
 
