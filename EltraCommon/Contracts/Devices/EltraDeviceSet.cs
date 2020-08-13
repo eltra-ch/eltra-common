@@ -5,7 +5,7 @@ using EltraCommon.Contracts.Channels;
 namespace EltraCommon.Contracts.Devices
 {
     /// <summary>
-    /// EltraDeviceNodeList
+    /// EltraDeviceSet
     /// </summary>
     [DataContract]
     public class EltraDeviceSet

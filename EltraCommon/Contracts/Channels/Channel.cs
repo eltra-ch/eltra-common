@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Security;
+using EltraCommon.Contracts.Devices;
 using EltraCommon.Contracts.Location;
 
 namespace EltraCommon.Contracts.Channels
@@ -16,7 +19,8 @@ namespace EltraCommon.Contracts.Channels
 
         private string _userName;
         private GeoLocation _location;
-
+        private List<EltraDevice> _devices;
+        
         #endregion
 
         #region Constructors
@@ -85,6 +89,16 @@ namespace EltraCommon.Contracts.Channels
         /// </summary>
         [IgnoreDataMember]
         public uint UpdateInterval { get; set; }
+
+        /// <summary>
+        /// Devices
+        /// </summary>
+        [DataMember]
+        public List<EltraDevice> Devices 
+        { 
+            get => _devices ?? (_devices = new List<EltraDevice>());
+            set => _devices = value;
+        }
 
         /// <summary>
         /// Modified
