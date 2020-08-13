@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 using EltraCommon.Contracts.Channels;
-using EltraCommon.Contracts.Devices;
 
-namespace EltraCommon.Contracts.Node
+namespace EltraCommon.Contracts.Devices
 {
     /// <summary>
     /// EltraDeviceNodeList
     /// </summary>
     [DataContract]
-    public class EltraDeviceNodeList
+    public class EltraDeviceSet
     {
         #region Private fields
 
@@ -29,7 +28,7 @@ namespace EltraCommon.Contracts.Node
         /// DeviceNodeList
         /// </summary>
         [DataMember]
-        public List<EltraDevice> DeviceNodeList
+        public List<EltraDevice> Devices
         {
             get => _deviceNodeList ?? (_deviceNodeList = new List<EltraDevice>());
             set => _deviceNodeList = value;
@@ -38,7 +37,7 @@ namespace EltraCommon.Contracts.Node
         /// <summary>
         /// DevicesCount
         /// </summary>
-        public int DevicesCount => DeviceNodeList.Count;
+        public int DevicesCount => Devices.Count;
 
         #endregion
 
@@ -57,7 +56,7 @@ namespace EltraCommon.Contracts.Node
             {
                 deviceNode.ChannelId = Channel.Id;
 
-                DeviceNodeList.Add(deviceNode);
+                Devices.Add(deviceNode);
 
                 result = true;
             }
@@ -74,7 +73,7 @@ namespace EltraCommon.Contracts.Node
         {
             EltraDevice result = null;
 
-            foreach (var deviceNode in DeviceNodeList)
+            foreach (var deviceNode in Devices)
             {
                 if (deviceNode.NodeId == nodeId)
                 {
@@ -92,11 +91,11 @@ namespace EltraCommon.Contracts.Node
         /// <param name="device"></param>
         public void RemoveDevice(EltraDevice device)
         {
-            foreach (var sessionDevice in DeviceNodeList)
+            foreach (var sessionDevice in Devices)
             {
                 if (sessionDevice == device)
                 {
-                    DeviceNodeList.Remove(sessionDevice);
+                    Devices.Remove(sessionDevice);
                     break;
                 }
             }
@@ -110,7 +109,7 @@ namespace EltraCommon.Contracts.Node
             {
                 result = FindDevice(device.NodeId) != null;
             }
-            
+
             return result;
         }
 

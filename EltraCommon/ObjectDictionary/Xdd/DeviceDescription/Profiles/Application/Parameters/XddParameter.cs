@@ -6,7 +6,6 @@ using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Un
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Device;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Device.UserLevels;
 using EltraCommon.Logger;
-using EltraCommon.Contracts.Node;
 using EltraCommon.Contracts.Devices;
 
 #pragma warning disable 1591

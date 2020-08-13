@@ -1,5 +1,4 @@
 ﻿using EltraCommon.Contracts.Devices;
-using EltraCommon.Contracts.Node;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription;
 using System;

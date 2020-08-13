@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Xml;
 using EltraCommon.Contracts.Devices;
-using EltraCommon.Contracts.Node;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.DataTypes;

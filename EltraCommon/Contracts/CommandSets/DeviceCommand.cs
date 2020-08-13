@@ -4,7 +4,6 @@ using System.IO;
 using System.Runtime.Serialization;
 using EltraCommon.Logger;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.DataTypes;
-using EltraCommon.Contracts.Node;
 using EltraCommon.Contracts.Devices;
 
 namespace EltraCommon.Contracts.CommandSets
