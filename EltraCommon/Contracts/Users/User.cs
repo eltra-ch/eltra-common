@@ -22,10 +22,11 @@ namespace EltraCommon.Contracts.Users
         /// <summary>
         /// User
         /// </summary>
-        /// <param name="userData"></param>
-        public User(UserData userData)
+        /// <param name="identity"></param>
+        public User(UserIdentity identity)
         {
-            UserData = userData;
+            Identity = identity;
+
             Modified = DateTime.Now;
             Created = DateTime.Now;
             Status = UserStatus.Unlocked;
@@ -41,7 +42,7 @@ namespace EltraCommon.Contracts.Users
         /// UserData
         /// </summary>
         [DataMember]
-        public UserData UserData { get; set; }
+        public UserIdentity Identity { get; set; }
 
         /// <summary>
         /// Status

@@ -4,10 +4,10 @@ using System.Runtime.Serialization;
 namespace EltraCommon.Contracts.Users
 {
     /// <summary>
-    /// UserData
+    /// UserIdentity
     /// </summary>
     [DataContract]
-    public class UserData
+    public class UserIdentity
     {
         #region Properties
 

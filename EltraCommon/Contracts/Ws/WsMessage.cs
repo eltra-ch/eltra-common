@@ -46,7 +46,7 @@ namespace EltraCommon.Contracts.Ws
         /// User authorization data
         /// </summary>
         [DataMember]
-        public UserData Identity { get; set; }
+        public UserIdentity Identity { get; set; }
 
         /// <summary>
         /// Equals
