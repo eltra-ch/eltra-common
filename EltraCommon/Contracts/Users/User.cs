@@ -39,7 +39,7 @@ namespace EltraCommon.Contracts.Users
         public string UniqueId { get; set; }
 
         /// <summary>
-        /// UserData
+        /// Identity
         /// </summary>
         [DataMember]
         public UserIdentity Identity { get; set; }
