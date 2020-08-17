@@ -19,6 +19,19 @@ namespace EltraCommon.Contracts.Parameters
         /// </summary>
         [DataMember]
         public int NodeId { get; set; }
+
+        /// <summary>
+        /// Index
+        /// </summary>
+        [DataMember]
+        public ushort Index { get; set; }
+
+        /// <summary>
+        /// SubIndex
+        /// </summary>
+        [DataMember]
+        public byte SubIndex { get; set; }
+
         /// <summary>
         /// Parameter
         /// </summary>
