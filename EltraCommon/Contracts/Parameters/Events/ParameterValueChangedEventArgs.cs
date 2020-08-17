@@ -19,7 +19,7 @@ namespace EltraCommon.Contracts.Parameters.Events
         {
             NodeId = nodeId;
             Index = index;
-            SubIndex = SubIndex;
+            SubIndex = subIndex;
             ParameterValue = parameterValue;
         }
 
