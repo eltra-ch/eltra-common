@@ -33,6 +33,12 @@ namespace EltraCommon.Contracts.Users
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        /// <summary>
+        /// User level
+        /// </summary>
+        [DataMember]
+        public string Level { get; set; }
+
         #endregion
     }
 }
