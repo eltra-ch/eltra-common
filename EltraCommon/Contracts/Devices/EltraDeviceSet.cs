@@ -91,11 +91,11 @@ namespace EltraCommon.Contracts.Devices
         /// <param name="device"></param>
         public void RemoveDevice(EltraDevice device)
         {
-            foreach (var sessionDevice in Devices)
+            foreach (var channelDevice in Devices)
             {
-                if (sessionDevice == device)
+                if (channelDevice == device)
                 {
-                    Devices.Remove(sessionDevice);
+                    Devices.Remove(channelDevice);
                     break;
                 }
             }
