@@ -71,7 +71,7 @@ namespace EltraCommon.Contracts.Location
 
         private void UpdatePrivateAddress()
         {
-            IsPrivateAddress = CountryCode == "-" || Ip == "127.0.0.1" || Ip == "0.0.0.0";
+            IsPrivateAddress = CountryCode == "-" || Ip == "127.0.0.1" || Ip.StartsWith("0.0.0");
 
             if (!IsPrivateAddress && _address != null)
             {

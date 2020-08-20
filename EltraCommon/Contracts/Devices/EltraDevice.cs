@@ -11,6 +11,8 @@ using EltraCommon.ObjectDictionary.Common.DeviceDescription;
 using EltraCommon.ObjectDictionary.DeviceDescription.Events;
 using EltraCommon.ObjectDictionary.DeviceDescription;
 using System.Threading.Tasks;
+using EltraCommon.Contracts.Interfaces;
+using System.Collections.Generic;
 
 namespace EltraCommon.Contracts.Devices
 {
@@ -41,6 +43,16 @@ namespace EltraCommon.Contracts.Devices
             Modified = DateTime.Now;
             Created = DateTime.Now;
         }
+
+        #endregion
+
+        #region Interfaces
+
+        /// <summary>
+        /// Connector
+        /// </summary>
+        [IgnoreDataMember]
+        public ICloudConnector CloudConnector { get; set; }
 
         #endregion
 
@@ -443,7 +455,58 @@ namespace EltraCommon.Contracts.Devices
 
             return result;
         }
-        
+
+        /// <summary>
+        /// Get commands supported by device.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<DeviceCommand>> GetCommands()
+        {
+            var result = new List<DeviceCommand>();
+
+            if (CloudConnector!=null)
+            {
+                result = await CloudConnector.GetDeviceCommands(this);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get device command.
+        /// </summary>
+        /// <param name="commandName">Command name.</param>
+        /// <returns>DeviceCommand</returns>
+        public async Task<DeviceCommand> GetCommand(string commandName)
+        {
+            DeviceCommand result = null;
+
+            if (CloudConnector != null)
+            {
+                result = await CloudConnector.GetDeviceCommand(this, commandName);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get parameter by index, subindex.
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <param name="subIndex">Subindex</param>
+        /// <returns></returns>
+        public async Task<Parameter> GetParameter(ushort index, byte subIndex)
+        {
+            Parameter result = null;
+
+            if (CloudConnector != null)
+            {
+                result = await CloudConnector.GetParameter(this, index, subIndex);
+            }
+
+            return result;
+        }
+
         #endregion
     }
 }

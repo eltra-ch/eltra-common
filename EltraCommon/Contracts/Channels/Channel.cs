@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Security;
+using EltraCommon.Contracts.Channels.Events;
 using EltraCommon.Contracts.Devices;
 using EltraCommon.Contracts.Location;
 
@@ -20,7 +20,8 @@ namespace EltraCommon.Contracts.Channels
         private string _userName;
         private GeoLocation _location;
         private List<EltraDevice> _devices;
-        
+        private ChannelStatus _status;
+
         #endregion
 
         #region Constructors
@@ -32,7 +33,8 @@ namespace EltraCommon.Contracts.Channels
         {
             Modified = DateTime.Now;
             Created = DateTime.Now;
-            Status = ChannelStatus.Offline;
+
+            _status = ChannelStatus.Offline;
 
             Timeout = uint.MaxValue;
             UpdateInterval = DefaultUpdateInterval;
@@ -56,6 +58,20 @@ namespace EltraCommon.Contracts.Channels
 
         #endregion
 
+        #region Events
+
+        /// <summary>
+        /// Event fired on channel status change
+        /// </summary>
+        public event EventHandler<ChannelStatusChangedEventArgs> StatusChanged;
+
+        private void OnStatusChanged()
+        {
+            StatusChanged?.Invoke(this, new ChannelStatusChangedEventArgs() { Status = Status });
+        }
+
+        #endregion
+
         #region Properties
 
         /// <summary>
@@ -72,7 +88,19 @@ namespace EltraCommon.Contracts.Channels
         /// Status
         /// </summary>
         [DataMember]
-        public ChannelStatus Status { get; set; }
+        public ChannelStatus Status 
+        { 
+            get => _status;
+            set 
+            {
+                if (_status != value)
+                {
+                    _status = value;
+
+                    OnStatusChanged();
+                }
+            } 
+        }
 
         /// <summary>
         /// Location
