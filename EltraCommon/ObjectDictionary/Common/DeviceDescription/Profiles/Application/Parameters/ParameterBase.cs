@@ -5,6 +5,7 @@ using System.Xml;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Common;
 using EltraCommon.Logger;
 using EltraCommon.Contracts.Devices;
+using EltraCommon.Contracts.Parameters;
 
 #pragma warning disable 1591
 
@@ -129,6 +130,19 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                     result = label.Content;
                     break;
                 }
+            }
+
+            return result;
+        }
+
+        public bool RegisterUpdate(ParameterUpdatePriority priority)
+        {
+            bool result = false;
+            var connector = Device?.CloudConnector;
+
+            if (connector != null)
+            {
+                result = connector.RegisterParameterUpdate(Device, UniqueId, priority);
             }
 
             return result;
