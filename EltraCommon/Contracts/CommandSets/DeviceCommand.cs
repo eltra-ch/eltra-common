@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using EltraCommon.Logger;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.DataTypes;
 using EltraCommon.Contracts.Devices;
+using System.Threading.Tasks;
 
 namespace EltraCommon.Contracts.CommandSets
 {
@@ -88,6 +89,23 @@ namespace EltraCommon.Contracts.CommandSets
         public virtual bool Execute(string sourceId)
         {
             return false;
+        }
+
+        /// <summary>
+        /// Execute command.
+        /// </summary>
+        /// <returns>DeviceCommand</returns>
+        public async Task<DeviceCommand> Execute()
+        {
+            DeviceCommand result = null;
+            var connector = Device?.CloudConnector;
+
+            if (connector != null)
+            {
+                result = await connector.ExecuteCommand(this);
+            }
+
+            return result;
         }
 
         /// <summary>
