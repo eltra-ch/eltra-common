@@ -135,7 +135,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             return result;
         }
 
-        public bool RegisterUpdate(ParameterUpdatePriority priority)
+        public bool RegisterUpdate(ParameterUpdatePriority priority = ParameterUpdatePriority.Low)
         {
             bool result = false;
             var connector = Device?.CloudConnector;
@@ -143,6 +143,19 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             if (connector != null)
             {
                 result = connector.RegisterParameterUpdate(Device, UniqueId, priority);
+            }
+
+            return result;
+        }
+
+        public bool UnregisterUpdate(ParameterUpdatePriority priority = ParameterUpdatePriority.Low)
+        {
+            bool result = false;
+            var connector = Device?.CloudConnector;
+
+            if (connector != null)
+            {
+                result = connector.UnregisterParameterUpdate(Device, UniqueId, priority);
             }
 
             return result;

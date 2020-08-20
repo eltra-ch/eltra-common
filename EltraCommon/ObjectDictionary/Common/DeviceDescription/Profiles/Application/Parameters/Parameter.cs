@@ -11,6 +11,9 @@ using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Pa
 using System.Xml;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Units;
 using EltraCommon.Contracts.Devices;
+using System.Threading.Tasks;
+using EltraCommon.Contracts.Interfaces;
+using EltraCommon.Contracts.History;
 
 #pragma warning disable 1591
 
@@ -64,7 +67,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             set
             {
                 var oldValue = ActualValue.Clone();
-                
+
                 if (!value.Equals(ActualValue))
                 {
                     _actualValue = value;
@@ -79,7 +82,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         public List<XddAllowedValues> AllowedValues => _allowedValues ?? (_allowedValues = new List<XddAllowedValues>());
 
         public Unit Unit { get; set; }
-        
+
         #endregion
 
         #region Events
@@ -124,7 +127,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                             {
                                 DisplayFormat = childNode.InnerText.Trim();
                             }
-                            
+
                             if (!result)
                             {
                                 break;
@@ -157,7 +160,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         {
             bool result = false;
 
-            if (newValue !=null && newValue.IsValid)
+            if (newValue != null && newValue.IsValid)
             {
                 ActualValue = newValue;
 
@@ -302,12 +305,12 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                 switch (DataType.Type)
                 {
                     case TypeCode.Boolean:
-                    {
-                        if (GetValue(out bool value))
                         {
-                            result = $"{value}";
-                        }
-                    } break;
+                            if (GetValue(out bool value))
+                            {
+                                result = $"{value}";
+                            }
+                        } break;
                     case TypeCode.SByte:
                         {
                             if (GetValue(out sbyte value))
@@ -380,7 +383,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                             }
                         }
                         break;
-                        case TypeCode.Object:
+                    case TypeCode.Object:
                         {
                             result = "Domain";
                         }
@@ -405,14 +408,14 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                     case TypeCode.DateTime:
                         {
                             if (GetValue(out DateTime value))
-                            {                                
+                            {
                                 result = value.ToString(DateTimeFormat);
                             }
                         }
                         break;
                 }
             }
-            
+
             return result;
         }
 
@@ -500,7 +503,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                             var byteArray = Convert.FromBase64String(parameterValue.Value);
                             if (byteArray.Length > 0)
                             {
-                                value = (T)(object)BitConverter.ToChar(byteArray,0);
+                                value = (T)(object)BitConverter.ToChar(byteArray, 0);
                                 result = true;
                             }
                         }
@@ -536,7 +539,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                                 {
                                     value = (T)(object)BitConverter.ToInt32(byteArray, 0);
                                 }
-                                
+
                                 result = true;
                             }
                         }
@@ -546,7 +549,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                             var byteArray = Convert.FromBase64String(parameterValue.Value);
                             if (byteArray.Length > 0)
                             {
-                                value = (T)(object)BitConverter.ToInt64(byteArray,0);
+                                value = (T)(object)BitConverter.ToInt64(byteArray, 0);
                                 result = true;
                             }
                         }
@@ -555,7 +558,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                         {
                             var byteArray = Convert.FromBase64String(parameterValue.Value);
                             if (byteArray.Length > 0)
-                            {                                
+                            {
                                 if (GetReferenceLabel(BitConverter.ToUInt16(byteArray, 0), out string label) && typeof(T) == typeof(string))
                                 {
                                     value = (T)(object)label;
@@ -582,7 +585,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                                 {
                                     value = (T)(object)BitConverter.ToUInt32(byteArray, 0);
                                 }
-                                
+
                                 result = true;
                             }
                         }
@@ -592,7 +595,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                             var byteArray = Convert.FromBase64String(parameterValue.Value);
                             if (byteArray.Length > 0)
                             {
-                                value = (T)(object)BitConverter.ToUInt64(byteArray,0);
+                                value = (T)(object)BitConverter.ToUInt64(byteArray, 0);
                                 result = true;
                             }
                         }
@@ -624,7 +627,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                             {
                                 var doubleValue = BitConverter.ToDouble(byteArray, 0);
 
-                                if(Unit!=null && Unit.DecimalPlaces > 0)
+                                if (Unit != null && Unit.DecimalPlaces > 0)
                                 {
                                     doubleValue = System.Math.Round(doubleValue, Unit.DecimalPlaces);
                                 }
@@ -640,7 +643,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                             var byteArray = Convert.FromBase64String(parameterValue.Value);
                             if (byteArray.Length > 0)
                             {
-                                long dateData = BitConverter.ToInt64(byteArray,0);
+                                long dateData = BitConverter.ToInt64(byteArray, 0);
 
                                 var val = DateTime.FromBinary(dateData);
 
@@ -660,7 +663,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                     result = true;
                 }
             }
-            
+
             return result;
         }
 
@@ -685,13 +688,13 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             if (DataType.Type == TypeCode.Byte)
             {
-                value = (byte)BitConverter.ToChar(Convert.FromBase64String(ActualValue.Value),0);
+                value = (byte)BitConverter.ToChar(Convert.FromBase64String(ActualValue.Value), 0);
                 result = true;
             }
 
             return result;
         }
-        
+
         public bool GetValue(out sbyte value)
         {
             bool result = false;
@@ -703,7 +706,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
                 if (byteArray.Length > 0)
                 {
-                    value = (sbyte) byteArray[0];
+                    value = (sbyte)byteArray[0];
                     result = true;
                 }
             }
@@ -718,7 +721,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             if (DataType.Type == TypeCode.Int16)
             {
-                value = BitConverter.ToInt16(Convert.FromBase64String(ActualValue.Value),0);
+                value = BitConverter.ToInt16(Convert.FromBase64String(ActualValue.Value), 0);
                 result = true;
             }
 
@@ -732,7 +735,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             if (DataType.Type == TypeCode.Int32)
             {
-                value = BitConverter.ToInt32(Convert.FromBase64String(ActualValue.Value),0);
+                value = BitConverter.ToInt32(Convert.FromBase64String(ActualValue.Value), 0);
                 result = true;
             }
 
@@ -746,7 +749,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             if (DataType.Type == TypeCode.Int64)
             {
-                value = BitConverter.ToInt64(Convert.FromBase64String(ActualValue.Value),0);
+                value = BitConverter.ToInt64(Convert.FromBase64String(ActualValue.Value), 0);
                 result = true;
             }
 
@@ -760,7 +763,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             if (DataType.Type == TypeCode.UInt16)
             {
-                value = BitConverter.ToUInt16(Convert.FromBase64String(ActualValue.Value),0);
+                value = BitConverter.ToUInt16(Convert.FromBase64String(ActualValue.Value), 0);
                 result = true;
             }
 
@@ -774,7 +777,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             if (DataType.Type == TypeCode.UInt32)
             {
-                value = BitConverter.ToUInt32(Convert.FromBase64String(ActualValue.Value),0);
+                value = BitConverter.ToUInt32(Convert.FromBase64String(ActualValue.Value), 0);
                 result = true;
             }
 
@@ -788,7 +791,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             if (DataType.Type == TypeCode.UInt64)
             {
-                value = BitConverter.ToUInt64(Convert.FromBase64String(ActualValue.Value),0);
+                value = BitConverter.ToUInt64(Convert.FromBase64String(ActualValue.Value), 0);
                 result = true;
             }
 
@@ -810,7 +813,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             {
                 MsgLogger.Exception("Parameter - GetValue", e);
             }
-            
+
             return result;
         }
 
@@ -831,10 +834,10 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             {
                 Console.WriteLine(e);
             }
-            
+
             return result;
         }
-        
+
         public bool GetRange<T>(ref T minValue, ref T maxValue)
         {
             bool result = false;
@@ -869,7 +872,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                 maxValue = (T)Convert.ChangeType(maxVal, typeof(T));
 
                 result = true;
-            } 
+            }
             else if (rangeType == typeof(short))
             {
                 short minVal = short.MinValue;
@@ -899,7 +902,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                 maxValue = (T)Convert.ChangeType(maxVal, typeof(T));
 
                 result = true;
-            } 
+            }
             else if (rangeType == typeof(int))
             {
                 int minVal = int.MinValue;
@@ -929,7 +932,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                 maxValue = (T)Convert.ChangeType(maxVal, typeof(T));
 
                 result = true;
-            } 
+            }
             else if (rangeType == typeof(long))
             {
                 long minVal = long.MinValue;
@@ -1011,53 +1014,53 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                 switch (DataType.Type)
                 {
                     case TypeCode.Byte:
-                    {
-                        byte minValue = byte.MinValue;
-                        byte maxValue = byte.MaxValue;
-
-                        if (GetRange(ref minValue, ref maxValue))
                         {
-                            byte typedValue = (byte)(object)value;
+                            byte minValue = byte.MinValue;
+                            byte maxValue = byte.MaxValue;
 
-                            if (typedValue > maxValue || typedValue < minValue)
+                            if (GetRange(ref minValue, ref maxValue))
                             {
-                                result = false;
+                                byte typedValue = (byte)(object)value;
+
+                                if (typedValue > maxValue || typedValue < minValue)
+                                {
+                                    result = false;
+                                }
                             }
                         }
-                    }
-                    break;
+                        break;
                     case TypeCode.SByte:
-                    {
-                        sbyte minValue = sbyte.MinValue;
-                        sbyte maxValue = sbyte.MaxValue;
-
-                        if (GetRange(ref minValue, ref maxValue))
                         {
-                            sbyte typedValue = (sbyte)(object)value;
+                            sbyte minValue = sbyte.MinValue;
+                            sbyte maxValue = sbyte.MaxValue;
 
-                            if (typedValue > maxValue || typedValue < minValue)
+                            if (GetRange(ref minValue, ref maxValue))
                             {
-                                result = false;
+                                sbyte typedValue = (sbyte)(object)value;
+
+                                if (typedValue > maxValue || typedValue < minValue)
+                                {
+                                    result = false;
+                                }
                             }
                         }
-                    }
-                    break;
+                        break;
                     case TypeCode.Int16:
-                    {
-                        short minValue = short.MinValue;
-                        short maxValue = short.MaxValue;
-
-                        if (GetRange(ref minValue, ref maxValue))
                         {
-                            short typedValue = (short)(object)value;
+                            short minValue = short.MinValue;
+                            short maxValue = short.MaxValue;
 
-                            if (typedValue > maxValue || typedValue < minValue)
+                            if (GetRange(ref minValue, ref maxValue))
                             {
-                                result = false;
+                                short typedValue = (short)(object)value;
+
+                                if (typedValue > maxValue || typedValue < minValue)
+                                {
+                                    result = false;
+                                }
                             }
                         }
-                    }
-                    break;
+                        break;
                     case TypeCode.UInt16:
                         {
                             ushort minValue = ushort.MinValue;
@@ -1076,89 +1079,139 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                         break;
 
                     case TypeCode.Int32:
-                    {
-                        int minValue = int.MinValue;
-                        int maxValue = int.MaxValue;
-                            
-                        if(GetRange(ref minValue, ref maxValue))
                         {
-                            int typedValue = (int)(object)value;
+                            int minValue = int.MinValue;
+                            int maxValue = int.MaxValue;
 
-                            if (typedValue > maxValue || typedValue < minValue)
+                            if (GetRange(ref minValue, ref maxValue))
                             {
-                                result = false;
+                                int typedValue = (int)(object)value;
+
+                                if (typedValue > maxValue || typedValue < minValue)
+                                {
+                                    result = false;
+                                }
                             }
-                        }
-                    } break;
+                        } break;
                     case TypeCode.UInt32:
-                    {
-                        uint minValue = uint.MinValue;
-                        uint maxValue = uint.MaxValue;
-
-                        if (GetRange(ref minValue, ref maxValue))
                         {
-                            uint typedValue = (uint)(object)value;
+                            uint minValue = uint.MinValue;
+                            uint maxValue = uint.MaxValue;
 
-                            if (typedValue > maxValue || typedValue < minValue)
+                            if (GetRange(ref minValue, ref maxValue))
                             {
-                                result = false;
+                                uint typedValue = (uint)(object)value;
+
+                                if (typedValue > maxValue || typedValue < minValue)
+                                {
+                                    result = false;
+                                }
                             }
-                        }
-                    } break;
+                        } break;
                     case TypeCode.Int64:
-                    {
-                        long minValue = long.MinValue;
-                        long maxValue = long.MaxValue;
-
-                        if (GetRange(ref minValue, ref maxValue))
                         {
-                            long typedValue = (long)(object)value;
+                            long minValue = long.MinValue;
+                            long maxValue = long.MaxValue;
 
-                            if (typedValue > maxValue || typedValue < minValue)
+                            if (GetRange(ref minValue, ref maxValue))
                             {
-                                result = false;
+                                long typedValue = (long)(object)value;
+
+                                if (typedValue > maxValue || typedValue < minValue)
+                                {
+                                    result = false;
+                                }
                             }
-                        }
-                    } break;
+                        } break;
                     case TypeCode.UInt64:
-                    {
-                        ulong minValue = ulong.MinValue;
-                        ulong maxValue = ulong.MaxValue;
-
-                        if (GetRange(ref minValue, ref maxValue))
                         {
-                            ulong typedValue = (ulong)(object)value;
+                            ulong minValue = ulong.MinValue;
+                            ulong maxValue = ulong.MaxValue;
 
-                            if (typedValue > maxValue || typedValue < minValue)
+                            if (GetRange(ref minValue, ref maxValue))
                             {
-                                result = false;
+                                ulong typedValue = (ulong)(object)value;
+
+                                if (typedValue > maxValue || typedValue < minValue)
+                                {
+                                    result = false;
+                                }
                             }
-                        }
-                    } break;
+                        } break;
                     case TypeCode.Double:
-                    {
-                        double minValue = double.MinValue;
-                        double maxValue = double.MaxValue;
-
-                        if (GetRange(ref minValue, ref maxValue))
                         {
-                            double typedValue = (double)(object)value;
+                            double minValue = double.MinValue;
+                            double maxValue = double.MaxValue;
 
-                            if (typedValue > maxValue || typedValue < minValue)
+                            if (GetRange(ref minValue, ref maxValue))
                             {
-                                result = false;
+                                double typedValue = (double)(object)value;
+
+                                if (typedValue > maxValue || typedValue < minValue)
+                                {
+                                    result = false;
+                                }
                             }
-                        }
-                    } break;
-                    
-                } 
+                        } break;
+
+                }
             }
-            
+
+            return result;
+        }
+
+        public async Task<bool> Write()
+        {
+            bool result = false;
+            var claudConnector = Device?.CloudConnector;
+
+            if (claudConnector != null)
+            {
+                result = await claudConnector.WriteParameter(Device, this);
+            }
+
+            return result;
+        }
+
+        public async Task<List<ParameterValue>> GetValueHistory(DateTime from, DateTime to)
+        {
+            var result = new List<ParameterValue>();
+            var claudConnector = Device?.CloudConnector;
+
+            if (claudConnector != null)
+            {
+                result = await claudConnector.GetParameterValueHistory(Device, Index, SubIndex, from, to);
+            }
+
+            return result;
+        }
+
+        public async Task<ParameterValueHistoryStatistics> GetValueHistoryStatistics(DateTime from, DateTime to)
+        {
+            ParameterValueHistoryStatistics result = null;
+            var claudConnector = Device?.CloudConnector;
+
+            if (claudConnector != null)
+            {
+                result = await claudConnector.GetParameterValueHistoryStatistics(Device, UniqueId, from, to);
+            }
+
+            return result;
+        }
+
+        public async Task<ParameterValue> ReadValue()
+        {
+            ParameterValue result = null;
+            var claudConnector = Device?.CloudConnector;
+
+            if (claudConnector != null)
+            {
+                result = await claudConnector.GetParameterValue(Device, Index, SubIndex);
+            }
+
             return result;
         }
 
         #endregion
-
-
     }
 }

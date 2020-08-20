@@ -489,6 +489,24 @@ namespace EltraCommon.Contracts.Devices
             return result;
         }
 
+        /// <summary>
+        /// Get parameter by index, subindex.
+        /// </summary>
+        /// <param name="index">Index</param>
+        /// <param name="subIndex">Subindex</param>
+        /// <returns></returns>
+        public async Task<Parameter> GetParameter(ushort index, byte subIndex)
+        {
+            Parameter result = null;
+
+            if (CloudConnector != null)
+            {
+                result = await CloudConnector.GetParameter(this, index, subIndex);
+            }
+
+            return result;
+        }
+
         #endregion
     }
 }
