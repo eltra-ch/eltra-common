@@ -3,6 +3,7 @@ using EltraCommon.Contracts.Devices;
 using EltraCommon.Contracts.History;
 using EltraCommon.Contracts.Parameters;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters;
+using EltraCommon.ObjectDictionary.DeviceDescription;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -98,5 +99,12 @@ namespace EltraCommon.Contracts.Interfaces
         /// <param name="priority"></param>
         /// <returns></returns>
         bool UnregisterParameterUpdate(EltraDevice device, string uniqueId, ParameterUpdatePriority priority = ParameterUpdatePriority.Low);
+
+        /// <summary>
+        /// Download Device Description
+        /// </summary>
+        /// <param name="deviceVersion"></param>
+        /// <returns></returns>
+        Task<DeviceDescriptionPayload> DownloadDeviceDescription(DeviceVersion deviceVersion);
     }
 }

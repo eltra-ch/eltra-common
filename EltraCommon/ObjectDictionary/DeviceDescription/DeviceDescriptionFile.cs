@@ -3,12 +3,11 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web;
 using EltraCommon.Contracts.Devices;
 using EltraCommon.ObjectDictionary.DeviceDescription.Events;
 using EltraCommon.Helpers;
 using EltraCommon.Logger;
-using Newtonsoft.Json;
+using EltraCommon.Contracts.Interfaces;
 
 #pragma warning disable 1591
 
@@ -155,31 +154,15 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
             return result;
         }
         
-        private async Task<DeviceDescriptionPayload> Download(DeviceVersion deviceVersion)
+        private async Task<DeviceDescriptionPayload> Download(ICloudConnector connector, DeviceVersion deviceVersion)
         {
             DeviceDescriptionPayload result = null;
 
             try
             {
-                var query = HttpUtility.ParseQueryString(string.Empty);
-
-                query["hardwareVersion"] = $"{deviceVersion.HardwareVersion}";
-                query["softwareVersion"] = $"{deviceVersion.SoftwareVersion}";
-                query["applicationNumber"] = $"{deviceVersion.ApplicationNumber}";
-                query["applicationVersion"] = $"{deviceVersion.ApplicationVersion}";
-
-                var url = UrlHelper.BuildUrl(Url, "api/description/download", query);
-
-                var json = await Get(url);
-
-                if (!string.IsNullOrEmpty(json))
+                if (connector != null)
                 {
-                    result = JsonConvert.DeserializeObject<DeviceDescriptionPayload>(json);
-
-                    if (result != null)
-                    {
-                        result.Version = deviceVersion;
-                    }
+                    result = await connector.DownloadDeviceDescription(deviceVersion);
                 }
             }
             catch (Exception e)
@@ -216,7 +199,7 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
         private async Task<bool> DownloadFile()
         {
             bool result = false;
-            var deviceDescription = await Download(Device.Version);
+            var deviceDescription = await Download(Device.CloudConnector, Device.Version);
 
             if (deviceDescription != null)
             {
