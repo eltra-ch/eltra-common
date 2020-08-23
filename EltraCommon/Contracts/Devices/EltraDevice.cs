@@ -507,6 +507,32 @@ namespace EltraCommon.Contracts.Devices
             return result;
         }
 
+        /// <summary>
+        /// Get parameter by uniqueid.
+        /// </summary>
+        /// <param name="uniqueId"></param>
+        /// <returns></returns>
+        public async Task<Parameter> GetParameter(string uniqueId)
+        {
+            Parameter result = null;
+
+            if (CloudConnector != null)
+            {
+                var parameterBase = SearchParameter(uniqueId);
+
+                if (parameterBase is Parameter parameter)
+                {
+                    result = await CloudConnector.GetParameter(this, parameter.Index, parameter.SubIndex);
+                }
+                else if (parameterBase != null)
+                {
+                    result = await CloudConnector.GetParameter(this, parameterBase.Index, 0x00);
+                }
+            }
+
+            return result;
+        }
+
         #endregion
     }
 }
