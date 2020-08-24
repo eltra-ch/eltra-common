@@ -77,10 +77,13 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             }
         }
 
+        [DataMember]
         public string DateTimeFormat { get; set; }
 
+        [DataMember]
         public List<XddAllowedValues> AllowedValues => _allowedValues ?? (_allowedValues = new List<XddAllowedValues>());
 
+        [DataMember]
         public Unit Unit { get; set; }
 
         #endregion

@@ -36,7 +36,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         #region Properties
 
         [IgnoreDataMember]
-        public EltraDevice Device { get; }
+        public EltraDevice Device { get; set; }
 
         [IgnoreDataMember]
         protected XmlNode Source => _source;
