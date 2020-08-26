@@ -48,6 +48,21 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Device.Use
             return result;
         }
 
+        public bool HasLevel(string level)
+        {
+            bool result = false;
+
+            foreach (var userLevel in UserLevels)
+            {
+                if (userLevel.UniqueId == level)
+                {
+                    result = true;
+                }
+            }
+
+            return result;
+        }
+
         public bool Parse(XmlNode node)
         {
             bool result = true;

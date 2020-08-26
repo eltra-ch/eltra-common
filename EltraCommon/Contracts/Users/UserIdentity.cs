@@ -34,10 +34,10 @@ namespace EltraCommon.Contracts.Users
         public string Password { get; set; }
 
         /// <summary>
-        /// User level
+        /// User role
         /// </summary>
         [DataMember]
-        public string Level { get; set; }
+        public string Role { get; set; }
 
         #endregion
     }
