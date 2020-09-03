@@ -2,6 +2,7 @@
 using System.Runtime.Serialization;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.DataTypes;
 using EltraCommon.Logger;
+using System.Text;
 
 #pragma warning disable 1591
 
@@ -253,7 +254,9 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             {
                 string s = (string)(object)value;
 
-                Value = s;
+                var byteArray = Encoding.Unicode.GetBytes(s);
+
+                Value = Convert.ToBase64String(byteArray);
             }
             else if (typeof(T) == typeof(byte[]))
             {
@@ -450,8 +453,12 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                     }
                     else if (typeof(T) == typeof(string))
                     {
-                        value = (T)(object)Value;
-                        result = true;
+                        var byteArray = Convert.FromBase64String(Value);
+                        if (byteArray.Length > 0)
+                        {
+                            value = (T)(object)Encoding.Unicode.GetString(byteArray);
+                            result = true;
+                        }
                     }
                     else if (typeof(T) == typeof(byte[]))
                     {
