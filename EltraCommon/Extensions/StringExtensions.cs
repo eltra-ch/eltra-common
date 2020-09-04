@@ -2,7 +2,7 @@
 
 #pragma warning disable 1591
 
-namespace EltraCommon.Helpers
+namespace EltraCommon.Extensions
 {
     public static class StringExtensions
     {

@@ -13,6 +13,7 @@ using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application
 using EltraCommon.Contracts.Devices;
 using System.Threading.Tasks;
 using EltraCommon.Contracts.History;
+using EltraCommon.Converters;
 
 #pragma warning disable 1591
 
@@ -163,7 +164,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             bool result = false;
             var bytesArray = new Span<byte>();
 
-            if (Convert.TryFromBase64String(newValue.Value, bytesArray, out int bytesWritten))
+            if (Base64Converter.TryFromBase64String(newValue.Value, bytesArray, out int bytesWritten))
             {
                 switch (DataType.Type)
                 {
@@ -224,7 +225,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                         break;
                     case TypeCode.DateTime:
                         {
-                            result = bytesWritten > 0;
+                            result = (bytesWritten == sizeof(Int64));
                         }
                         break;
                     case TypeCode.Object:
@@ -793,7 +794,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             if (DataType.Type == TypeCode.Byte)
             {
                 var bytesArray = new Span<byte>();
-                if (Convert.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(byte))
+                if (Base64Converter.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(byte))
                 {
                     value = (byte)bytesArray[0];
                     result = true;
@@ -811,7 +812,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             if (DataType.Type == TypeCode.SByte)
             {
                 var bytesArray = new Span<byte>();
-                if (Convert.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(sbyte))
+                if (Base64Converter.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(sbyte))
                 {
                     value = (sbyte)bytesArray[0];
                     result = true;
@@ -829,7 +830,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             if (DataType.Type == TypeCode.Int16)
             {
                 var bytesArray = new Span<byte>();
-                if (Convert.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(Int16))
+                if (Base64Converter.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(Int16))
                 {
                     value = BitConverter.ToInt16(bytesArray.ToArray(), 0);
 
@@ -848,7 +849,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             if (DataType.Type == TypeCode.Int32)
             {
                 var bytesArray = new Span<byte>();
-                if (Convert.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(Int32))
+                if (Base64Converter.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(Int32))
                 {
                     value = BitConverter.ToInt32(bytesArray.ToArray(), 0);
 
@@ -867,7 +868,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             if (DataType.Type == TypeCode.Int64)
             {
                 var bytesArray = new Span<byte>();
-                if (Convert.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(Int64))
+                if (Base64Converter.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(Int64))
                 {
                     value = BitConverter.ToInt64(bytesArray.ToArray(), 0);
 
@@ -886,7 +887,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             if (DataType.Type == TypeCode.UInt16)
             {
                 var bytesArray = new Span<byte>();
-                if (Convert.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(UInt16))
+                if (Base64Converter.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(UInt16))
                 {
                     value = BitConverter.ToUInt16(bytesArray.ToArray(), 0);
 
@@ -905,7 +906,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             if (DataType.Type == TypeCode.UInt32)
             {
                 var bytesArray = new Span<byte>();                
-                if(Convert.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(UInt32))
+                if(Base64Converter.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(UInt32))
                 {
                     value = BitConverter.ToUInt32(bytesArray.ToArray(), 0);
 
@@ -924,7 +925,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             if (DataType.Type == TypeCode.UInt64)
             {
                 var bytesArray = new Span<byte>();
-                if (Convert.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(UInt64))
+                if (Base64Converter.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(UInt64))
                 {
                     value = BitConverter.ToUInt64(bytesArray.ToArray(), 0);
                     result = true;
@@ -943,7 +944,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             try
             {
                 var bytesArray = new Span<byte>();
-                if (Convert.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten > 0)
+                if (Base64Converter.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten > 0)
                 {
                     value = bytesArray.ToArray();
                     result = true;
