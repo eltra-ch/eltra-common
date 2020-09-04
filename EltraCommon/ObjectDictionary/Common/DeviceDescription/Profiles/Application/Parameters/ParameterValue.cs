@@ -482,6 +482,10 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                         }
                     }
                 }
+                else
+                {
+                    result = true;
+                }
             }
             catch(Exception e)
             {

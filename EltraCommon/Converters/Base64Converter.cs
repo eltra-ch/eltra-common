@@ -86,6 +86,26 @@ namespace EltraCommon.Converters
             return TryFromBase64Chars(s.AsSpan(), bytes, out bytesWritten);
         }
 
+        /// <summary>
+        /// AllocateBase64Buffer
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static Span<byte> AllocateBase64Buffer(string text)
+        {
+            byte[] result = null;
+
+            if (!string.IsNullOrEmpty(text))
+            {
+                result = new byte[((text.Length * 3) + 3) / 4 -
+                                    (text.Length > 0 && text[text.Length - 1] == '=' ?
+                                    text.Length > 1 && text[text.Length - 2] == '=' ?
+                                    2 : 1 : 0)];
+            }
+
+            return result;
+        }
+
         #endregion
 
         #region Methods

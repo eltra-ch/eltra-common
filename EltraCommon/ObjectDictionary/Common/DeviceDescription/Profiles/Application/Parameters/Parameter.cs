@@ -151,9 +151,12 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         {
             bool result = false;
 
-            if (data != null && data.Length > 0)
+            if (data != null)
             {
-                result = SetValue(new ParameterValue(data));
+                if(data.Length > 0 || DataType.Type == TypeCode.Object || DataType.Type == TypeCode.String || DataType.Type == TypeCode.DateTime)
+                {
+                    result = SetValue(new ParameterValue(data));
+                }
             }
 
             return result;
@@ -162,77 +165,81 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         private bool IsParameterValueValid(ParameterValue newValue)
         {
             bool result = false;
-            var bytesArray = new Span<byte>();
 
-            if (Base64Converter.TryFromBase64String(newValue.Value, bytesArray, out int bytesWritten))
+            if(newValue != null && !string.IsNullOrEmpty(newValue.Value))
             {
-                switch (DataType.Type)
+                var bytesArray = Base64Converter.AllocateBase64Buffer(newValue.Value);
+
+                if (Base64Converter.TryFromBase64String(newValue.Value, bytesArray, out int bytesWritten))
                 {
-                    case TypeCode.Boolean:
-                        {
-                            result = bytesWritten == sizeof(Boolean);
-                        }
-                        break;
-                    case TypeCode.Byte:
-                        {
-                            result = bytesWritten == sizeof(Byte);
-                        }
-                        break;
-                    case TypeCode.SByte:
-                        {
-                            result = bytesWritten == sizeof(SByte);
-                        }
-                        break;
-                    case TypeCode.Int16:
-                        {
-                            result = bytesWritten == sizeof(Int16);
-                        }
-                        break;
-                    case TypeCode.Int32:
-                        {
-                            result = bytesWritten == sizeof(Int32);
-                        }
-                        break;
-                    case TypeCode.Int64:
-                        {
-                            result = bytesWritten == sizeof(Int64);
-                        }
-                        break;
-                    case TypeCode.UInt16:
-                        {
-                            result = bytesWritten == sizeof(UInt16);
-                        }
-                        break;
-                    case TypeCode.UInt32:
-                        {
-                            result = bytesWritten == sizeof(UInt32);
-                        }
-                        break;
-                    case TypeCode.UInt64:
-                        {
-                            result = bytesWritten == sizeof(UInt64);
-                        }
-                        break;
-                    case TypeCode.Double:
-                        {
-                            result = bytesWritten == sizeof(Double);
-                        }
-                        break;
-                    case TypeCode.String:
-                        {
-                            result = bytesWritten == sizeof(Double);
-                        }
-                        break;
-                    case TypeCode.DateTime:
-                        {
-                            result = (bytesWritten == sizeof(Int64));
-                        }
-                        break;
-                    case TypeCode.Object:
-                        {
-                            result = bytesWritten > 0;
-                        }
-                        break;
+                    switch (DataType.Type)
+                    {
+                        case TypeCode.Boolean:
+                            {
+                                result = bytesWritten >= sizeof(Boolean);
+                            }
+                            break;
+                        case TypeCode.Byte:
+                            {
+                                result = bytesWritten >= sizeof(Byte);
+                            }
+                            break;
+                        case TypeCode.SByte:
+                            {
+                                result = bytesWritten >= sizeof(SByte);
+                            }
+                            break;
+                        case TypeCode.Int16:
+                            {
+                                result = bytesWritten >= sizeof(Int16);
+                            }
+                            break;
+                        case TypeCode.Int32:
+                            {
+                                result = bytesWritten >= sizeof(Int32);
+                            }
+                            break;
+                        case TypeCode.Int64:
+                            {
+                                result = bytesWritten >= sizeof(Int64);
+                            }
+                            break;
+                        case TypeCode.UInt16:
+                            {
+                                result = bytesWritten >= sizeof(UInt16);
+                            }
+                            break;
+                        case TypeCode.UInt32:
+                            {
+                                result = bytesWritten >= sizeof(UInt32);
+                            }
+                            break;
+                        case TypeCode.UInt64:
+                            {
+                                result = bytesWritten >= sizeof(UInt64);
+                            }
+                            break;
+                        case TypeCode.Double:
+                            {
+                                result = bytesWritten >= sizeof(Double);
+                            }
+                            break;
+                        case TypeCode.String:
+                            {
+                                result = bytesWritten > 0;
+                            }
+                            break;
+                        case TypeCode.DateTime:
+                            {
+                                result = (bytesWritten >= sizeof(Int64));
+                            }
+                            break;
+                        case TypeCode.Object:
+                            {
+                                result = bytesWritten > 0;
+                            }
+                            break;
+                    }
                 }
             }
             else
@@ -242,6 +249,10 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                     result = true;
                 }
                 else if (DataType.Type == TypeCode.Object)
+                {
+                    result = true;
+                }
+                else if (DataType.Type == TypeCode.DateTime)
                 {
                     result = true;
                 }
@@ -793,7 +804,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             if (DataType.Type == TypeCode.Byte)
             {
-                var bytesArray = new Span<byte>();
+                var bytesArray = Base64Converter.AllocateBase64Buffer(ActualValue.Value);
                 if (Base64Converter.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(byte))
                 {
                     value = (byte)bytesArray[0];
@@ -811,7 +822,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             if (DataType.Type == TypeCode.SByte)
             {
-                var bytesArray = new Span<byte>();
+                var bytesArray = Base64Converter.AllocateBase64Buffer(ActualValue.Value);
                 if (Base64Converter.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(sbyte))
                 {
                     value = (sbyte)bytesArray[0];
@@ -829,7 +840,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             if (DataType.Type == TypeCode.Int16)
             {
-                var bytesArray = new Span<byte>();
+                var bytesArray = Base64Converter.AllocateBase64Buffer(ActualValue.Value);
                 if (Base64Converter.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(Int16))
                 {
                     value = BitConverter.ToInt16(bytesArray.ToArray(), 0);
@@ -848,7 +859,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             if (DataType.Type == TypeCode.Int32)
             {
-                var bytesArray = new Span<byte>();
+                var bytesArray = Base64Converter.AllocateBase64Buffer(ActualValue.Value);
                 if (Base64Converter.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(Int32))
                 {
                     value = BitConverter.ToInt32(bytesArray.ToArray(), 0);
@@ -867,7 +878,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             if (DataType.Type == TypeCode.Int64)
             {
-                var bytesArray = new Span<byte>();
+                var bytesArray = Base64Converter.AllocateBase64Buffer(ActualValue.Value);
                 if (Base64Converter.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(Int64))
                 {
                     value = BitConverter.ToInt64(bytesArray.ToArray(), 0);
@@ -886,7 +897,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             if (DataType.Type == TypeCode.UInt16)
             {
-                var bytesArray = new Span<byte>();
+                var bytesArray = Base64Converter.AllocateBase64Buffer(ActualValue.Value);
                 if (Base64Converter.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(UInt16))
                 {
                     value = BitConverter.ToUInt16(bytesArray.ToArray(), 0);
@@ -905,8 +916,8 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             if (DataType.Type == TypeCode.UInt32)
             {
-                var bytesArray = new Span<byte>();                
-                if(Base64Converter.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(UInt32))
+                var bytesArray = Base64Converter.AllocateBase64Buffer(ActualValue.Value);
+                if (Base64Converter.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(UInt32))
                 {
                     value = BitConverter.ToUInt32(bytesArray.ToArray(), 0);
 
@@ -924,7 +935,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             if (DataType.Type == TypeCode.UInt64)
             {
-                var bytesArray = new Span<byte>();
+                var bytesArray = Base64Converter.AllocateBase64Buffer(ActualValue.Value);
                 if (Base64Converter.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(UInt64))
                 {
                     value = BitConverter.ToUInt64(bytesArray.ToArray(), 0);
@@ -943,11 +954,24 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             try
             {
-                var bytesArray = new Span<byte>();
-                if (Base64Converter.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten > 0)
+                string actualValue = ActualValue.Value;
+                var bytesArray = Base64Converter.AllocateBase64Buffer(actualValue);
+
+                if (!string.IsNullOrEmpty(actualValue))
                 {
-                    value = bytesArray.ToArray();
-                    result = true;
+                    if (Base64Converter.TryFromBase64String(actualValue, bytesArray, out int bytesWritten) && bytesWritten > 0)
+                    {
+                        value = bytesArray.ToArray();
+                        result = true;
+                    }
+                }
+                else
+                {
+                    if(DataType.Type == TypeCode.String || DataType.Type == TypeCode.Object || DataType.Type == TypeCode.DateTime)
+                    {
+                        value = new byte[0];
+                        result = true;
+                    }
                 }
             }
             catch (Exception e)
