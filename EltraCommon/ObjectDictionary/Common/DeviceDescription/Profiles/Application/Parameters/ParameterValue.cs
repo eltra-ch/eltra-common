@@ -305,7 +305,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                     else if (typeof(T) == typeof(sbyte))
                     {
                         var byteArray = Convert.FromBase64String(Value);
-                        if (byteArray.Length == sizeof(sbyte))
+                        if (byteArray.Length >= sizeof(sbyte))
                         {
                             sbyte[] signed = Array.ConvertAll(byteArray, b => unchecked((sbyte)b));
                             value = (T)(object)signed[0];

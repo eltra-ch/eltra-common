@@ -778,6 +778,11 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                     value = (T)(object)string.Empty;
                     result = true;
                 }
+                else if (DataType.Type == TypeCode.DateTime)
+                {
+                    value = (T)(object)DateTime.MinValue;
+                    result = true;
+                }
             }
 
             return result;
