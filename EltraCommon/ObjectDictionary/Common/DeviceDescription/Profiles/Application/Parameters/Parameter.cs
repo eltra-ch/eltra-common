@@ -12,7 +12,6 @@ using System.Xml;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Units;
 using EltraCommon.Contracts.Devices;
 using System.Threading.Tasks;
-using EltraCommon.Contracts.Interfaces;
 using EltraCommon.Contracts.History;
 
 #pragma warning disable 1591
@@ -159,15 +158,109 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             return result;
         }
 
+        private bool IsParameterValueValid(ParameterValue newValue)
+        {
+            bool result = false;
+            var bytesArray = new Span<byte>();
+
+            if (Convert.TryFromBase64String(newValue.Value, bytesArray, out int bytesWritten))
+            {
+                switch (DataType.Type)
+                {
+                    case TypeCode.Boolean:
+                        {
+                            result = bytesWritten == sizeof(Boolean);
+                        }
+                        break;
+                    case TypeCode.Byte:
+                        {
+                            result = bytesWritten == sizeof(Byte);
+                        }
+                        break;
+                    case TypeCode.SByte:
+                        {
+                            result = bytesWritten == sizeof(SByte);
+                        }
+                        break;
+                    case TypeCode.Int16:
+                        {
+                            result = bytesWritten == sizeof(Int16);
+                        }
+                        break;
+                    case TypeCode.Int32:
+                        {
+                            result = bytesWritten == sizeof(Int32);
+                        }
+                        break;
+                    case TypeCode.Int64:
+                        {
+                            result = bytesWritten == sizeof(Int64);
+                        }
+                        break;
+                    case TypeCode.UInt16:
+                        {
+                            result = bytesWritten == sizeof(UInt16);
+                        }
+                        break;
+                    case TypeCode.UInt32:
+                        {
+                            result = bytesWritten == sizeof(UInt32);
+                        }
+                        break;
+                    case TypeCode.UInt64:
+                        {
+                            result = bytesWritten == sizeof(UInt64);
+                        }
+                        break;
+                    case TypeCode.Double:
+                        {
+                            result = bytesWritten == sizeof(Double);
+                        }
+                        break;
+                    case TypeCode.String:
+                        {
+                            result = bytesWritten == sizeof(Double);
+                        }
+                        break;
+                    case TypeCode.DateTime:
+                        {
+                            result = bytesWritten > 0;
+                        }
+                        break;
+                    case TypeCode.Object:
+                        {
+                            result = bytesWritten > 0;
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                if(DataType.Type == TypeCode.String)
+                {
+                    result = true;
+                }
+                else if (DataType.Type == TypeCode.Object)
+                {
+                    result = true;
+                }
+            }
+
+            return result;
+        }
+
         public bool SetValue(ParameterValue newValue)
         {
             bool result = false;
 
             if (newValue != null)
             {
-                ActualValue = newValue;
+                if(IsParameterValueValid(newValue))
+                {
+                    ActualValue = newValue;
 
-                result = true;
+                    result = true;
+                }
             }
 
             return result;
@@ -246,7 +339,10 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                     break;
                 case TypeCode.Int64:
                     {
-
+                        if (Int64.TryParse(text, out var value))
+                        {
+                            result = SetValue(value);
+                        }
                     }
                     break;
                 case TypeCode.UInt16:
@@ -696,8 +792,12 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             if (DataType.Type == TypeCode.Byte)
             {
-                value = (byte)BitConverter.ToChar(Convert.FromBase64String(ActualValue.Value), 0);
-                result = true;
+                var bytesArray = new Span<byte>();
+                if (Convert.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(byte))
+                {
+                    value = (byte)bytesArray[0];
+                    result = true;
+                }
             }
 
             return result;
@@ -710,11 +810,10 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             if (DataType.Type == TypeCode.SByte)
             {
-                var byteArray = Convert.FromBase64String(ActualValue.Value);
-
-                if (byteArray.Length > 0)
+                var bytesArray = new Span<byte>();
+                if (Convert.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(sbyte))
                 {
-                    value = (sbyte)byteArray[0];
+                    value = (sbyte)bytesArray[0];
                     result = true;
                 }
             }
@@ -729,8 +828,13 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             if (DataType.Type == TypeCode.Int16)
             {
-                value = BitConverter.ToInt16(Convert.FromBase64String(ActualValue.Value), 0);
-                result = true;
+                var bytesArray = new Span<byte>();
+                if (Convert.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(Int16))
+                {
+                    value = BitConverter.ToInt16(bytesArray.ToArray(), 0);
+
+                    result = true;
+                }
             }
 
             return result;
@@ -743,8 +847,13 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             if (DataType.Type == TypeCode.Int32)
             {
-                value = BitConverter.ToInt32(Convert.FromBase64String(ActualValue.Value), 0);
-                result = true;
+                var bytesArray = new Span<byte>();
+                if (Convert.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(Int32))
+                {
+                    value = BitConverter.ToInt32(bytesArray.ToArray(), 0);
+
+                    result = true;
+                }
             }
 
             return result;
@@ -757,8 +866,13 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             if (DataType.Type == TypeCode.Int64)
             {
-                value = BitConverter.ToInt64(Convert.FromBase64String(ActualValue.Value), 0);
-                result = true;
+                var bytesArray = new Span<byte>();
+                if (Convert.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(Int64))
+                {
+                    value = BitConverter.ToInt64(bytesArray.ToArray(), 0);
+
+                    result = true;
+                }
             }
 
             return result;
@@ -771,8 +885,13 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             if (DataType.Type == TypeCode.UInt16)
             {
-                value = BitConverter.ToUInt16(Convert.FromBase64String(ActualValue.Value), 0);
-                result = true;
+                var bytesArray = new Span<byte>();
+                if (Convert.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(UInt16))
+                {
+                    value = BitConverter.ToUInt16(bytesArray.ToArray(), 0);
+
+                    result = true;
+                }
             }
 
             return result;
@@ -785,8 +904,13 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             if (DataType.Type == TypeCode.UInt32)
             {
-                value = BitConverter.ToUInt32(Convert.FromBase64String(ActualValue.Value), 0);
-                result = true;
+                var bytesArray = new Span<byte>();                
+                if(Convert.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(UInt32))
+                {
+                    value = BitConverter.ToUInt32(bytesArray.ToArray(), 0);
+
+                    result = true;
+                }
             }
 
             return result;
@@ -799,8 +923,12 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             if (DataType.Type == TypeCode.UInt64)
             {
-                value = BitConverter.ToUInt64(Convert.FromBase64String(ActualValue.Value), 0);
-                result = true;
+                var bytesArray = new Span<byte>();
+                if (Convert.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(UInt64))
+                {
+                    value = BitConverter.ToUInt64(bytesArray.ToArray(), 0);
+                    result = true;
+                }
             }
 
             return result;
@@ -814,8 +942,12 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             try
             {
-                value = Convert.FromBase64String(ActualValue.Value);
-                result = true;
+                var bytesArray = new Span<byte>();
+                if (Convert.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten > 0)
+                {
+                    value = bytesArray.ToArray();
+                    result = true;
+                }
             }
             catch (Exception e)
             {
