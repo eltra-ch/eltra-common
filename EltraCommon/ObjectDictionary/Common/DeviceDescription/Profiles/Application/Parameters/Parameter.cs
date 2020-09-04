@@ -665,6 +665,11 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                     value = (T)(object)new byte[DataType.SizeInBytes];
                     result = true;
                 }
+                else if( DataType.Type == TypeCode.String)
+                {
+                    value = (T)(object)string.Empty;
+                    result = true;
+                }
             }
 
             return result;
