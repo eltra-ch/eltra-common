@@ -805,7 +805,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             if (DataType.Type == TypeCode.Byte)
             {
                 var bytesArray = Base64Converter.AllocateBase64Buffer(ActualValue.Value);
-                if (Base64Converter.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(byte))
+                if (Base64Converter.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten >= sizeof(byte))
                 {
                     value = (byte)bytesArray[0];
                     result = true;
@@ -823,7 +823,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             if (DataType.Type == TypeCode.SByte)
             {
                 var bytesArray = Base64Converter.AllocateBase64Buffer(ActualValue.Value);
-                if (Base64Converter.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten == sizeof(sbyte))
+                if (Base64Converter.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten >= sizeof(sbyte))
                 {
                     value = (sbyte)bytesArray[0];
                     result = true;
