@@ -167,7 +167,7 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
                                 {
                                     if (FindParameter(paramIdRef.UniqueIdRef) is XddParameter refParam)
                                     {
-                                        if (refParam.ActualValue.IsValid)
+                                        if(!string.IsNullOrEmpty(refParam.ActualValue.Value))
                                         {
                                             maxValue.Value = new XddValue(refParam.ActualValue, refParam.DataType);
                                         }

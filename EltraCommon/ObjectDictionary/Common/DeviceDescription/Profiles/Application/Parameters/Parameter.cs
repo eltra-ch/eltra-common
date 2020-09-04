@@ -163,7 +163,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         {
             bool result = false;
 
-            if (newValue != null && newValue.IsValid)
+            if (newValue != null)
             {
                 ActualValue = newValue;
 

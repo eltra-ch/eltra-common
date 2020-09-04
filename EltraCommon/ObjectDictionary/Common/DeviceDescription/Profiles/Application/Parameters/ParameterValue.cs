@@ -51,8 +51,6 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         [DataMember]
         public DateTime Modified { get; set; }
 
-        public bool IsValid => !string.IsNullOrEmpty(Value);
-        
         public bool Equals(ParameterValue other)
         {
             return other != null && other.Value == Value;
