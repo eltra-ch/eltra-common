@@ -88,8 +88,9 @@ namespace EltraCommon.Contracts.Interfaces
         /// <param name="device"></param>
         /// <param name="uniqueId"></param>
         /// <param name="priority"></param>
+        /// <param name="waitForResult"></param>
         /// <returns></returns>
-        bool RegisterParameterUpdate(EltraDevice device, string uniqueId, ParameterUpdatePriority priority = ParameterUpdatePriority.Low);
+        bool RegisterParameterUpdate(EltraDevice device, string uniqueId, ParameterUpdatePriority priority = ParameterUpdatePriority.Low, bool waitForResult = false);
 
         /// <summary>
         /// Unregister parameter update.
@@ -97,8 +98,9 @@ namespace EltraCommon.Contracts.Interfaces
         /// <param name="device"></param>
         /// <param name="uniqueId"></param>
         /// <param name="priority"></param>
+        /// <param name="waitForResult"></param>
         /// <returns></returns>
-        bool UnregisterParameterUpdate(EltraDevice device, string uniqueId, ParameterUpdatePriority priority = ParameterUpdatePriority.Low);
+        bool UnregisterParameterUpdate(EltraDevice device, string uniqueId, ParameterUpdatePriority priority = ParameterUpdatePriority.Low, bool waitForResult = false);
 
         /// <summary>
         /// Download Device Description

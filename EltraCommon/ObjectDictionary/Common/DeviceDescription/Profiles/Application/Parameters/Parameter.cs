@@ -14,6 +14,7 @@ using EltraCommon.Contracts.Devices;
 using System.Threading.Tasks;
 using EltraCommon.Contracts.History;
 using EltraCommon.Converters;
+using EltraCommon.Contracts.Parameters;
 
 #pragma warning disable 1591
 
@@ -1377,6 +1378,26 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             if (claudConnector != null)
             {
                 result = await claudConnector.GetParameterValue(Device, Index, SubIndex);
+            }
+
+            return result;
+        }
+
+        public bool AutoUpdate(bool start, ParameterUpdatePriority priority = ParameterUpdatePriority.Low, bool waitForResult = false)
+        {
+            bool result = false;
+            var connector = Device?.CloudConnector;
+
+            if (connector != null)
+            {
+                if (start)
+                {
+                    result = connector.RegisterParameterUpdate(Device, UniqueId, priority, waitForResult);
+                }
+                else
+                {
+                    result = connector.UnregisterParameterUpdate(Device, UniqueId, priority, waitForResult);
+                }
             }
 
             return result;
