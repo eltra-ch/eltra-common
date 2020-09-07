@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.DataTypes;
 using EltraCommon.Logger;
 using System.Text;
+using EltraCommon.Converters;
 
 #pragma warning disable 1591
 
@@ -451,10 +452,16 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                     }
                     else if (typeof(T) == typeof(string))
                     {
-                        var byteArray = Convert.FromBase64String(Value);
-                        if (byteArray.Length > 0)
+                        var bytesArray = Base64Converter.AllocateBase64Buffer(Value);
+
+                        if (Base64Converter.TryFromBase64String(Value, bytesArray, out int bytesWritten))
                         {
-                            value = (T)(object)Encoding.Unicode.GetString(byteArray);
+                            value = (T)(object)Encoding.Unicode.GetString(bytesArray.ToArray());
+                            result = true;
+                        }
+                        else
+                        {
+                            value = (T)(object)Value;
                             result = true;
                         }
                     }
