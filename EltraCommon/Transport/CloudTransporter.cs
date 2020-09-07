@@ -115,21 +115,17 @@ namespace EltraCommon.Transport
             return client;
         }
 
-        private async Task ExceptionHandling(int tryCount, Exception e)
+        private void ExceptionHandling(Exception e)
         {
-            if (tryCount < MaxRetryCount)
-            {
-                await Task.Delay(MaxRetryTimeout);
-            }
-            else if(e != null)
+            if(e != null)
             {
                 MsgLogger.Exception($"{GetType().Name} - ExceptionHandling", e);
             }
         }
 
-        private async Task HttRequestExceptionHandling(int tryCount, HttpRequestException e)
+        private void HttRequestExceptionHandling(HttpRequestException e)
         {
-            await ExceptionHandling(tryCount, e.InnerException);
+            ExceptionHandling(e.InnerException);
 
             if (e.InnerException is SocketException socketException)
             {
@@ -207,14 +203,15 @@ namespace EltraCommon.Transport
                 }
                 catch (HttpRequestException e)
                 {
-                    await HttRequestExceptionHandling(tryCount, e);
-
+                    HttRequestExceptionHandling(e);
                     result.Exception = e.InnerException;
+                    tryCount = MaxRetryCount;
                 }
                 catch (Exception e)
                 {
-                    await ExceptionHandling(tryCount, e);
+                    ExceptionHandling(e);
                     result.Exception = e;
+                    tryCount = MaxRetryCount;
                 }
             } while (tryCount < MaxRetryCount);
             
@@ -283,11 +280,13 @@ namespace EltraCommon.Transport
                 }
                 catch (HttpRequestException e)
                 {
-                    await HttRequestExceptionHandling(tryCount, e);
+                    HttRequestExceptionHandling(e);
+                    tryCount = MaxRetryCount;
                 }
                 catch (Exception e)
                 {
-                    await ExceptionHandling(tryCount, e);
+                    ExceptionHandling(e); 
+                    tryCount = MaxRetryCount;
                 }
             } while (tryCount < MaxRetryCount);
 
@@ -402,11 +401,13 @@ namespace EltraCommon.Transport
                 }
                 catch (HttpRequestException e)
                 {
-                    await HttRequestExceptionHandling(tryCount, e);
+                    HttRequestExceptionHandling(e);
+                    tryCount = MaxRetryCount;
                 }
                 catch (Exception e)
                 {
-                    await ExceptionHandling(tryCount, e);
+                    ExceptionHandling(e);
+                    tryCount = MaxRetryCount;
                 }
             } while (tryCount < MaxRetryCount && redirectCount < MaxRetryCount);
 
@@ -455,11 +456,13 @@ namespace EltraCommon.Transport
                 }
                 catch (HttpRequestException e)
                 {
-                    await HttRequestExceptionHandling(tryCount, e);
+                    HttRequestExceptionHandling(e);
+                    tryCount = MaxRetryCount;
                 }
                 catch (Exception e)
                 {
-                    await ExceptionHandling(tryCount, e);
+                    ExceptionHandling(e);
+                    tryCount = MaxRetryCount;
                 }
             } while (tryCount < MaxRetryCount);
 
@@ -509,11 +512,13 @@ namespace EltraCommon.Transport
                 }
                 catch (HttpRequestException e)
                 {
-                    await HttRequestExceptionHandling(tryCount, e);
+                    HttRequestExceptionHandling(e);
+                    tryCount = MaxRetryCount;
                 }
                 catch (Exception e)
                 {
-                    await ExceptionHandling(tryCount, e);
+                    ExceptionHandling(e);
+                    tryCount = MaxRetryCount;
                 }
             } while (tryCount < MaxRetryCount && redirectCount < MaxRedirectCount);
 
@@ -583,12 +588,13 @@ namespace EltraCommon.Transport
                 }
                 catch (HttpRequestException e)
                 {
-                    await HttRequestExceptionHandling(tryCount, e);
+                    HttRequestExceptionHandling(e);
+                    tryCount = MaxRetryCount;
                 }
                 catch (Exception e)
                 {
-                    await ExceptionHandling(tryCount, e);
-
+                    ExceptionHandling(e);
+                    tryCount = MaxRetryCount;
                     result.Exception = e;
                 }
             } while (tryCount < MaxRetryCount);
