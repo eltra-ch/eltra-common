@@ -77,7 +77,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             {
                 if (type == TypeCode.String)
                 {
-                    Value = defaultValue;
+                    Value = Convert.ToBase64String(Encoding.Unicode.GetBytes(defaultValue));
                 }
                 else
                 {
