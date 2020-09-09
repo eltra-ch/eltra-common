@@ -1,16 +1,19 @@
 ﻿using System.Collections.Generic;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters;
+using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles;
 
 #pragma warning disable 1591
 
 namespace EltraCommon.ObjectDictionary.Common.DeviceDescription
 {
-    public abstract class IDeviceDescription
+    public interface IDeviceDescription
     {
-        public List<ParameterBase> Parameters { get; set; }
+        List<ParameterBase> Parameters { get; set; }
 
-        public string DataSource { get; set; }
+        XddProfile Profile { get; set; }
 
-        public abstract bool Parse();
+        string DataSource { get; set; }
+
+        bool Parse();
     }
 }

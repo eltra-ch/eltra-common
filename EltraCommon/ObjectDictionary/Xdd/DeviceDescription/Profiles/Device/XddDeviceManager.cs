@@ -13,7 +13,11 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Device
 
         private XddUserLevelList _userLevelList;
 
-        private XddUserLevelList UserLevelList => _userLevelList ?? (_userLevelList = new XddUserLevelList(this));
+        #endregion
+
+        #region Properties
+
+        public XddUserLevelList UserLevelList => _userLevelList ?? (_userLevelList = new XddUserLevelList(this));
 
         #endregion
 

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using EltraCommon.Contracts.Devices;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription;
+using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles;
 
 #pragma warning disable 1591
@@ -29,17 +31,21 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription
 
         #region Properties
 
-        protected XddProfile Profile
+        public XddProfile Profile
         {
             get => _profile ?? (_profile = new XddProfile(_device));
             set => _profile = value;
-        } 
+        }
         
+        public List<ParameterBase> Parameters { get; set; }
+
+        public string DataSource { get; set; }
+
         #endregion
 
         #region Methods
 
-        public override bool Parse()
+        public virtual bool Parse()
         {
             bool result = false;
 

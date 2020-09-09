@@ -31,11 +31,11 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles
 
         #region Properties
 
-        protected XddApplicationProcess ApplicationProcess => _applicationProcess ?? (_applicationProcess = new XddApplicationProcess(_device, DeviceManager));
+        public XddApplicationProcess ApplicationProcess => _applicationProcess ?? (_applicationProcess = new XddApplicationProcess(_device, DeviceManager));
 
-        protected XddDeviceManager DeviceManager => _deviceManager ?? (_deviceManager = new XddDeviceManager());
+        public XddDeviceManager DeviceManager => _deviceManager ?? (_deviceManager = new XddDeviceManager());
 
-        protected XddDeviceIdentity DeviceIdentity => _deviceIdentity ?? (_deviceIdentity = new XddDeviceIdentity(_device));
+        public XddDeviceIdentity DeviceIdentity => _deviceIdentity ?? (_deviceIdentity = new XddDeviceIdentity(_device));
 
         public XddParameterList ParameterList => ApplicationProcess.ParameterList;
 

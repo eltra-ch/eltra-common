@@ -26,7 +26,7 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles
 
         #region Properties
 
-        protected XddProfileBody ProfileBody
+        public XddProfileBody ProfileBody
         {
             get => _profileBody ?? (_profileBody = new XddProfileBody(_device));
             set => _profileBody = value;

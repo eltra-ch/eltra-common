@@ -100,6 +100,11 @@ namespace EltraCommon.Contracts.Devices
                 {
                     MsgLogger.WriteError($"{GetType().Name} - OnDeviceDescriptionFileStateChanged", $"create object dictionary failed!");
                 }
+                else
+                {
+                    Name = DeviceDescription?.Profile?.ProfileBody?.DeviceIdentity?.ProductName;
+                    ProductPicture = DeviceDescription?.Profile?.ProfileBody?.DeviceIdentity?.ProductPicture;
+                }
             }
         }
 

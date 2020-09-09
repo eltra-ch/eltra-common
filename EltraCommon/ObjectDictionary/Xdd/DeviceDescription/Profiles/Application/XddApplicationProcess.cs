@@ -37,10 +37,10 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
 
         public XddParameterList ParameterList => _parameterList ?? (_parameterList = new XddParameterList(_device, _deviceManager, DataTypeList, TemplateList));
 
-        private XddDataTypeList DataTypeList => _dataTypeList ?? (_dataTypeList = new XddDataTypeList());
-        private XddTemplateList TemplateList => _templateList ?? (_templateList = new XddTemplateList(DataTypeList));
+        public XddDataTypeList DataTypeList => _dataTypeList ?? (_dataTypeList = new XddDataTypeList());
+        public XddTemplateList TemplateList => _templateList ?? (_templateList = new XddTemplateList(DataTypeList));
 
-        private XddUnitsList UnitsList => _unitsList ?? (_unitsList = new XddUnitsList(ParameterList));
+        public XddUnitsList UnitsList => _unitsList ?? (_unitsList = new XddUnitsList(ParameterList));
 
         #endregion
 
