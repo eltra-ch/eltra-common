@@ -135,7 +135,7 @@ namespace EltraCommon.Threads
         {
             SetRunning();
 
-            const int minDelay = 10;
+            const int minDelay = 1;
 
             while (ShouldRun())
             {
