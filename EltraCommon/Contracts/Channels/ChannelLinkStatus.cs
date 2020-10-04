@@ -16,6 +16,6 @@
         /// <summary>
         /// Binded
         /// </summary>
-        Binded,
+        Bound,
     }
 }
