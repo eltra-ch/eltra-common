@@ -1377,27 +1377,55 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             if (claudConnector != null)
             {
-                result = await claudConnector.GetParameterValue(Device, Index, SubIndex);
+                var actualValue = await claudConnector.GetParameterValue(Device, Index, SubIndex);
+
+                if(actualValue != null)
+                {
+                    ActualValue = actualValue;
+
+                    result = actualValue;
+                }
             }
 
             return result;
         }
 
-        public bool AutoUpdate(bool start, ParameterUpdatePriority priority = ParameterUpdatePriority.Low, bool waitForResult = false)
+        public async Task<ParameterValue> UpdateValue()
+        {
+            ParameterValue result = null;
+            ParameterValue actualValue = await ReadValue();
+            
+            if (actualValue != null)
+            {
+                ActualValue = actualValue;
+
+                result = actualValue;
+            }
+
+            return result;
+        }
+
+        public bool AutoUpdate(ParameterUpdatePriority priority = ParameterUpdatePriority.Low, bool waitForResult = false)
         {
             bool result = false;
             var connector = Device?.CloudConnector;
 
             if (connector != null)
             {
-                if (start)
-                {
-                    result = connector.RegisterParameterUpdate(Device, UniqueId, priority, waitForResult);
-                }
-                else
-                {
-                    result = connector.UnregisterParameterUpdate(Device, UniqueId, priority, waitForResult);
-                }
+                result = connector.RegisterParameterUpdate(Device, UniqueId, priority, waitForResult);
+            }
+
+            return result;
+        }
+
+        public bool StopUpdate(ParameterUpdatePriority priority = ParameterUpdatePriority.Low, bool waitForResult = false)
+        {
+            bool result = false;
+            var connector = Device?.CloudConnector;
+
+            if (connector != null)
+            {
+                result = connector.UnregisterParameterUpdate(Device, UniqueId, priority, waitForResult);
             }
 
             return result;
