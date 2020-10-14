@@ -131,7 +131,7 @@ namespace EltraCommon.Threads
             return result;
         }
 
-        private async void Run()
+        private void Run()
         {
             SetRunning();
 
@@ -139,16 +139,20 @@ namespace EltraCommon.Threads
 
             while (ShouldRun())
             {
-                try
-                {
-                    await Execute();
-                }
-                catch (Exception e)
-                {
-                    MsgLogger.Exception("EltraThread - Run", e);
-                }
+                var t = Task.Run(async ()=> {
+                    try
+                    {
+                        await Execute();
+                    }
+                    catch (Exception e)
+                    {
+                        MsgLogger.Exception("EltraThread - Run", e);
+                    }
 
-                await Task.Delay(minDelay);
+                    await Task.Delay(minDelay);
+                });
+
+                t.Wait();
             }
 
             SetStopped();
