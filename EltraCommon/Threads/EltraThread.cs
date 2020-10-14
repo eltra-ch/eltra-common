@@ -102,8 +102,8 @@ namespace EltraCommon.Threads
             bool result = false;
             int maxWaitTime = (int)TimeSpan.FromSeconds(60).TotalMilliseconds;
 
-            if (IsRunning)
-            {
+            if (IsRunning && ShouldRun())
+            {                
                 lock (_lock)
                 {
                     RequestStop();
@@ -125,7 +125,7 @@ namespace EltraCommon.Threads
                     {
                         result = true;
                     }
-                }                
+                }
             }
 
             return result;
