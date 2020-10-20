@@ -1,5 +1,4 @@
-﻿using EltraCommon.Contracts.Users;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace EltraCommon.Contracts.Channels
 {
@@ -14,5 +13,10 @@ namespace EltraCommon.Contracts.Channels
         /// </summary>
         [DataMember]
         public string Id { get; set; }
+        /// <summary>
+        /// Node id
+        /// </summary>
+        [DataMember]
+        public int NodeId { get; set; }
     }
 }
