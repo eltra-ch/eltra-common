@@ -77,7 +77,7 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
                         var nameAttribute = toolNode.Attributes["Name"];
                         var statusAttribute = toolNode.Attributes["Status"];
                         
-                        AddDeviceTool(deviceTool, uuidAttribute, nameAttribute, statusAttribute);
+                        AddDeviceTool(toolNode, deviceTool, uuidAttribute, nameAttribute, statusAttribute);
                     }
                 }
             }
@@ -91,7 +91,7 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
             return result;
         }
 
-        private void AddDeviceTool(DeviceTool deviceTool, XmlAttribute uuidAttribute, XmlAttribute nameAttribute, XmlAttribute statusAttribute)
+        private void AddDeviceTool(XmlNode toolNode, DeviceTool deviceTool, XmlAttribute uuidAttribute, XmlAttribute nameAttribute, XmlAttribute statusAttribute)
         {
             if (uuidAttribute != null)
             {
@@ -111,9 +111,35 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
                             case "disabled": deviceTool.Status = DeviceToolStatus.Disabled; break;
                         }
 
+                        foreach(XmlElement childNode in toolNode.ChildNodes)
+                        {
+                            if(childNode.Name == "Payload")
+                            {
+                                AddDeviceToolPayload(childNode, deviceTool);
+                            }
+                        }
+
                         DeviceTools.Add(deviceTool);
                     }
                 }
+            }
+        }
+
+        private void AddDeviceToolPayload(XmlElement payloadNode, DeviceTool deviceTool)
+        {
+            var fileNameAttribute = payloadNode.Attributes["FileName"];
+            var hashCodeAttribute = payloadNode.Attributes["HashCode"];
+            var versionAttribute = payloadNode.Attributes["Version"];
+
+            if(fileNameAttribute != null && hashCodeAttribute != null && versionAttribute != null)
+            {
+                var payload = new DeviceToolPayload();
+
+                payload.FileName = fileNameAttribute.InnerXml;
+                payload.HashCode = hashCodeAttribute.InnerXml;
+                payload.Version = versionAttribute.InnerXml;
+
+                deviceTool.AddPayload(payload);
             }
         }
 

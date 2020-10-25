@@ -1,4 +1,5 @@
 ﻿using EltraCommon.Contracts.Devices;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace EltraCommon.Contracts.ToolSet
@@ -9,6 +10,12 @@ namespace EltraCommon.Contracts.ToolSet
     [DataContract]
     public class DeviceTool
     {
+        #region Private fields
+
+        private List<DeviceToolPayload> _payloadList;
+
+        #endregion
+
         #region Constructors
         /// <summary>
         /// DeviceTool
@@ -53,6 +60,24 @@ namespace EltraCommon.Contracts.ToolSet
         /// </summary>
         [DataMember]
         public DeviceToolStatus Status { get; set; }
+
+        /// <summary>
+        /// PayloadSet
+        /// </summary>
+        [DataMember]
+        public List<DeviceToolPayload> PayloadSet
+        { 
+            get => _payloadList ?? (_payloadList = new List<DeviceToolPayload>());
+        }
+
+        #endregion
+
+        #region Methods
+
+        internal void AddPayload(DeviceToolPayload payload)
+        {
+            PayloadSet.Add(payload);
+        }
 
         #endregion
     }
