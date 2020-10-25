@@ -162,13 +162,18 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
         {
             try
             {
-                var rootNode = GetRootNode();
-
-                var productNameNode = rootNode?.SelectSingleNode("Profile/ProfileBody/DeviceIdentity/productName");
-
-                if (productNameNode != null)
+                if (Device != null)
                 {
-                    ProductName = productNameNode.InnerText;
+                    var rootNode = GetRootNode();
+
+                    var productNameNode = rootNode?.SelectSingleNode("Profile/ProfileBody/DeviceIdentity/productName");
+
+                    if (productNameNode != null)
+                    {
+                        ProductName = productNameNode.InnerText;
+
+                        Device.Identification.Name = ProductName;
+                    }
                 }
             }
             catch (Exception e)
@@ -183,33 +188,36 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
 
             try
             {
-                var rootNode = GetRootNode();
-
-                var versionNodes = rootNode?.SelectNodes("Profile/ProfileBody/DeviceIdentity/version");
-
-                if (versionNodes != null)
+                if (Device != null)
                 {
-                    var version = new DeviceVersion();
+                    var rootNode = GetRootNode();
 
-                    foreach (XmlNode versionNode in versionNodes)
+                    var versionNodes = rootNode?.SelectNodes("Profile/ProfileBody/DeviceIdentity/version");
+
+                    if (versionNodes != null)
                     {
-                        var versionTypeAttribute = versionNode.Attributes["versionType"];
+                        var version = new DeviceVersion();
 
-                        if (versionTypeAttribute != null)
+                        foreach (XmlNode versionNode in versionNodes)
                         {
-                            switch (versionTypeAttribute.InnerText)
+                            var versionTypeAttribute = versionNode.Attributes["versionType"];
+
+                            if (versionTypeAttribute != null)
                             {
-                                case "SW": version.SoftwareVersion = Convert.ToUInt16(versionNode.InnerText, 16); break;
-                                case "HW": version.HardwareVersion = Convert.ToUInt16(versionNode.InnerText, 16); break;
-                                case "APPNB": version.ApplicationNumber = Convert.ToUInt16(versionNode.InnerText, 16); break;
-                                case "APPVER": version.ApplicationVersion = Convert.ToUInt16(versionNode.InnerText, 16); break;
+                                switch (versionTypeAttribute.InnerText)
+                                {
+                                    case "SW": version.SoftwareVersion = Convert.ToUInt16(versionNode.InnerText, 16); break;
+                                    case "HW": version.HardwareVersion = Convert.ToUInt16(versionNode.InnerText, 16); break;
+                                    case "APPNB": version.ApplicationNumber = Convert.ToUInt16(versionNode.InnerText, 16); break;
+                                    case "APPVER": version.ApplicationVersion = Convert.ToUInt16(versionNode.InnerText, 16); break;
+                                }
                             }
                         }
+
+                        Device.Version = version;
+
+                        result = true;
                     }
-
-                    Device.Version = version;
-
-                    result = true;
                 }
             }
             catch (Exception e)
