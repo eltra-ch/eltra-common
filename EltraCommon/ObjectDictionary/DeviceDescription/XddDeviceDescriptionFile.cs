@@ -28,7 +28,11 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
 
         #region Properties
 
-        public List<DeviceTool> DeviceTools { get => _deviceTools ?? (_deviceTools = new List<DeviceTool>()); }
+        public List<DeviceTool> DeviceTools 
+        { 
+            get => _deviceTools ?? (_deviceTools = new List<DeviceTool>());
+            set => _deviceTools = value;
+        }
 
         #endregion
 
@@ -63,21 +67,32 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
 
             try
             {
-                var rootNode = GetRootNode();
-
-                var toolsNode = rootNode?.SelectNodes("Profile/ProfileBody/DeviceInteraction/DeviceTools/DeviceTool");
-
-                if (toolsNode != null)
+                if (Device != null)
                 {
-                    foreach (XmlNode toolNode in toolsNode)
-                    {
-                        var deviceTool = new DeviceTool();
+                    var rootNode = GetRootNode();
 
-                        var uuidAttribute = toolNode.Attributes["Uuid"];
-                        var nameAttribute = toolNode.Attributes["Name"];
-                        var statusAttribute = toolNode.Attributes["Status"];
-                        
-                        AddDeviceTool(toolNode, deviceTool, uuidAttribute, nameAttribute, statusAttribute);
+                    var toolsNode = rootNode?.SelectNodes("Profile/ProfileBody/DeviceInteraction/DeviceTools/DeviceTool");
+
+                    if (toolsNode != null)
+                    {
+                        foreach (XmlNode toolNode in toolsNode)
+                        {
+                            var uuidAttribute = toolNode.Attributes["Uuid"];
+
+                            var deviceTool = Device.FindTool(uuidAttribute.InnerXml);
+
+                            if (deviceTool == null)
+                            {
+                                deviceTool = new DeviceTool();
+
+                                Device.AddTool(deviceTool);
+                            }
+                            
+                            var nameAttribute = toolNode.Attributes["Name"];
+                            var statusAttribute = toolNode.Attributes["Status"];
+
+                            AddDeviceTool(toolNode, deviceTool, uuidAttribute, nameAttribute, statusAttribute);
+                        }
                     }
                 }
             }
