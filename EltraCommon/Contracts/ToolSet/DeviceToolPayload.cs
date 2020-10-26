@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.Serialization;
 
 namespace EltraCommon.Contracts.ToolSet
@@ -14,6 +15,8 @@ namespace EltraCommon.Contracts.ToolSet
         /// </summary>
         public DeviceToolPayload()
         {
+            Modified = DateTime.MinValue;
+            Created = DateTime.MinValue;
         }
 
         #endregion
@@ -27,6 +30,12 @@ namespace EltraCommon.Contracts.ToolSet
         public string FileName { get; set; }
 
         /// <summary>
+        /// Content
+        /// </summary>
+        [DataMember]
+        public string Content { get; set; }
+
+        /// <summary>
         /// HashCode
         /// </summary>
         [DataMember]
@@ -37,6 +46,18 @@ namespace EltraCommon.Contracts.ToolSet
         /// </summary>
         [DataMember]
         public string Version { get; set; }
+
+        /// <summary>
+        /// Modified
+        /// </summary>
+        [DataMember]
+        public DateTime Modified { get; set; }
+
+        /// <summary>
+        /// Created
+        /// </summary>
+        [DataMember]
+        public DateTime Created { get; set; }
 
         #endregion
     }

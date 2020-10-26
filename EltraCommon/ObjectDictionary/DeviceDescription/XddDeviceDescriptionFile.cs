@@ -133,7 +133,7 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
 
             if(fileNameAttribute != null && hashCodeAttribute != null && versionAttribute != null)
             {
-                var payload = new DeviceToolPayload();
+                var payload = new DeviceToolPayload() { Modified = DateTime.Now, Created = DateTime.Now };
 
                 payload.FileName = fileNameAttribute.InnerXml;
                 payload.HashCode = hashCodeAttribute.InnerXml;
