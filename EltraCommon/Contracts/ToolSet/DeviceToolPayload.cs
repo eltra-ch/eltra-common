@@ -24,6 +24,18 @@ namespace EltraCommon.Contracts.ToolSet
         #region Properties
 
         /// <summary>
+        /// Channel Id
+        /// </summary>
+        [DataMember]
+        public string ChannelId { get; set; }
+
+        /// <summary>
+        /// Node Id
+        /// </summary>
+        [DataMember]
+        public int NodeId { get; set; }
+
+        /// <summary>
         /// FileName
         /// </summary>
         [DataMember]
