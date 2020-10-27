@@ -36,6 +36,12 @@ namespace EltraCommon.Contracts.ToolSet
         public int NodeId { get; set; }
 
         /// <summary>
+        /// Tool Id
+        /// </summary>
+        [DataMember]
+        public string ToolId { get; set; }
+
+        /// <summary>
         /// FileName
         /// </summary>
         [DataMember]
