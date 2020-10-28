@@ -38,7 +38,7 @@ namespace EltraCommon.Helpers
             {
                 using (MD5 md5 = MD5.Create())
                 {
-                    byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(text);
+                    byte[] inputBytes = Encoding.ASCII.GetBytes(text);
                     byte[] hashBytes = md5.ComputeHash(inputBytes);
 
                     StringBuilder sb = new StringBuilder();

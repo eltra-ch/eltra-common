@@ -77,7 +77,26 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
                     {
                         foreach (XmlNode toolNode in toolsNode)
                         {
-                            var uuidAttribute = toolNode.Attributes["Uuid"];
+                            XmlAttribute uuidAttribute = null;
+
+                            foreach(XmlAttribute att in toolNode.Attributes)
+                            {
+                                if(att.Name == "Uuid")
+                                {
+                                    uuidAttribute = att;
+                                    break;
+                                }
+                                else if(att.Name == "uniqueID")
+                                {
+                                    uuidAttribute = att;
+                                    break;
+                                }
+                            }
+
+                            if(uuidAttribute==null)
+                            {
+                                throw new Exception("device tool uniqueID attribute not specified!");
+                            }
 
                             var deviceTool = Device.FindTool(uuidAttribute.InnerXml);
 

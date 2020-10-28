@@ -66,11 +66,11 @@ namespace EltraCommon.Contracts.ToolSet
 
             if(!string.IsNullOrEmpty(id))
             {
-                foreach (var command in Tools)
+                foreach (var tool in Tools)
                 {
-                    if (command.Id.ToLower() == id.ToLower())
+                    if (tool.Id.ToLower() == id.ToLower())
                     {
-                        result = command;
+                        result = tool;
                         break;
                     }
                 }
