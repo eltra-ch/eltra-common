@@ -168,6 +168,31 @@ namespace EltraXamCommon.Plugins
             return result;
         }
 
+        private bool UpdatePluginCache(DeviceToolPayload payload)
+        {
+            bool result = false;
+            var pluginFilePath = GetPluginFilePath(payload.FileName);
+
+            if (File.Exists(pluginFilePath))
+            {
+                if(UpdatePluginCache(pluginFilePath, payload.HashCode))
+                {
+                    var cacheItem = FindPluginInCache(payload.HashCode);
+
+                    if (cacheItem != null && cacheItem.Plugin != null)
+                    {
+                        var viewModels = cacheItem.Plugin.GetViewModels();
+
+                        OnPluginAdded(payload, viewModels);
+
+                        result = true;
+                    }
+                }
+            }
+
+            return result;
+        }
+
         private EltraPluginCacheItem FindPluginInFileSystem(DeviceToolPayload payload)
         {
             EltraPluginCacheItem result = null;
@@ -181,10 +206,19 @@ namespace EltraXamCommon.Plugins
 
                     if(hashCode == payload.HashCode)
                     {
-                        var pluginFilePath = GetPluginFilePath(payload.FileName);
-                        var viewModels = GetPluginViewModels(pluginFilePath, payload.HashCode);
+                        if (UpdatePluginCache(fullPath, hashCode))
+                        {
+                            var cacheItem = FindPluginInCache(payload.HashCode);
 
-                        OnPluginAdded(payload, viewModels);
+                            if (cacheItem != null && cacheItem.Plugin != null)
+                            {
+                                var viewModels = cacheItem.Plugin.GetViewModels();
+
+                                OnPluginAdded(payload, viewModels);
+
+                                result = cacheItem;
+                            }
+                        }
                     }
                 }
             }
@@ -207,6 +241,7 @@ namespace EltraXamCommon.Plugins
                 if (pluginCacheItem != null)
                 {
                     MsgLogger.WriteFlow($"{GetType().Name} - DownloadTool", $"payload file name {payload.FileName} found in cache");
+                    result = true;
                 }
                 else
                 {
@@ -214,16 +249,14 @@ namespace EltraXamCommon.Plugins
 
                     if (pluginCacheItem != null)
                     {
-                        MsgLogger.WriteFlow($"{GetType().Name} - DownloadTool", $"payload file name {payload.FileName} found in cache");
+                        MsgLogger.WriteFlow($"{GetType().Name} - DownloadTool", $"payload file name {payload.FileName} found in file system");
+                        result = true;
                     }
                     else
                     {
                         if (await DownloadTool(payload.FileName, payload.HashCode))
                         {
-                            var pluginFilePath = GetPluginFilePath(payload.FileName);
-                            var viewModels = GetPluginViewModels(pluginFilePath, payload.HashCode);
-
-                            OnPluginAdded(payload, viewModels);
+                            result = UpdatePluginCache(payload);
                         }
                         else
                         {
@@ -277,11 +310,16 @@ namespace EltraXamCommon.Plugins
                         {
                             var pluginHashCode = File.ReadAllText(pluginMd5File);
 
-                            var viewModels = GetPluginViewModels(pluginFile, pluginHashCode);
-
-                            if (viewModels.Count > 0)
+                            if(UpdatePluginCache(pluginFile, pluginHashCode))
                             {
-                                result.AddRange(viewModels);
+                                var cacheItem = FindPluginInCache(pluginHashCode);
+
+                                if(cacheItem != null && cacheItem.Plugin != null)
+                                {
+                                    var viewModels = cacheItem.Plugin.GetViewModels();
+
+                                    result.AddRange(viewModels);
+                                }
                             }
                         }
                         catch(Exception e)
@@ -295,9 +333,9 @@ namespace EltraXamCommon.Plugins
             return result;
         }
 
-        private List<ToolViewModel> GetPluginViewModels(string assemblyPath, string assemblyHashCode)
+        private bool UpdatePluginCache(string assemblyPath, string assemblyHashCode)
         {
-            var result = new List<ToolViewModel>();
+            bool result = false;
 
             try
             {
@@ -317,8 +355,6 @@ namespace EltraXamCommon.Plugins
                         {
                             pluginInterface.DialogService = _dialogService;
 
-                            result = pluginInterface.GetViewModels();
-
                             if(FindPluginInCache(assemblyHashCode) == null)
                             {
                                 var pluginCacheItem = new EltraPluginCacheItem() 
@@ -326,6 +362,8 @@ namespace EltraXamCommon.Plugins
 
                                 PluginCache.Add(pluginCacheItem);
                             }
+
+                            result = true;
 
                             break;
                         }
