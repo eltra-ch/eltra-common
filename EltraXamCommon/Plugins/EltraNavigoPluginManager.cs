@@ -88,30 +88,6 @@ namespace EltraXamCommon.Plugins
             return Path.Combine(LocalPath, fileName);
         }
 
-        private bool GetMd5FileName(string fileFullPath, out string md5FullPath)
-        {
-            bool result = false;
-            
-            md5FullPath = string.Empty;
-
-            try
-            {
-                var fi = new FileInfo(fileFullPath);
-
-                string fileNameWithoutExtension = fi.Name.Substring(0, fi.Name.Length - fi.Extension.Length);
-
-                md5FullPath = Path.Combine(fi.DirectoryName, $"{fileNameWithoutExtension}.md5");
-
-                result = true;
-            }
-            catch(Exception e)
-            {
-                MsgLogger.Exception($"{GetType().Name} - GetMd5FileName", e);
-            }
-            
-            return result;
-        }
-
         private async Task<bool> DownloadTool(string fileName, string hashCode)
         {
             bool result = false;
@@ -137,7 +113,7 @@ namespace EltraXamCommon.Plugins
 
                 File.WriteAllBytes(fileFullPath, base64EncodedBytes);
 
-                if(GetMd5FileName(fileFullPath, out string md5FullPath))
+                if(FileHelper.ChangeFileNameExtension(fileFullPath, "md5", out string md5FullPath))
                 {
                     File.WriteAllText(md5FullPath, hashCode);
                     
@@ -200,7 +176,7 @@ namespace EltraXamCommon.Plugins
 
             try
             {
-                if (File.Exists(fullPath) && GetMd5FileName(fullPath, out string md5FullPath) && File.Exists(md5FullPath))
+                if (File.Exists(fullPath) && FileHelper.ChangeFileNameExtension(fullPath, "md5", out string md5FullPath) && File.Exists(md5FullPath))
                 {
                     var hashCode = File.ReadAllText(md5FullPath);
 
@@ -302,7 +278,7 @@ namespace EltraXamCommon.Plugins
 
             foreach (var pluginFile in pluginFiles)
             {
-                if (GetMd5FileName(pluginFile, out string pluginMd5File))
+                if (FileHelper.ChangeFileNameExtension(pluginFile, "md5", out string pluginMd5File))
                 {
                     if (File.Exists(pluginMd5File))
                     {

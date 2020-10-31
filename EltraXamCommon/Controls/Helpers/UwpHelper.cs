@@ -14,11 +14,11 @@ namespace EltraXamCommon.Controls.Helpers
 				return;
 			}
 
-			Xamarin.Forms.Device.BeginInvokeOnMainThread(async () =>
+			Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
 			{
 				foreach (var element in elements)
 				{
-					await Task.Delay(100).ConfigureAwait(true);
+					Task.Delay(100);
 
 					if (element is VisualElement visualElement)
 					{

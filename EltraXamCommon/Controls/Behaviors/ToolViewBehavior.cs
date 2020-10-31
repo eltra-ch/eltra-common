@@ -15,21 +15,34 @@ namespace EltraXamCommon.Controls.Behaviors
         {
             _page = page;
 
-            page.BindingContextChanged += OnPageBindingContextChanged;
+            if (_page != null)
+            {
+                _page.BindingContextChanged += OnPageBindingContextChanged;
+                _page.LayoutChanged += OnPageLayoutChanged;
+            }
 
             base.OnAttachedTo(page);
-
-            _page.LayoutChanged += (sender, args) => { OnPageAppearing(sender, args); };
         }
 
-        private void OnPageAppearing(object sender, EventArgs e)
+        protected override void OnDetachingFrom(ContentView bindable)
+        {
+            if (_page != null)
+            {
+                _page.BindingContextChanged -= OnPageBindingContextChanged;
+                _page.LayoutChanged -= OnPageLayoutChanged;
+            }
+
+            base.OnDetachingFrom(bindable);
+        }
+
+        private void OnPageLayoutChanged(object sender, EventArgs e)
         {
             if (_toolViewModel != null && !_toolViewModel.IsVisible)
             {
-                _toolViewModel?.Show();
+                //_toolViewModel?.Show();
             }
 
-            _page?.Focus();            
+            _page?.Focus();
         }
 
         private void FixControls()
