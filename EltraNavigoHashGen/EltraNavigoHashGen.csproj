@@ -9,8 +9,8 @@
     <Description>Eltra - CANOpen based IoT Framework - SDK</Description>
     <Product>Eltra.Navigo.HashGen</Product>
     <Copyright>Dawid Sienkiewicz, (c) 2020</Copyright>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageProjectUrl>www.eltra.ch</PackageProjectUrl>
     <RepositoryUrl>https://github.com/eltra-ch/eltra-common</RepositoryUrl>
     <RepositoryType>GIT</RepositoryType>
