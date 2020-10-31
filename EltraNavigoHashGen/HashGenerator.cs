@@ -11,6 +11,8 @@ namespace EltraNavigoHashGen
 
         public string OutputFileName { get; set; }
 
+        public string OutputHashCode { get; set; }
+
         public bool Run()
         {
             bool result = false;
@@ -74,6 +76,8 @@ namespace EltraNavigoHashGen
                 try
                 {
                     string hashCode = CryptHelpers.ToMD5(base64EncodedInput);
+
+                    OutputHashCode = hashCode;
 
                     File.WriteAllText(md5Path, hashCode);
 

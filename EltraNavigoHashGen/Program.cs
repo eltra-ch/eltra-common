@@ -1,4 +1,5 @@
 ﻿using EltraCommon.Logger;
+using System.IO;
 
 namespace EltraNavigoHashGen
 {
@@ -7,7 +8,8 @@ namespace EltraNavigoHashGen
         static int Main(string[] args)
         {
             int result = 1;
-            MsgLogger.LogOutputs = "Console";
+            MsgLogger.LogOutputs = "Console;Debug;";
+            MsgLogger.LogLevels = MsgLogger.SupportedLogLevels;
 
             MsgLogger.WriteLine("Eltra navigo hash generator, Copyright (c) 2020 Dawid Sienkiewicz!");
 
@@ -19,8 +21,13 @@ namespace EltraNavigoHashGen
 
                 if (hashGenerator.Run())
                 {
-                    MsgLogger.WriteLine($"File '{fileName}' hash generation success!");
-                    MsgLogger.WriteLine($"File '{hashGenerator.OutputFileName}' hash generation success!");
+                    FileInfo fi = new FileInfo(fileName);
+                    FileInfo fo = new FileInfo(hashGenerator.OutputFileName);
+
+                    MsgLogger.WriteLine($"File '{fi.Name}' hash '{hashGenerator.OutputHashCode}' generation success!");
+                    
+                    MsgLogger.WriteLine($"File '{fo.Name}' generation success!");
+                    MsgLogger.WriteLine($"File output path '{fo.DirectoryName}'");
 
                     result = 0;
                 }
