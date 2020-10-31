@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>Dawid Sienkiewicz</Authors>
     <Company>eltra.ch - Dawid Sienkiewicz</Company>
     <PackageId>Eltra.Navigo.HashGen</PackageId>
@@ -16,8 +16,7 @@
     <RepositoryType>GIT</RepositoryType>
     <PackageTags>CANOpen IoT Eltra OPCUA OPC</PackageTags>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-	<PackageType>DotnetCliTool</PackageType>
-	<AssemblyName>dotnet-hashgen</AssemblyName>
+	<AssemblyName>EltraNavigoHashGen</AssemblyName>
 	<Version>1.0.1</Version>
   </PropertyGroup>
 
