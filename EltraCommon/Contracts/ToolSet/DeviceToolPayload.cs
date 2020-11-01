@@ -42,6 +42,12 @@ namespace EltraCommon.Contracts.ToolSet
         public string ToolId { get; set; }
 
         /// <summary>
+        /// UniqueId
+        /// </summary>
+        [DataMember]
+        public string Id { get; set; }
+
+        /// <summary>
         /// FileName
         /// </summary>
         [DataMember]
@@ -64,6 +70,12 @@ namespace EltraCommon.Contracts.ToolSet
         /// </summary>
         [DataMember]
         public string Version { get; set; }
+
+        /// <summary>
+        /// Mode
+        /// </summary>
+        [DataMember]
+        public string Mode { get; set; }
 
         /// <summary>
         /// Modified

@@ -107,8 +107,19 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
                                 Device.AddTool(deviceTool);
                             }
                             
-                            var nameAttribute = toolNode.Attributes["Name"];
-                            var statusAttribute = toolNode.Attributes["Status"];
+                            var nameAttribute = toolNode.Attributes["name"];
+
+                            if(nameAttribute == null)
+                            {
+                                nameAttribute = toolNode.Attributes["Name"];
+                            }
+
+                            var statusAttribute = toolNode.Attributes["status"];
+
+                            if(statusAttribute == null)
+                            {
+                                statusAttribute = toolNode.Attributes["Status"];
+                            }
 
                             AddDeviceTool(toolNode, deviceTool, uuidAttribute, nameAttribute, statusAttribute);
                         }
@@ -161,17 +172,40 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
 
         private void AddDeviceToolPayload(XmlElement payloadNode, DeviceTool deviceTool)
         {
-            var fileNameAttribute = payloadNode.Attributes["FileName"];
-            var hashCodeAttribute = payloadNode.Attributes["HashCode"];
-            var versionAttribute = payloadNode.Attributes["Version"];
+            var fileNameAttribute = payloadNode.Attributes["fileName"];
+            var hashCodeAttribute = payloadNode.Attributes["hashCode"];
+            var uniqueIdAttribute = payloadNode.Attributes["uniqueID"];
+            var versionAttribute = payloadNode.Attributes["version"];
+            var modeAttribute = payloadNode.Attributes["mode"];
 
-            if(fileNameAttribute != null && hashCodeAttribute != null && versionAttribute != null)
+            if (fileNameAttribute==null)
+            {
+                fileNameAttribute = payloadNode.Attributes["FileName"];
+            }
+
+            if(hashCodeAttribute==null)
+            {
+                hashCodeAttribute = payloadNode.Attributes["HashCode"];
+            }
+
+            if (versionAttribute == null)
+            {
+                versionAttribute = payloadNode.Attributes["Version"];
+            }
+
+            if (uniqueIdAttribute != null && fileNameAttribute != null && hashCodeAttribute != null && versionAttribute != null)
             {
                 var payload = new DeviceToolPayload() { Modified = DateTime.Now, Created = DateTime.Now };
-
+                
+                payload.Id = uniqueIdAttribute.InnerXml;
                 payload.FileName = fileNameAttribute.InnerXml;
                 payload.HashCode = hashCodeAttribute.InnerXml;
                 payload.Version = versionAttribute.InnerXml;
+
+                if(modeAttribute!=null)
+                {
+                    payload.Mode = modeAttribute.InnerXml;
+                }
 
                 deviceTool.AddPayload(payload);
             }
