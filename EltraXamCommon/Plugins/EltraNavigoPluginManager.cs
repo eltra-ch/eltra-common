@@ -10,13 +10,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Web;
+using Xamarin.Forms.Internals;
 
 namespace EltraXamCommon.Plugins
 {
+    [Preserve(AllMembers = true)]
     public class EltraNavigoPluginManager
     {
         #region Private fields
@@ -88,36 +89,52 @@ namespace EltraXamCommon.Plugins
             return Path.Combine(LocalPath, fileName);
         }
 
-        private async Task<bool> DownloadTool(string fileName, string hashCode)
+        private async Task<bool> DownloadTool(string payloadId, string hashCode, DeviceToolPayloadMode mode)
         {
             bool result = false;
 
             try
             {
-                var fileFullPath = GetPluginFilePath(fileName);
+                var fileFullPath = GetPluginFilePath(GetPluginFileName(payloadId));
 
                 var transport = new CloudTransporter();
 
                 var query = HttpUtility.ParseQueryString(string.Empty);
 
-                query["fileName"] = fileName;
+                query["uniqueId"] = payloadId;
                 query["hashCode"] = hashCode;
+                query["mode"] = $"{(int)mode}";
 
                 var url = UrlHelper.BuildUrl(Url, "api/description/payload-download", query);
 
                 var json = await transport.Get(url);
 
-                var payload = JsonConvert.DeserializeObject<DeviceToolPayload>(json);
-
-                var base64EncodedBytes = Convert.FromBase64String(payload.Content);
-
-                File.WriteAllBytes(fileFullPath, base64EncodedBytes);
-
-                if(FileHelper.ChangeFileNameExtension(fileFullPath, "md5", out string md5FullPath))
+                if (!string.IsNullOrEmpty(json))
                 {
-                    File.WriteAllText(md5FullPath, hashCode);
-                    
-                    result = true;
+                    var payload = JsonConvert.DeserializeObject<DeviceToolPayload>(json);
+
+                    if (payload != null)
+                    {
+                        var base64EncodedBytes = Convert.FromBase64String(payload.Content);
+
+                        File.WriteAllBytes(fileFullPath, base64EncodedBytes);
+
+                        /*if (FileHelper.ChangeFileNameExtension(fileFullPath, "md5", out string md5FullPath))
+                        {
+                            File.WriteAllText(md5FullPath, hashCode);
+
+                            result = true;
+                        }
+
+                        if (FileHelper.ChangeFileNameExtension(fileFullPath, "id", out string idFullPath))
+                        {
+                            File.WriteAllText(idFullPath, payloadId);
+
+                            result = true;
+                        }*/
+
+                        result = true;
+                    }
                 }
             }
             catch (Exception e)
@@ -128,32 +145,48 @@ namespace EltraXamCommon.Plugins
             return result;
         }
 
-        private EltraPluginCacheItem FindPluginInCache(string payloadHashCode)
+        private EltraPluginCacheItem FindPluginInCache(DeviceToolPayload payload)
         {
             EltraPluginCacheItem result = null;
 
             foreach(var pluginCacheItem in PluginCache)
             {
-                if(pluginCacheItem.HashCode == payloadHashCode)
+                if (payload.Mode == DeviceToolPayloadMode.Development)
                 {
-                    result = pluginCacheItem;
-                    break;
+                    if (pluginCacheItem.PayloadId == payload.Id)
+                    {
+                        result = pluginCacheItem;
+                        break;
+                    }
+                }
+                else
+                {
+                    if (pluginCacheItem.HashCode == payload.HashCode)
+                    {
+                        result = pluginCacheItem;
+                        break;
+                    }
                 }
             }
 
             return result;
         }
 
+        private string GetPluginFileName(string payloadId)
+        {
+            return $"{payloadId}.pld";
+        }
+
         private bool UpdatePluginCache(DeviceToolPayload payload)
         {
             bool result = false;
-            var pluginFilePath = GetPluginFilePath(payload.FileName);
+            var pluginFilePath = GetPluginFilePath(GetPluginFileName(payload.Id));
 
             if (File.Exists(pluginFilePath))
             {
-                if(UpdatePluginCache(pluginFilePath, payload.HashCode))
+                if(UpdatePluginCache(pluginFilePath, payload))
                 {
-                    var cacheItem = FindPluginInCache(payload.HashCode);
+                    var cacheItem = FindPluginInCache(payload);
 
                     if (cacheItem != null && cacheItem.Plugin != null)
                     {
@@ -169,31 +202,51 @@ namespace EltraXamCommon.Plugins
             return result;
         }
 
-        private EltraPluginCacheItem FindPluginInFileSystem(DeviceToolPayload payload)
+        private bool GetHashCodeFromFile(string filePath, out string hashCode)
         {
-            EltraPluginCacheItem result = null;
-            string fullPath = Path.Combine(LocalPath, payload.FileName);
+            bool result = false;
+
+            hashCode = string.Empty;
 
             try
             {
-                if (File.Exists(fullPath) && FileHelper.ChangeFileNameExtension(fullPath, "md5", out string md5FullPath) && File.Exists(md5FullPath))
+                var bytes = File.ReadAllBytes(filePath);
+
+                if (bytes != null && bytes.Length > 0)
                 {
-                    var hashCode = File.ReadAllText(md5FullPath);
+                    var encodedBytes = Convert.ToBase64String(bytes);
 
-                    if(hashCode == payload.HashCode)
+                    hashCode = CryptHelpers.ToMD5(encodedBytes);
+
+                    result = true;
+                }
+            }
+            catch(Exception e)
+            {
+                MsgLogger.Exception($"{GetType().Name}", e);
+            }
+            
+            return result;
+        }
+
+        private EltraPluginCacheItem FindPluginInFileSystem(DeviceToolPayload payload)
+        {
+            EltraPluginCacheItem result = null;
+            var pluginFilePath = GetPluginFilePath(GetPluginFileName(payload.Id));
+
+            try
+            {
+                if (File.Exists(pluginFilePath))
+                {
+                    if (payload.Mode == DeviceToolPayloadMode.Development)
                     {
-                        if (UpdatePluginCache(fullPath, hashCode))
+                        result = UpdateCache(payload, pluginFilePath);
+                    }
+                    else
+                    {
+                        if(GetHashCodeFromFile(pluginFilePath, out var hashCode) && hashCode == payload.HashCode)
                         {
-                            var cacheItem = FindPluginInCache(payload.HashCode);
-
-                            if (cacheItem != null && cacheItem.Plugin != null)
-                            {
-                                var viewModels = cacheItem.Plugin.GetViewModels();
-
-                                OnPluginAdded(payload, viewModels);
-
-                                result = cacheItem;
-                            }
+                            result = UpdateCache(payload, pluginFilePath);
                         }
                     }
                 }
@@ -206,13 +259,34 @@ namespace EltraXamCommon.Plugins
             return result;
         }
 
+        private EltraPluginCacheItem UpdateCache(DeviceToolPayload payload, string fullPath)
+        {
+            EltraPluginCacheItem result = null;
+
+            if (UpdatePluginCache(fullPath, payload))
+            {
+                var cacheItem = FindPluginInCache(payload);
+
+                if (cacheItem != null && cacheItem.Plugin != null)
+                {
+                    var viewModels = cacheItem.Plugin.GetViewModels();
+
+                    OnPluginAdded(payload, viewModels);
+
+                    result = cacheItem;
+                }
+            }
+
+            return result;
+        }
+
         private async Task<bool> DownloadTool(DeviceTool deviceTool)
         {
             bool result = false;
 
             foreach(var payload in deviceTool.PayloadSet)
             {
-                var pluginCacheItem = FindPluginInCache(payload.HashCode);
+                var pluginCacheItem = FindPluginInCache(payload);
 
                 if (pluginCacheItem != null)
                 {
@@ -230,7 +304,7 @@ namespace EltraXamCommon.Plugins
                     }
                     else
                     {
-                        if (await DownloadTool(payload.FileName, payload.HashCode))
+                        if (await DownloadTool(payload.Id, payload.HashCode, payload.Mode))
                         {
                             result = UpdatePluginCache(payload);
                         }
@@ -245,71 +319,7 @@ namespace EltraXamCommon.Plugins
             return result;
         }
 
-        private List<string> GetlayoutPlugins()
-        {
-            const string eltraNavigo = "EltraNavigo";
-
-            List<string> result = new List<string>();
-
-            string path = LocalPath;
-            var fileList = new DirectoryInfo(path).GetFiles("*.dll", SearchOption.AllDirectories);
-            string exceptFile = $"{eltraNavigo}.dll";
-
-            foreach (var file in fileList)
-            {
-                if (file.Name.StartsWith(eltraNavigo) && file.Name != exceptFile)
-                {
-                    result.Add(file.FullName);
-                }
-            }
-
-            result = result.Distinct().ToList();
-
-            return result;
-        }
-
-        public List<ToolViewModel> GetToolViewModels()
-        {
-            var result = new List<ToolViewModel>();
-
-            var pluginFiles = GetlayoutPlugins();
-            
-            PluginCache.Clear();
-
-            foreach (var pluginFile in pluginFiles)
-            {
-                if (FileHelper.ChangeFileNameExtension(pluginFile, "md5", out string pluginMd5File))
-                {
-                    if (File.Exists(pluginMd5File))
-                    {
-                        try
-                        {
-                            var pluginHashCode = File.ReadAllText(pluginMd5File);
-
-                            if(UpdatePluginCache(pluginFile, pluginHashCode))
-                            {
-                                var cacheItem = FindPluginInCache(pluginHashCode);
-
-                                if(cacheItem != null && cacheItem.Plugin != null)
-                                {
-                                    var viewModels = cacheItem.Plugin.GetViewModels();
-
-                                    result.AddRange(viewModels);
-                                }
-                            }
-                        }
-                        catch(Exception e)
-                        {
-                            MsgLogger.Exception($"{GetType().Name} - GetToolViewModels", e);
-                        }
-                    }
-                }
-            }
-
-            return result;
-        }
-
-        private bool UpdatePluginCache(string assemblyPath, string assemblyHashCode)
+        private bool UpdatePluginCache(string assemblyPath, DeviceToolPayload payload)
         {
             bool result = false;
 
@@ -331,10 +341,10 @@ namespace EltraXamCommon.Plugins
                         {
                             pluginInterface.DialogService = _dialogService;
 
-                            if(FindPluginInCache(assemblyHashCode) == null)
+                            if(FindPluginInCache(payload) == null)
                             {
                                 var pluginCacheItem = new EltraPluginCacheItem() 
-                                { FullPath = assemblyPath, HashCode = assemblyHashCode, Plugin = pluginInterface };
+                                { FullPath = assemblyPath, HashCode = payload.HashCode, PayloadId = payload.Id, Plugin = pluginInterface };
 
                                 PluginCache.Add(pluginCacheItem);
                             }
