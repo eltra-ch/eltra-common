@@ -75,7 +75,7 @@ namespace EltraCommon.Contracts.ToolSet
         /// Mode
         /// </summary>
         [DataMember]
-        public string Mode { get; set; }
+        public DeviceToolPayloadMode Mode { get; set; }
 
         /// <summary>
         /// Modified

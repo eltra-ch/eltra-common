@@ -204,7 +204,24 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
 
                 if(modeAttribute!=null)
                 {
-                    payload.Mode = modeAttribute.InnerXml;
+                    string mode = modeAttribute.InnerXml.ToLower();
+
+                    switch(mode)
+                    {
+                        case "development":
+                            payload.Mode = DeviceToolPayloadMode.Development;
+                            break;
+                        case "production":
+                            payload.Mode = DeviceToolPayloadMode.Production;
+                            break;
+                        default:
+                            payload.Mode = DeviceToolPayloadMode.Undefined;
+                            break;
+                    }
+                }
+                else
+                {
+                    payload.Mode = DeviceToolPayloadMode.Production;
                 }
 
                 deviceTool.AddPayload(payload);
