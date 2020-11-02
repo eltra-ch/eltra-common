@@ -5,7 +5,7 @@ using EltraCommon.Contracts.Devices;
 using EltraCommon.Logger;
 using EltraConnector.Agent;
 
-namespace EltraXamCommon.Controls
+namespace EltraUiCommon.Controls
 {
     public class ToolViewBaseModel : BaseViewModel
     {

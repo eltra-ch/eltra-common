@@ -1,5 +1,6 @@
 ﻿using EltraCommon.Contracts.Devices;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Parameters;
+using EltraUiCommon.Controls;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

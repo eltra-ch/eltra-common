@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace EltraXamCommon.Controls
+namespace EltraUiCommon.Controls
 {
     public class ToolControlViewModel : ToolViewBaseModel
     {
@@ -14,10 +14,6 @@ namespace EltraXamCommon.Controls
             : base(parent)
         {            
         }
-
-        #endregion
-
-        #region Properties
 
         #endregion
 

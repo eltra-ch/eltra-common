@@ -4,13 +4,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using EltraCommon.Logger;
 using EltraCommon.Contracts.Devices;
-using Xamarin.Forms;
 using EltraConnector.Agent;
 using EltraCommon.Contracts.Channels;
 using EltraConnector.UserAgent.Definitions;
-using EltraXamCommon.Device.Factory;
+using EltraUiCommon.Device.Factory;
 
-namespace EltraXamCommon.Controls
+namespace EltraUiCommon.Controls
 {
     public class ToolViewModel : ToolViewBaseModel
     {
@@ -108,8 +107,6 @@ namespace EltraXamCommon.Controls
                 }
             }
         }
-
-        public ImageSource Image { get; set; } 
 
         public bool IsOnline
         {

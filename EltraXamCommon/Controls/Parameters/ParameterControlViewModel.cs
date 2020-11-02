@@ -1,4 +1,6 @@
-﻿namespace EltraXamCommon.Controls.Parameters
+﻿using EltraUiCommon.Controls;
+
+namespace EltraXamCommon.Controls.Parameters
 {
     public class ParameterControlViewModel : ToolViewBaseModel
     {

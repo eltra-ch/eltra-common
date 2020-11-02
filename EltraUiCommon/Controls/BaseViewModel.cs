@@ -1,10 +1,11 @@
 ﻿using EltraCommon.Logger;
+using EltraUiCommon.System;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace EltraXamCommon.Controls
+namespace EltraUiCommon.Controls
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
@@ -13,6 +14,7 @@ namespace EltraXamCommon.Controls
         private BaseViewModel _parent;
         private string _title = string.Empty;
         private bool _isBusy;
+        private IInvokeOnMainThread _invokeOnMainThread;
 
         #endregion
 
@@ -53,6 +55,11 @@ namespace EltraXamCommon.Controls
 
         #region Methods
 
+        public void Init(IInvokeOnMainThread invokeOnMainThread)
+        {
+            _invokeOnMainThread = invokeOnMainThread;
+        }
+
         protected bool SetProperty<T>(ref T backingStore, T value, [CallerMemberName]string propertyName = "", Action onChanged = null)
         {
             bool result = false;
@@ -63,14 +70,21 @@ namespace EltraXamCommon.Controls
                 {
                     backingStore = value;
 
-                    Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+                    if (_invokeOnMainThread != null)
                     {
+                        _invokeOnMainThread.BeginInvokeOnMainThread(() =>
+                        {
+                            onChanged?.Invoke();
 
+                            OnPropertyChanged(propertyName);
+                        });
+                    }
+                    else
+                    {
                         onChanged?.Invoke();
 
                         OnPropertyChanged(propertyName);
-                    });
-
+                    }
 
                     result = true;
                 }

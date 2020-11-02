@@ -1,4 +1,4 @@
-﻿using EltraUiCommon.Controls;
+﻿using EltraXamCommon.Controls;
 using Prism.Services.Dialogs;
 using System.Collections.Generic;
 using Xamarin.Forms;

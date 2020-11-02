@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters.Events;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Parameters;
+using EltraUiCommon.Controls;
 
 namespace EltraXamCommon.Controls.Parameters
 {

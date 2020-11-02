@@ -19,17 +19,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Device\**" />
-    <EmbeddedResource Remove="Device\**" />
-    <None Remove="Device\**" />
     <None Include="LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="Device\Factory\DeviceVcsFactory.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,6 +35,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\connect\EltraConnector\EltraConnector.csproj" />
     <ProjectReference Include="..\EltraCommon\EltraCommon.csproj" />
+    <ProjectReference Include="..\EltraUiCommon\EltraUiCommon.csproj" />
   </ItemGroup>
 
   <ItemGroup>
