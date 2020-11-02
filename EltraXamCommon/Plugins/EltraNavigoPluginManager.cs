@@ -325,40 +325,69 @@ namespace EltraXamCommon.Plugins
 
             try
             {
+                MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"load assembly - path = {assemblyPath}");
+
                 var theAssembly = Assembly.LoadFrom(assemblyPath);
-                
+
+                MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", "load assembly - get types");
+
                 Type[] types = theAssembly.GetTypes();
+
+                MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"load assembly - get types - count = {types.Length}");
 
                 foreach (Type t in types)
                 {
-                    var type = t.GetInterface("EltraXamCommon.Plugins.IEltraNavigoPlugin");
-
-                    if (type != null && !string.IsNullOrEmpty(t.FullName))
+                    try
                     {
-                        var assemblyInstace = theAssembly.CreateInstance(t.FullName, false);
+                        var type = t.GetInterface("EltraXamCommon.Plugins.IEltraNavigoPlugin");
 
-                        if (assemblyInstace is IEltraNavigoPlugin pluginInterface)
+                        MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"type full name = {t.FullName}");
+
+                        if (type != null && !string.IsNullOrEmpty(t.FullName))
                         {
-                            pluginInterface.DialogService = _dialogService;
+                            MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"create instance $ {t.FullName}");
 
-                            if(FindPluginInCache(payload) == null)
+                            var assemblyInstace = theAssembly.CreateInstance(t.FullName, false);
+
+                            if (assemblyInstace is IEltraNavigoPlugin pluginInterface)
                             {
-                                var pluginCacheItem = new EltraPluginCacheItem() 
-                                { FullPath = assemblyPath, HashCode = payload.HashCode, PayloadId = payload.Id, Plugin = pluginInterface };
+                                pluginInterface.DialogService = _dialogService;
 
-                                PluginCache.Add(pluginCacheItem);
+                                MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"find payload {payload.FileName}");
+
+                                if (FindPluginInCache(payload) == null)
+                                {
+                                    var pluginCacheItem = new EltraPluginCacheItem()
+                                    { FullPath = assemblyPath, HashCode = payload.HashCode, PayloadId = payload.Id, Plugin = pluginInterface };
+
+                                    PluginCache.Add(pluginCacheItem);
+
+                                    MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"add payload {payload.FileName} cache item");
+                                }
+                                else
+                                {
+                                    MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"payload {payload.FileName} already added");
+                                }
+
+                                result = true;
+
+                                break;
                             }
-
-                            result = true;
-
-                            break;
+                            else
+                            {
+                                MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"error: create instance $ {t.FullName} failed!");
+                            }
                         }
+                    }
+                    catch (Exception e)
+                    {
+                        MsgLogger.Exception($"{GetType().Name} - UpdatePluginCache [1]", e);
                     }
                 }
             }
             catch (Exception e)
             {
-                Debug.Print(e.Message);
+                MsgLogger.Exception($"{GetType().Name} - UpdatePluginCache [2]", e);
             }
 
             return result;
