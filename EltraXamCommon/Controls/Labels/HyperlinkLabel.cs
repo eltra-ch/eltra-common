@@ -1,7 +1,7 @@
 ﻿using Xamarin.Essentials;
 using Xamarin.Forms;
 
-namespace EltraXamCommon.Controls.Labels
+namespace EltraUiCommon.Controls.Labels
 {
     public class HyperlinkLabel : Label
     {

@@ -9,7 +9,7 @@ namespace EltraXamCommon.Controls.Helpers
     {
 		public static void FixElements<T>(List<T> elements)
 		{
-			if (Xamarin.Forms.Device.RuntimePlatform != Xamarin.Forms.Device.UWP)
+			if (Device.RuntimePlatform != Device.UWP)
 			{
 				return;
 			}

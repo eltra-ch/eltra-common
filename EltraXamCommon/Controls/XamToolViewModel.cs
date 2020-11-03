@@ -1,5 +1,6 @@
 ﻿using Xamarin.Forms;
 using EltraUiCommon.Controls;
+using EltraXamCommon.Framework;
 
 namespace EltraXamCommon.Controls
 {
@@ -9,6 +10,7 @@ namespace EltraXamCommon.Controls
 
         public XamToolViewModel()
         {
+            Init(new InvokeOnMainThread());
         }
 
         public XamToolViewModel(ToolViewBaseModel parent)

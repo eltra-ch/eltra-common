@@ -1,5 +1,5 @@
 ﻿using EltraCommon.Logger;
-using EltraUiCommon.System;
+using EltraUiCommon.Framework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -50,6 +50,8 @@ namespace EltraUiCommon.Controls
             get => _isBusy;
             set => SetProperty(ref _isBusy, value);
         }
+
+        protected IInvokeOnMainThread InvokeOnMainThread => _invokeOnMainThread;
 
         #endregion
 

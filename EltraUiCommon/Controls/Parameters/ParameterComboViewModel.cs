@@ -1,10 +1,9 @@
 ﻿using EltraCommon.Contracts.Devices;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Parameters;
-using EltraUiCommon.Controls;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace EltraXamCommon.Controls.Parameters
+namespace EltraUiCommon.Controls.Parameters
 {
     public class ParameterComboViewModel : ToolViewBaseModel
     {
@@ -37,7 +36,7 @@ namespace EltraXamCommon.Controls.Parameters
             set => SetProperty(ref _label, value);
         }
 
-        internal void SelectedIndexChanged()
+        public void SelectedIndexChanged()
         {
             WriteValue();
         }

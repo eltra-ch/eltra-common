@@ -2,7 +2,7 @@
 
 namespace EltraXamCommon.Helpers
 {
-    [AttributeUsage(System.AttributeTargets.All)]
+    [AttributeUsage(AttributeTargets.All)]
     public class PreserveAttribute : Attribute
     {
         public PreserveAttribute() { }

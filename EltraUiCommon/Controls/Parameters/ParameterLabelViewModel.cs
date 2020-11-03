@@ -3,9 +3,8 @@ using System.Threading.Tasks;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters.Events;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Parameters;
-using EltraUiCommon.Controls;
 
-namespace EltraXamCommon.Controls.Parameters
+namespace EltraUiCommon.Controls.Parameters
 {
     public class ParameterLabelViewModel : ParameterControlViewModel
     {
@@ -79,17 +78,29 @@ namespace EltraXamCommon.Controls.Parameters
 
                     var valueAsText = _parameter.GetValueAsString();
 
-                    Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+                    if (InvokeOnMainThread != null)
                     {
-                        Value = valueAsText;
-                        Label = _parameter.Label;
-
-                        if (parameter is XddParameter epos4Parameter)
+                        InvokeOnMainThread.BeginInvokeOnMainThread(() =>
                         {
-                            Unit = epos4Parameter.Unit.Label;
-                        }
-                    });
+                            UpdateParameterValue(parameter, valueAsText);
+                        });
+                    }
+                    else
+                    {
+                        UpdateParameterValue(parameter, valueAsText);
+                    }
                 }
+            }
+        }
+
+        private void UpdateParameterValue(Parameter parameter, string valueAsText)
+        {
+            Value = valueAsText;
+            Label = _parameter.Label;
+
+            if (parameter is XddParameter epos4Parameter)
+            {
+                Unit = epos4Parameter.Unit.Label;
             }
         }
 
@@ -174,16 +185,17 @@ namespace EltraXamCommon.Controls.Parameters
                         {
                             var valueAsText = _parameter.GetValueAsString();
 
-                            Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+                            if (InvokeOnMainThread != null)
                             {
-                                Value = valueAsText;
-                                Label = _parameter.Label;
-
-                                if (_parameter is XddParameter epos4Parameter)
+                                InvokeOnMainThread.BeginInvokeOnMainThread(() =>
                                 {
-                                    Unit = epos4Parameter.Unit.Label;
-                                }
-                            });
+                                    UpdateParameterValue(_parameter, valueAsText);
+                                });
+                            }
+                            else
+                            {
+                                UpdateParameterValue(_parameter, valueAsText);
+                            }
 
                             result = true;
                         }

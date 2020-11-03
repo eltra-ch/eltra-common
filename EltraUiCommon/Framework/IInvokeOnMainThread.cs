@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EltraUiCommon.System
+namespace EltraUiCommon.Framework
 {
     public interface IInvokeOnMainThread
     {

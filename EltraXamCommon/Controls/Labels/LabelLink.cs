@@ -2,6 +2,7 @@
 using System;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using System.ComponentModel;
 
 namespace EltraXamCommon.Controls.Labels
 {
@@ -72,7 +73,7 @@ namespace EltraXamCommon.Controls.Labels
             }
         }
 
-        private void OnLabelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void OnLabelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "HtmlText")
             {
