@@ -78,6 +78,12 @@ namespace EltraCommon.Contracts.ToolSet
         public DeviceToolPayloadMode Mode { get; set; }
 
         /// <summary>
+        /// Type
+        /// </summary>
+        [DataMember]
+        public string Type { get; set; }
+
+        /// <summary>
         /// Modified
         /// </summary>
         [DataMember]
