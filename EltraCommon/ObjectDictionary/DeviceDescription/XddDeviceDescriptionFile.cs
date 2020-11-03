@@ -177,6 +177,7 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
             var uniqueIdAttribute = payloadNode.Attributes["uniqueID"];
             var versionAttribute = payloadNode.Attributes["version"];
             var modeAttribute = payloadNode.Attributes["mode"];
+            var typeAttribute = payloadNode.Attributes["type"];
 
             if (fileNameAttribute==null)
             {
@@ -193,7 +194,13 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
                 versionAttribute = payloadNode.Attributes["Version"];
             }
 
-            if (uniqueIdAttribute != null && fileNameAttribute != null && hashCodeAttribute != null && versionAttribute != null)
+            if(typeAttribute == null)
+            {
+                throw new Exception("missing type attribute");
+            }
+
+            if (uniqueIdAttribute != null && fileNameAttribute != null && 
+                hashCodeAttribute != null && versionAttribute != null && typeAttribute != null)
             {
                 var payload = new DeviceToolPayload() { Modified = DateTime.Now, Created = DateTime.Now };
                 
@@ -201,8 +208,9 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
                 payload.FileName = fileNameAttribute.InnerXml;
                 payload.HashCode = hashCodeAttribute.InnerXml;
                 payload.Version = versionAttribute.InnerXml;
+                payload.Type = typeAttribute.InnerXml;
 
-                if(modeAttribute!=null)
+                if (modeAttribute!=null)
                 {
                     string mode = modeAttribute.InnerXml.ToLower();
 
