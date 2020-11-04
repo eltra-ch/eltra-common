@@ -6,7 +6,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
-             xmlns:converters="clr-namespace:EltraWpfCommon.Controls.Converters"
+             xmlns:converters="clr-namespace:EltraWpfCommon.Controls.Converters" xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors" xmlns:Behaviors1="clr-namespace:EltraXamCommon.Controls.Parameters.Behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
   
@@ -30,14 +30,17 @@
 
             <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Value}" IsEnabled="{Binding IsEnabled}"
                         Foreground="{Binding IsValid, Converter={StaticResource ValidationColorConverter}}">
+
+            <Behaviors:Interaction.Behaviors>
+                <Behaviors1:ParameterValidationBehavior/>
+            </Behaviors:Interaction.Behaviors>
+
             <!--<Entry.Triggers>
                   <EventTrigger Event="Completed">
                     <triggers:EntryCompleted/>
                   </EventTrigger>
               </Entry.Triggers>
-              <Entry.Behaviors>
-                <behaviors:ParameterValidationBehavior />
-              </Entry.Behaviors>-->
+             -->
           </TextBox>
           
           <Border Grid.Row="1" Grid.Column="2" Padding="2"/>
