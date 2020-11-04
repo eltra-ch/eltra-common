@@ -1,9 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Prism.Wpf" Version="8.0.0.1909" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\connect\EltraConnector\EltraConnector.csproj" />
+    <ProjectReference Include="..\EltraCommon\EltraCommon.csproj" />
+    <ProjectReference Include="..\EltraUiCommon\EltraUiCommon.csproj" />
+  </ItemGroup>
 
 </Project>

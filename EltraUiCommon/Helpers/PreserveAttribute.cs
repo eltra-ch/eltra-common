@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EltraXamCommon.Helpers
+namespace EltraWpfCommon.Helpers
 {
     [AttributeUsage(AttributeTargets.All)]
     public class PreserveAttribute : Attribute

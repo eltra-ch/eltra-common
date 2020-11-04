@@ -1,4 +1,5 @@
 ﻿using EltraUiCommon.Controls;
+using EltraUiCommon.Helpers;
 using EltraXamCommon.Controls.Helpers;
 using System;
 using System.Collections.Generic;
