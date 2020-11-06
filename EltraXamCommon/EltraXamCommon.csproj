@@ -15,10 +15,15 @@
     <PackageTags>CANOpen IoT Eltra Xamarin</PackageTags>
     <PackageReleaseNotes>Initial release - support for UI plugin system (Eltra framework)</PackageReleaseNotes>
     <PackageProjectUrl>www.eltra.ch</PackageProjectUrl>
-    <Version>1.0.4</Version>
+    <Version>1.0.5</Version>
+    <PackageIcon>eltra_logo.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\EltraResources\png\eltra_logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
     <None Include="LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
