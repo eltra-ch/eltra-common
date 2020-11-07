@@ -23,7 +23,7 @@ namespace EltraXamCommon.Plugins
 
         private List<EltraPluginCacheItem> _pluginCache;
         private IDialogService _dialogService;
-        private PluginStore _payloadStore;
+        private PluginStore _pluginStore;
         
         #endregion
 
@@ -55,7 +55,7 @@ namespace EltraXamCommon.Plugins
 
         public string LocalPath => Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
-        private PluginStore PluginStore => _payloadStore ?? (_payloadStore = CreatePluginStore());
+        private PluginStore PluginStore => _pluginStore ?? (_pluginStore = CreatePluginStore());
 
         #endregion
 
@@ -63,56 +63,14 @@ namespace EltraXamCommon.Plugins
 
         private PluginStore CreatePluginStore()
         {
-            PluginStore result = LoadPluginStore();
+            var pluginStore = new PluginStore() { LocalPath = LocalPath };
 
-            if(result == null)
-            {
-                result = new PluginStore();
-            }
-            else
-            {
-                result.Purge();
-            }
+            pluginStore.Load();
 
-            return result;
-        }
+            //remove previously stored plugins
+            pluginStore.Purge();
 
-        private PluginStore LoadPluginStore()
-        {
-            PluginStore result = null;
-
-            try
-            {
-                var pluginStoreFile = Path.Combine(LocalPath, ".pluginStore");
-
-                if (File.Exists(pluginStoreFile))
-                {
-                    var json = File.ReadAllText(pluginStoreFile);
-
-                    result = JsonConvert.DeserializeObject<PluginStore>(json);
-                }
-            }
-            catch(Exception e)
-            {
-                MsgLogger.Exception($"{GetType().Name} - LoadPluginStore", e);
-            }
-
-            return result;
-        }
-
-        private void SerializePluginStore()
-        {
-            try
-            {
-                var pluginStoreFile = Path.Combine(LocalPath, ".pluginStore");
-                var json = JsonConvert.SerializeObject(PluginStore);
-
-                File.WriteAllText(pluginStoreFile, json);
-            }
-            catch (Exception e)
-            {
-                MsgLogger.Exception($"{GetType().Name} - SerializePluginStore", e);
-            }
+            return pluginStore;
         }
 
         public async Task<bool> DownloadTool(EltraDevice device)
@@ -177,7 +135,7 @@ namespace EltraXamCommon.Plugins
 
                         PluginStore.Add(payloadId, assemblyPath);
 
-                        SerializePluginStore();
+                        PluginStore.Serialize();
 
                         result = true;
                     }

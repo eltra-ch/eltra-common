@@ -33,6 +33,8 @@ namespace EltraXamCommon.Plugins
                     }
                 }
             }
+
+            Files.Clear();
         }
 
         public void AddFile(string fileName)
