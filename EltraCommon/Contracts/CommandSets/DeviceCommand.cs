@@ -84,9 +84,10 @@ namespace EltraCommon.Contracts.CommandSets
         /// <summary>
         /// Execute command
         /// </summary>
-        /// <param name="sourceId"></param>
+        /// <param name="sourceChannelId"></param>
+        /// <param name="sourceLoginName"></param>
         /// <returns></returns>
-        public virtual bool Execute(string sourceId)
+        public virtual bool Execute(string sourceChannelId, string sourceLoginName)
         {
             return false;
         }

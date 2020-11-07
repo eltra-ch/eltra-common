@@ -24,6 +24,12 @@ namespace EltraCommon.Contracts.CommandSets
         public string SourceChannelId { get; set; }
 
         /// <summary>
+        /// SourceLoginName
+        /// </summary>
+        [DataMember]
+        public string SourceLoginName { get; set; }
+
+        /// <summary>
         /// TargetChannelId
         /// </summary>
         [DataMember]
