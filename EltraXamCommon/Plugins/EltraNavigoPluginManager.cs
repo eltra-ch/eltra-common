@@ -23,7 +23,8 @@ namespace EltraXamCommon.Plugins
 
         private List<EltraPluginCacheItem> _pluginCache;
         private IDialogService _dialogService;
-
+        private PluginStore _payloadStore;
+        
         #endregion
 
         #region Constructors
@@ -54,9 +55,65 @@ namespace EltraXamCommon.Plugins
 
         public string LocalPath => Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
+        private PluginStore PluginStore => _payloadStore ?? (_payloadStore = CreatePluginStore());
+
         #endregion
 
         #region Methods
+
+        private PluginStore CreatePluginStore()
+        {
+            PluginStore result = LoadPluginStore();
+
+            if(result == null)
+            {
+                result = new PluginStore();
+            }
+            else
+            {
+                result.Purge();
+            }
+
+            return result;
+        }
+
+        private PluginStore LoadPluginStore()
+        {
+            PluginStore result = null;
+
+            try
+            {
+                var pluginStoreFile = Path.Combine(LocalPath, ".pluginStore");
+
+                if (File.Exists(pluginStoreFile))
+                {
+                    var json = File.ReadAllText(pluginStoreFile);
+
+                    result = JsonConvert.DeserializeObject<PluginStore>(json);
+                }
+            }
+            catch(Exception e)
+            {
+                MsgLogger.Exception($"{GetType().Name} - LoadPluginStore", e);
+            }
+
+            return result;
+        }
+
+        private void SerializePluginStore()
+        {
+            try
+            {
+                var pluginStoreFile = Path.Combine(LocalPath, ".pluginStore");
+                var json = JsonConvert.SerializeObject(PluginStore);
+
+                File.WriteAllText(pluginStoreFile, json);
+            }
+            catch (Exception e)
+            {
+                MsgLogger.Exception($"{GetType().Name} - SerializePluginStore", e);
+            }
+        }
 
         public async Task<bool> DownloadTool(EltraDevice device)
         {
@@ -94,7 +151,7 @@ namespace EltraXamCommon.Plugins
 
             try
             {
-                var fileFullPath = GetPluginFilePath(GetPluginFileName(payloadId));
+                var assemblyPath = GetPluginFilePath(GetPluginFileName(Guid.NewGuid().ToString()));
 
                 var transport = new CloudTransporter();
 
@@ -116,21 +173,11 @@ namespace EltraXamCommon.Plugins
                     {
                         var base64EncodedBytes = Convert.FromBase64String(payload.Content);
 
-                        File.WriteAllBytes(fileFullPath, base64EncodedBytes);
+                        File.WriteAllBytes(assemblyPath, base64EncodedBytes);
 
-                        /*if (FileHelper.ChangeFileNameExtension(fileFullPath, "md5", out string md5FullPath))
-                        {
-                            File.WriteAllText(md5FullPath, hashCode);
+                        PluginStore.Add(payloadId, assemblyPath);
 
-                            result = true;
-                        }
-
-                        if (FileHelper.ChangeFileNameExtension(fileFullPath, "id", out string idFullPath))
-                        {
-                            File.WriteAllText(idFullPath, payloadId);
-
-                            result = true;
-                        }*/
+                        SerializePluginStore();
 
                         result = true;
                     }
@@ -179,7 +226,7 @@ namespace EltraXamCommon.Plugins
         private bool UpdatePluginCache(DeviceToolPayload payload)
         {
             bool result = false;
-            var pluginFilePath = GetPluginFilePath(GetPluginFileName(payload.Id));
+            var pluginFilePath = PluginStore.GetAssemblyFile(payload.Id);
 
             if (File.Exists(pluginFilePath))
             {
@@ -201,84 +248,6 @@ namespace EltraXamCommon.Plugins
             return result;
         }
 
-        private bool GetHashCodeFromFile(string filePath, out string hashCode)
-        {
-            bool result = false;
-
-            hashCode = string.Empty;
-
-            try
-            {
-                var bytes = File.ReadAllBytes(filePath);
-
-                if (bytes != null && bytes.Length > 0)
-                {
-                    var encodedBytes = Convert.ToBase64String(bytes);
-
-                    hashCode = CryptHelpers.ToMD5(encodedBytes);
-
-                    result = true;
-                }
-            }
-            catch(Exception e)
-            {
-                MsgLogger.Exception($"{GetType().Name}", e);
-            }
-            
-            return result;
-        }
-
-        private EltraPluginCacheItem FindPluginInFileSystem(DeviceToolPayload payload)
-        {
-            EltraPluginCacheItem result = null;
-            var pluginFilePath = GetPluginFilePath(GetPluginFileName(payload.Id));
-
-            try
-            {
-                if (File.Exists(pluginFilePath))
-                {
-                    if (payload.Mode == DeviceToolPayloadMode.Development)
-                    {
-                        result = UpdateCache(payload, pluginFilePath);
-                    }
-                    else
-                    {
-                        if(GetHashCodeFromFile(pluginFilePath, out var hashCode) && hashCode == payload.HashCode)
-                        {
-                            result = UpdateCache(payload, pluginFilePath);
-                        }
-                    }
-                }
-            }
-            catch(Exception e)
-            {
-                MsgLogger.Exception($"{GetType().Name} - FindPluginInFileSystem", e);
-            }
-
-            return result;
-        }
-
-        private EltraPluginCacheItem UpdateCache(DeviceToolPayload payload, string fullPath)
-        {
-            EltraPluginCacheItem result = null;
-
-            if (UpdatePluginCache(fullPath, payload))
-            {
-                var cacheItem = FindPluginInCache(payload);
-
-                if (cacheItem != null && cacheItem.Plugin != null)
-                {
-                    var viewModels = cacheItem.Plugin.GetViewModels();
-
-                    OnPluginAdded(payload, viewModels);
-
-                    result = cacheItem;
-                }
-            }
-
-            return result;
-        }
-
         private async Task<bool> DownloadTool(DeviceTool deviceTool)
         {
             bool result = false;
@@ -294,23 +263,13 @@ namespace EltraXamCommon.Plugins
                 }
                 else
                 {
-                    pluginCacheItem = FindPluginInFileSystem(payload);
-
-                    if (pluginCacheItem != null)
+                    if (await DownloadTool(payload.Id, payload.HashCode, payload.Mode))
                     {
-                        MsgLogger.WriteFlow($"{GetType().Name} - DownloadTool", $"payload file name {payload.FileName} found in file system");
-                        result = true;
+                        result = UpdatePluginCache(payload);
                     }
                     else
                     {
-                        if (await DownloadTool(payload.Id, payload.HashCode, payload.Mode))
-                        {
-                            result = UpdatePluginCache(payload);
-                        }
-                        else
-                        {
-                            MsgLogger.WriteError($"{GetType().Name} - DownloadTool", $"payload file name {payload.FileName} download failed!");
-                        }
+                        MsgLogger.WriteError($"{GetType().Name} - DownloadTool", $"payload file name {payload.FileName} download failed!");
                     }
                 }
             }
@@ -321,71 +280,86 @@ namespace EltraXamCommon.Plugins
         private bool UpdatePluginCache(string assemblyPath, DeviceToolPayload payload)
         {
             bool result = false;
-
+            
             try
             {
                 MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"load assembly - path = {assemblyPath}");
 
-                var theAssembly = Assembly.LoadFrom(assemblyPath);
+                assemblyPath = PluginStore.GetAssemblyFile(payload.Id);
 
-                MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", "load assembly - get types");
-
-                Type[] types = theAssembly.GetTypes();
-
-                MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"load assembly - get types - count = {types.Length}");
-
-                foreach (Type t in types)
+                if(!string.IsNullOrEmpty(assemblyPath))
                 {
-                    try
+                    var pluginAssembly = Assembly.LoadFrom(assemblyPath);
+
+                    MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", "load assembly - get types");
+
+                    Type[] types = pluginAssembly.GetTypes();
+
+                    MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"load assembly - get types - count = {types.Length}");
+
+                    foreach (Type t in types)
                     {
-                        var type = t.GetInterface("EltraXamCommon.Plugins.IEltraNavigoPlugin");
-
-                        MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"type full name = {t.FullName}");
-
-                        if (type != null && !string.IsNullOrEmpty(t.FullName))
+                        try
                         {
-                            MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"create instance $ {t.FullName}");
+                            var type = t.GetInterface("EltraXamCommon.Plugins.IEltraNavigoPlugin");
 
-                            var assemblyInstace = theAssembly.CreateInstance(t.FullName, false);
+                            MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"type full name = {t.FullName}");
 
-                            if (assemblyInstace is IEltraNavigoPlugin pluginInterface)
+                            if (type != null && !string.IsNullOrEmpty(t.FullName))
                             {
-                                pluginInterface.DialogService = _dialogService;
+                                MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"create instance $ {t.FullName}");
 
-                                MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"find payload {payload.FileName}");
+                                var assemblyInstace = pluginAssembly.CreateInstance(t.FullName, false);
 
-                                if (FindPluginInCache(payload) == null)
+                                if (assemblyInstace is IEltraNavigoPlugin pluginInterface)
                                 {
-                                    var pluginCacheItem = new EltraPluginCacheItem()
-                                    { FullPath = assemblyPath, HashCode = payload.HashCode, PayloadId = payload.Id, Plugin = pluginInterface };
+                                    pluginInterface.DialogService = _dialogService;
 
-                                    PluginCache.Add(pluginCacheItem);
+                                    MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"find payload {payload.FileName}");
 
-                                    MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"add payload {payload.FileName} cache item");
+                                    if (FindPluginInCache(payload) == null)
+                                    {
+                                        var pluginCacheItem = new EltraPluginCacheItem()
+                                        { FullPath = assemblyPath, HashCode = payload.HashCode, PayloadId = payload.Id, Plugin = pluginInterface };
+
+                                        PluginCache.Add(pluginCacheItem);
+
+                                        MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"add payload {payload.FileName} cache item");
+                                    }
+                                    else
+                                    {
+                                        MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"payload {payload.FileName} already added");
+                                    }
+
+                                    result = true;
+
+                                    break;
                                 }
                                 else
                                 {
-                                    MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"payload {payload.FileName} already added");
+                                    MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"error: create instance $ {t.FullName} failed!");
                                 }
-
-                                result = true;
-
-                                break;
-                            }
-                            else
-                            {
-                                MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"error: create instance $ {t.FullName} failed!");
                             }
                         }
+                        catch (Exception e)
+                        {
+                            GC.Collect();
+                            GC.WaitForPendingFinalizers();
+
+                            MsgLogger.Exception($"{GetType().Name} - UpdatePluginCache [1]", e);
+                        }
                     }
-                    catch (Exception e)
-                    {
-                        MsgLogger.Exception($"{GetType().Name} - UpdatePluginCache [1]", e);
-                    }
+                }
+                else
+                {
+                    MsgLogger.WriteError($"{GetType().Name} - UpdatePluginCache", "assembly store returns empty element");
                 }
             }
             catch (Exception e)
             {
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+
                 MsgLogger.Exception($"{GetType().Name} - UpdatePluginCache [2]", e);
             }
 
