@@ -15,7 +15,7 @@
     <PackageTags>CANOpen IoT Eltra Xamarin</PackageTags>
     <PackageReleaseNotes>Initial release - support for UI plugin system (Eltra framework)</PackageReleaseNotes>
     <PackageProjectUrl>www.eltra.ch</PackageProjectUrl>
-    <Version>1.0.7</Version>
+    <Version>1.0.8</Version>
     <PackageIcon>eltra_logo.png</PackageIcon>
   </PropertyGroup>
 
@@ -32,13 +32,14 @@
 
   <ItemGroup>
     <PackageReference Include="Forms9Patch" Version="2.4.6" />
+    <PackageReference Include="Prism.Core" Version="8.0.0.1909" />
+    <PackageReference Include="Prism.DryIoc.Forms" Version="8.0.0.1909" />
+    <PackageReference Include="Prism.Forms" Version="8.0.0.1909" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1560" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\xternals\Prism\src\Forms\Prism.DryIoc.Forms\Prism.DryIoc.Forms.csproj" />
-    <ProjectReference Include="..\..\..\..\..\xternals\Prism\src\Prism.Core\Prism.Core.csproj" />
     <ProjectReference Include="..\..\..\connect\EltraConnector\EltraConnector.csproj" />
     <ProjectReference Include="..\EltraCommon\EltraCommon.csproj" />
     <ProjectReference Include="..\EltraUiCommon\EltraUiCommon.csproj" />
