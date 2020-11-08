@@ -1,10 +1,15 @@
-﻿using EltraCommon.Contracts.Devices;
+﻿using DryIoc;
+using EltraCommon.Contracts.Devices;
 using EltraCommon.Contracts.ToolSet;
 using EltraCommon.Helpers;
 using EltraCommon.Logger;
 using EltraCommon.Transport;
 using EltraUiCommon.Controls;
+using EltraUiCommon.Helpers;
+using EltraXamCommon.Plugins.Events;
 using Newtonsoft.Json;
+using Prism.Ioc;
+using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
@@ -24,14 +29,16 @@ namespace EltraXamCommon.Plugins
         private List<EltraPluginCacheItem> _pluginCache;
         private IDialogService _dialogService;
         private PluginStore _pluginStore;
-        
+        private IContainerRegistry _containerRegistry;
+
         #endregion
 
         #region Constructors
 
-        public EltraNavigoPluginManager(IDialogService dialogService)
+        public EltraNavigoPluginManager(IDialogService dialogService, IContainerRegistry containerRegistry)
         {
             _dialogService = dialogService;
+            _containerRegistry = containerRegistry;
         }
 
         #endregion
@@ -192,14 +199,58 @@ namespace EltraXamCommon.Plugins
                 {
                     var cacheItem = FindPluginInCache(payload);
 
-                    if (cacheItem != null && cacheItem.Plugin != null)
+                    if (cacheItem != null && cacheItem.PluginService != null)
                     {
-                        var viewModels = cacheItem.Plugin.GetViewModels();
+                        var viewModels = cacheItem.PluginService.GetViewModels();
 
                         OnPluginAdded(payload, viewModels);
 
                         result = true;
                     }
+                }
+            }
+
+            return result;
+        }
+
+        private EltraPluginCacheItem FindPluginInFileSystem(DeviceToolPayload payload)
+        {
+            EltraPluginCacheItem result = null;
+            var pluginFilePath = GetPluginFilePath(payload.FileName);
+
+            try
+            {
+                if (File.Exists(pluginFilePath))
+                {
+                    if (payload.Mode == DeviceToolPayloadMode.Development)
+                    {
+                        result = UpdateCache(payload, pluginFilePath);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MsgLogger.Exception($"{GetType().Name} - FindPluginInFileSystem", e);
+            }
+
+            return result;
+        }
+
+        private EltraPluginCacheItem UpdateCache(DeviceToolPayload payload, string fullPath)
+        {
+            EltraPluginCacheItem result = null;
+
+            if (UpdatePluginCache(fullPath, payload))
+            {
+                var cacheItem = FindPluginInCache(payload);
+
+                if (cacheItem != null && cacheItem.PluginService != null)
+                {
+                    var viewModels = cacheItem.PluginService.GetViewModels();
+
+                    OnPluginAdded(payload, viewModels);
+
+                    result = cacheItem;
                 }
             }
 
@@ -221,13 +272,23 @@ namespace EltraXamCommon.Plugins
                 }
                 else
                 {
-                    if (await DownloadTool(payload.Id, payload.HashCode, payload.Mode))
+                    pluginCacheItem = FindPluginInFileSystem(payload);
+
+                    if (pluginCacheItem != null)
                     {
-                        result = UpdatePluginCache(payload);
+                        MsgLogger.WriteFlow($"{GetType().Name} - DownloadTool", $"payload file name {payload.FileName} found in file system");
+                        result = true;
                     }
                     else
                     {
-                        MsgLogger.WriteError($"{GetType().Name} - DownloadTool", $"payload file name {payload.FileName} download failed!");
+                        if (await DownloadTool(payload.Id, payload.HashCode, payload.Mode))
+                        {
+                            result = UpdatePluginCache(payload);
+                        }
+                        else
+                        {
+                            MsgLogger.WriteError($"{GetType().Name} - DownloadTool", $"payload file name {payload.FileName} download failed!");
+                        }
                     }
                 }
             }
@@ -243,7 +304,12 @@ namespace EltraXamCommon.Plugins
             {
                 MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"load assembly - path = {assemblyPath}");
 
-                assemblyPath = PluginStore.GetAssemblyFile(payload.Id);
+                var payloadPath = PluginStore.GetAssemblyFile(payload.Id);
+
+                if(!string.IsNullOrEmpty(payloadPath))
+                {
+                    assemblyPath = payloadPath;
+                }
 
                 if(!string.IsNullOrEmpty(assemblyPath))
                 {
@@ -259,7 +325,7 @@ namespace EltraXamCommon.Plugins
                     {
                         try
                         {
-                            var type = t.GetInterface("EltraXamCommon.Plugins.IEltraNavigoPlugin");
+                            var type = t.GetInterface("EltraXamCommon.Plugins.IEltraNavigoPluginService");
 
                             MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"type full name = {t.FullName}");
 
@@ -269,16 +335,16 @@ namespace EltraXamCommon.Plugins
 
                                 var assemblyInstace = pluginAssembly.CreateInstance(t.FullName, false);
 
-                                if (assemblyInstace is IEltraNavigoPlugin pluginInterface)
+                                if (assemblyInstace is IEltraNavigoPluginService pluginInterface)
                                 {
-                                    pluginInterface.DialogService = _dialogService;
+                                    pluginInterface.DialogRequested += OnPluginInterfaceDialogRequested;
 
                                     MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"find payload {payload.FileName}");
 
                                     if (FindPluginInCache(payload) == null)
                                     {
                                         var pluginCacheItem = new EltraPluginCacheItem()
-                                        { FullPath = assemblyPath, HashCode = payload.HashCode, PayloadId = payload.Id, Plugin = pluginInterface };
+                                        { FullPath = assemblyPath, HashCode = payload.HashCode, PayloadId = payload.Id, PluginService = pluginInterface };
 
                                         PluginCache.Add(pluginCacheItem);
 
@@ -322,6 +388,39 @@ namespace EltraXamCommon.Plugins
             }
 
             return result;
+        }
+
+        private void OnPluginInterfaceDialogRequested(object sender, DialogRequestedEventArgs e)
+        {
+            if(sender is IEltraNavigoPluginService pluginService)
+            {
+                var dialogView = pluginService.ResolveDialogView(e.ViewModel);
+
+                if (dialogView != null)
+                {
+                    var viewModel = e.ViewModel;
+                    var dialogViewName = dialogView.GetType().Name;
+
+                    if (!_containerRegistry.IsRegistered(dialogView.GetType()))
+                    {
+                        var viewType = dialogView.GetType().ToString();
+                        var viewModelType = e.ViewModel.GetType();
+
+                        ViewModelLocationProvider.Register(viewType, viewModelType);
+
+                        _containerRegistry.Register(typeof(object), dialogView.GetType(), dialogViewName);
+                    }
+
+                    ThreadHelper.RunOnMainThread(() =>
+                    {
+                        Action<IDialogResult> dialogResult = (r) => {
+                            e.DialogResult = r;
+                        };
+
+                        _dialogService?.ShowDialog(dialogViewName, e.Parameters, dialogResult);
+                    });
+                }
+            }
         }
 
         #endregion

@@ -41,7 +41,9 @@ namespace EltraXamCommon.Plugins
 
                     if(pluginStore != null)
                     {
-                        Items = result.Items;
+                        result = pluginStore;
+
+                        Items = pluginStore.Items;
                     }
                 }
             }

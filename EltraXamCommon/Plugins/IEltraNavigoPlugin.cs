@@ -1,5 +1,7 @@
 ﻿using EltraUiCommon.Controls;
-using Prism.Services.Dialogs;
+using EltraXamCommon.Dialogs;
+using EltraXamCommon.Plugins.Events;
+using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -7,12 +9,27 @@ using Xamarin.Forms.Internals;
 namespace EltraXamCommon.Plugins
 {
     [Preserve(AllMembers = true)]
-    public interface IEltraNavigoPlugin
+    public interface IEltraNavigoPluginService
     {
-        IDialogService DialogService { get; set; }
+        #region Events
+
+        event EventHandler<DialogRequestedEventArgs> DialogRequested;
+
+        #endregion
+
+        #region Views
 
         List<ToolViewModel> GetViewModels();
 
         ContentView GetView(ToolViewModel viewModel);
+
+        #endregion
+
+        #region Dialog views
+
+        List<XamDialogViewModel> GetDialogViewModels();
+        View ResolveDialogView(XamDialogViewModel viewModel);
+        
+        #endregion
     }
 }

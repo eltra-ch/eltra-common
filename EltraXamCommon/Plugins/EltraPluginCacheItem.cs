@@ -2,7 +2,7 @@ namespace EltraXamCommon.Plugins
 {
     public class EltraPluginCacheItem
     {
-        public IEltraNavigoPlugin Plugin { get; set; }
+        public IEltraNavigoPluginService PluginService { get; set; }
 
         public string PayloadId { get; set; }
 
