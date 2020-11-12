@@ -21,7 +21,7 @@ namespace EltraXamCommon.Plugins
 
         List<ToolViewModel> GetViewModels();
 
-        ContentView GetView(ToolViewModel viewModel);
+        View ResolveView(ToolViewModel viewModel);
 
         #endregion
 
@@ -29,7 +29,8 @@ namespace EltraXamCommon.Plugins
 
         List<XamDialogViewModel> GetDialogViewModels();
         View ResolveDialogView(XamDialogViewModel viewModel);
-        
+        void ShowDialog(object sender, DialogRequestedEventArgs e);
+
         #endregion
     }
 }

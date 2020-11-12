@@ -14,9 +14,9 @@ namespace EltraXamCommon.Dialogs
 
         #region Events handling
 
-        protected void SendRequestClose()
+        protected void SendCloseRequest(IDialogParameters dialogParameters = null)
         {
-            RequestClose?.Invoke(null);
+            RequestClose?.Invoke(dialogParameters);
         }
 
         #endregion

@@ -335,16 +335,16 @@ namespace EltraXamCommon.Plugins
 
                                 var assemblyInstace = pluginAssembly.CreateInstance(t.FullName, false);
 
-                                if (assemblyInstace is IEltraNavigoPluginService pluginInterface)
+                                if (assemblyInstace is IEltraNavigoPluginService pluginService)
                                 {
-                                    pluginInterface.DialogRequested += OnPluginInterfaceDialogRequested;
+                                    pluginService.DialogRequested += OnPluginInterfaceDialogRequested;
 
                                     MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"find payload {payload.FileName}");
 
                                     if (FindPluginInCache(payload) == null)
                                     {
                                         var pluginCacheItem = new EltraPluginCacheItem()
-                                        { FullPath = assemblyPath, HashCode = payload.HashCode, PayloadId = payload.Id, PluginService = pluginInterface };
+                                        { FullPath = assemblyPath, HashCode = payload.HashCode, PayloadId = payload.Id, PluginService = pluginService };
 
                                         PluginCache.Add(pluginCacheItem);
 
