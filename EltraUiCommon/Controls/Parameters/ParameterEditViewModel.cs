@@ -149,7 +149,9 @@ namespace EltraUiCommon.Controls.Parameters
 
                     Changed?.Invoke(this, e);
                 }
-            }            
+            }
+
+            RegisterEvents();
         }
 
         #endregion
