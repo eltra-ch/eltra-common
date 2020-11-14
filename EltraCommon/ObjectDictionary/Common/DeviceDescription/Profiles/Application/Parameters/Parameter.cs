@@ -93,12 +93,19 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
         public event EventHandler<ParameterChangedEventArgs> ParameterChanged;
 
+        public event EventHandler<ParameterWrittenEventArgs> ParameterWritten;
+
         #endregion
 
         #region Event handler
         protected virtual void OnParameterChanged(ParameterChangedEventArgs e)
         {
             ParameterChanged?.Invoke(this, e);
+        }
+
+        protected virtual void OnParameterWritten(ParameterWrittenEventArgs e)
+        {
+            ParameterWritten?.Invoke(this, e);
         }
 
         #endregion
@@ -1339,6 +1346,8 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             if (claudConnector != null)
             {
                 result = await claudConnector.WriteParameter(Device, this);
+
+                OnParameterWritten(new ParameterWrittenEventArgs(this, result));
             }
 
             return result;
