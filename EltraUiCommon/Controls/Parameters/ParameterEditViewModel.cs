@@ -4,7 +4,6 @@ using EltraCommon.Contracts.Devices;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters.Events;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Parameters;
-using EltraUiCommon.Controls;
 
 namespace EltraUiCommon.Controls.Parameters
 {
@@ -131,13 +130,22 @@ namespace EltraUiCommon.Controls.Parameters
 
         public event EventHandler<ParameterChangedEventArgs> Changed;
 
+        public event EventHandler<ParameterChangedEventArgs> Edited;
+
+        public event EventHandler<ParameterWrittenEventArgs> Written;
+
         #endregion
 
         #region Events handling
 
+        private void OnEdited(ParameterChangedEventArgs e)
+        {
+            Edited?.Invoke(this, e);
+        }
+
         private void OnParameterChanged(object sender, ParameterChangedEventArgs e)
         {
-            UnregisterEvents();
+            UnregisterChangedEvent();
 
             if (e.Parameter != null)
             {
@@ -151,14 +159,19 @@ namespace EltraUiCommon.Controls.Parameters
                 }
             }
 
-            RegisterEvents();
+            RegisterChangedEvent();
+        }
+
+        private void OnParameterWritten(object sender, ParameterWrittenEventArgs e)
+        {
+            Written?.Invoke(sender, e);
         }
 
         #endregion
 
         #region Methods
 
-        private void RegisterEvents()
+        private void RegisterChangedEvent()
         {
             if (_parameter != null)
             {
@@ -166,11 +179,39 @@ namespace EltraUiCommon.Controls.Parameters
             }
         }
 
-        private void UnregisterEvents()
+        private void UnregisterChangedEvent()
         {
             if (_parameter != null)
             {
                 _parameter.ParameterChanged -= OnParameterChanged;
+            }
+        }
+
+        private void RegisterEvents()
+        {
+            RegisterChangedEvent();
+            RegisterWrittenEvent();
+        }
+
+        private void RegisterWrittenEvent()
+        {
+            if (_parameter != null)
+            {
+                _parameter.ParameterWritten += OnParameterWritten;
+            }
+        }
+
+        private void UnregisterEvents()
+        {
+            UnregisterChangedEvent();
+            UnregisterWrittenEvent();
+        }
+
+        private void UnregisterWrittenEvent()
+        {
+            if (_parameter != null)
+            {
+                _parameter.ParameterWritten -= OnParameterWritten;
             }
         }
 
@@ -315,6 +356,7 @@ namespace EltraUiCommon.Controls.Parameters
                 if (Vcs != null)
                 {
                     var oldValue = _parameter.GetValueAsString();
+                    var oldParameterValue = _parameter.ActualValue.Clone();
 
                     if (oldValue != newValue)
                     {
@@ -324,8 +366,12 @@ namespace EltraUiCommon.Controls.Parameters
                             {
                                 if (await _parameter.Write())
                                 {
+                                    var newParameterValue = _parameter.ActualValue;
+
                                     InitDoubleValue();
                                     InitIntValue();
+
+                                    OnEdited(new ParameterChangedEventArgs(_parameter, oldParameterValue, newParameterValue) );
 
                                     result = true;
                                 }
