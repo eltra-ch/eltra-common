@@ -64,6 +64,9 @@ namespace EltraXamCommon.Plugins
 
         private PluginStore PluginStore => _pluginStore ?? (_pluginStore = CreatePluginStore());
 
+        public bool Debugging { get; set; }
+        public bool PurgeToolStorage { get; set; }
+
         #endregion
 
         #region Methods
@@ -80,7 +83,7 @@ namespace EltraXamCommon.Plugins
             return pluginStore;
         }
 
-        public async Task<bool> DownloadTool(EltraDevice device)
+        public bool PurgeToolFileSystem(EltraDevice device)
         {
             bool result = false;
 
@@ -90,9 +93,39 @@ namespace EltraXamCommon.Plugins
             {
                 foreach (var tool in deviceToolSet.Tools)
                 {
+                    result = PurgeToolFileSystem(tool);
+
+                    if (!result)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public async Task<bool> DownloadTool(EltraDevice device)
+        {
+            bool result = false;
+
+            var deviceToolSet = device?.ToolSet;
+
+            if(PurgeToolStorage)
+            {
+                if(!PurgeToolFileSystem(device))
+                {
+                    MsgLogger.WriteError($"{GetType().Name} - DownloadTool", "purge file system failed!");
+                }
+            }
+
+            if (deviceToolSet != null)
+            {
+                foreach (var tool in deviceToolSet.Tools)
+                {
                     if (tool.Status == DeviceToolStatus.Enabled)
                     {
-                        result = await DownloadTool(tool);
+                        result = await UpdateTool(tool);
 
                         if (!result)
                         {
@@ -216,11 +249,12 @@ namespace EltraXamCommon.Plugins
         private EltraPluginCacheItem FindPluginInFileSystem(DeviceToolPayload payload)
         {
             EltraPluginCacheItem result = null;
-            var pluginFilePath = GetPluginFilePath(payload.FileName);
-
+            
             try
             {
-                if (File.Exists(pluginFilePath))
+                var pluginFilePath = GetPluginFilePath(payload.FileName);
+
+                if (Debugging && File.Exists(pluginFilePath))
                 {
                     if (payload.Mode == DeviceToolPayloadMode.Development)
                     {
@@ -231,6 +265,29 @@ namespace EltraXamCommon.Plugins
             catch (Exception e)
             {
                 MsgLogger.Exception($"{GetType().Name} - FindPluginInFileSystem", e);
+            }
+
+            return result;
+        }
+
+        private bool PurgeToolFileSystem(DeviceToolPayload payload)
+        {
+            bool result = false;
+
+            try
+            {
+                var pluginFilePath = GetPluginFilePath(payload.FileName);
+
+                if (File.Exists(pluginFilePath))
+                {
+                    File.Delete(pluginFilePath);    
+                }
+
+                result = true;
+            }
+            catch (Exception e)
+            {
+                MsgLogger.Exception($"{GetType().Name} - CleanupToolStorage", e);
             }
 
             return result;
@@ -257,7 +314,7 @@ namespace EltraXamCommon.Plugins
             return result;
         }
 
-        private async Task<bool> DownloadTool(DeviceTool deviceTool)
+        private async Task<bool> UpdateTool(DeviceTool deviceTool)
         {
             bool result = false;
 
@@ -290,6 +347,23 @@ namespace EltraXamCommon.Plugins
                             MsgLogger.WriteError($"{GetType().Name} - DownloadTool", $"payload file name {payload.FileName} download failed!");
                         }
                     }
+                }
+            }
+
+            return result;
+        }
+
+        private bool PurgeToolFileSystem(DeviceTool deviceTool)
+        {
+            bool result = false;
+
+            foreach (var payload in deviceTool.PayloadSet)
+            {
+                result = PurgeToolFileSystem(payload);
+
+                if (result)
+                {
+                    MsgLogger.WriteFlow($"{GetType().Name} - CleanupToolStorage", $"payload file name {payload.FileName} deleted from file system");
                 }
             }
 

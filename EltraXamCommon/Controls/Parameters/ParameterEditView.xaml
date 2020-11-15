@@ -8,7 +8,8 @@
   <ContentView.Content>
       <Grid>
             <Grid.Resources>
-                <converters:ParameterEditFontValidationColorConverter x:Key="ValidationColorConverter"></converters:ParameterEditFontValidationColorConverter>
+                <converters:ParameterEditFontValidationColorConverter x:Key="ValidationColorConverter"/>
+                <converters:ParameterEditUnitWidthConverter x:Key="ParameterEditUnitWidthConverter"/>
             </Grid.Resources>
           <Grid.RowDefinitions>
               <RowDefinition Height="Auto"/>
@@ -21,9 +22,12 @@
               <ColumnDefinition Width="Auto"/>
           </Grid.ColumnDefinitions>
 
-          <Label Grid.Row="1" Grid.Column="0" Text="{Binding Label, Mode=OneWay}" IsVisible="{Binding ShowLabel}" VerticalOptions="Center"/>
+          <Label x:Name="Label" Grid.Row="1" Grid.Column="0" Text="{Binding Label, Mode=OneWay}" IsVisible="{Binding ShowLabel}" VerticalOptions="Center"/>
 
-            <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Value}" IsEnabled="{Binding IsEnabled}" TextColor="{Binding IsValid, Converter={StaticResource ValidationColorConverter}}">
+          <Entry x:Name="EditBox" Grid.Row="1" Grid.Column="1" 
+                 Text="{Binding Value}" IsEnabled="{Binding IsEnabled}" 
+                 Placeholder="{Binding Label}"
+                 TextColor="{Binding IsValid, Converter={StaticResource ValidationColorConverter}}">
               <Entry.Triggers>
                   <EventTrigger Event="Completed">
                     <triggers:EntryCompleted/>
@@ -33,19 +37,11 @@
                 <behaviors:ParameterValidationBehavior />
               </Entry.Behaviors>
           </Entry>
-          <!--<Stepper Grid.Row="1" Grid.Column="1" 
-                   Minimum="{Binding DoubleMinValue}" 
-                   Maximum="{Binding DoubleMaxValue}" 
-                   Value="{Binding DoubleValue}" 
-                   Increment="{Binding DoubleIncrement}" IsEnabled="{Binding IsEnabled}" IsVisible="{Binding ShowStepper}">
-            <Stepper.Triggers>
-                <EventTrigger Event="ValueChanged">
-                    <triggers:StepperValueChangedTrigger/>
-                </EventTrigger>
-            </Stepper.Triggers>
-          </Stepper>-->
-          <Frame Grid.Row="1" Grid.Column="2" BorderColor="Transparent" BackgroundColor="Transparent" Padding="2"/>
-          <Label Grid.Row="1" Grid.Column="3" Text="{Binding Unit}" WidthRequest="{Binding UnitWidth}" VerticalOptions="Center"/>
+          
+          <Frame Grid.Row="1" Grid.Column="2" BorderColor="Transparent" BackgroundColor="Transparent" Padding="2" 
+                   IsVisible="{Binding UnitWidth, Converter={StaticResource ParameterEditUnitWidthConverter}}"/>
+
+            <Label x:Name="Unit" Grid.Row="1" Grid.Column="3" Text="{Binding Unit}" WidthRequest="{Binding UnitWidth}" VerticalOptions="Center"/>
       </Grid>
     </ContentView.Content>
 </ContentView>
