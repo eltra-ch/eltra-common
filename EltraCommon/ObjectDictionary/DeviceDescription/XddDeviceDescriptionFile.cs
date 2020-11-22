@@ -215,7 +215,7 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
                         uniqueIdAttribute = att;
                         break;
                     }
-                    else if (att.Name.ToLower() == "uniqueID")
+                    else if (att.Name.ToLower() == "uniqueid")
                     {
                         uniqueIdAttribute = att;
                         break;
