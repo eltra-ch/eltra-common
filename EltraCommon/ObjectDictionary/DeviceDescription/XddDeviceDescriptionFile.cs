@@ -71,58 +71,25 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
                 {
                     var rootNode = GetRootNode();
 
-                    var toolsNode = rootNode?.SelectNodes("Profile/ProfileBody/DeviceInteraction/DeviceTools/DeviceTool");
+                    var deviceInteractionNode = rootNode?.SelectSingleNode("Profile/ProfileBody/DeviceInteraction");
 
-                    if (toolsNode != null)
+                    if(deviceInteractionNode!=null)
                     {
-                        foreach (XmlNode toolNode in toolsNode)
+                        var payloadList = new List<DeviceToolPayload>();
+
+                        foreach (XmlNode childNode in deviceInteractionNode.ChildNodes)
                         {
-                            XmlAttribute uuidAttribute = null;
-
-                            foreach(XmlAttribute att in toolNode.Attributes)
+                            if (childNode.Name.ToLower() == "payloadlist")
                             {
-                                if(att.Name == "Uuid")
-                                {
-                                    uuidAttribute = att;
-                                    break;
-                                }
-                                else if(att.Name == "uniqueID")
-                                {
-                                    uuidAttribute = att;
-                                    break;
-                                }
+                                ReadPayloadList(childNode, ref payloadList);
                             }
-
-                            if(uuidAttribute==null)
+                            else if (childNode.Name.ToLower() == "devicetools")
                             {
-                                throw new Exception("device tool uniqueID attribute not specified!");
+                                ReadDeviceTools(childNode);
                             }
-
-                            var deviceTool = Device.FindTool(uuidAttribute.InnerXml);
-
-                            if (deviceTool == null)
-                            {
-                                deviceTool = new DeviceTool();
-
-                                Device.AddTool(deviceTool);
-                            }
-                            
-                            var nameAttribute = toolNode.Attributes["name"];
-
-                            if(nameAttribute == null)
-                            {
-                                nameAttribute = toolNode.Attributes["Name"];
-                            }
-
-                            var statusAttribute = toolNode.Attributes["status"];
-
-                            if(statusAttribute == null)
-                            {
-                                statusAttribute = toolNode.Attributes["Status"];
-                            }
-
-                            AddDeviceTool(toolNode, deviceTool, uuidAttribute, nameAttribute, statusAttribute);
                         }
+
+                        ResolveDeviceToolReferences(payloadList);
                     }
                 }
             }
@@ -130,6 +97,165 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
             {
                 MsgLogger.Exception($"{GetType().Name} - ReadDeviceTools", e);
                 
+                result = false;
+            }
+
+            return result;
+        }
+
+        private bool ReadDeviceTools(XmlNode deviceToolsNode)
+        {
+            bool result = true;
+
+            try
+            {
+                if (Device != null)
+                {
+                    foreach (XmlNode childNode in deviceToolsNode.ChildNodes)
+                    {                        
+                        if (childNode.Name.ToLower() == "devicetool")
+                        {
+                            ReadDeviceTool(childNode);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MsgLogger.Exception($"{GetType().Name} - ReadDeviceTools", e);
+
+                result = false;
+            }
+
+            return result;
+        }
+
+        private DeviceToolPayload SearchPayload(List<DeviceToolPayload> deviceToolPayloads, string id)
+        {
+            DeviceToolPayload payload = null;
+
+            foreach (var deviceToolPayload in deviceToolPayloads)
+            {
+                if (deviceToolPayload.Id == id)
+                {
+                    payload = deviceToolPayload;
+                    break;
+                }
+            }
+
+            return payload;
+        }
+
+        private void ResolveDeviceToolReferences(List<DeviceToolPayload> deviceToolPayloads)
+        {
+            foreach(var deviceTool in DeviceTools)
+            {
+                foreach(var payload in deviceTool.PayloadSet)
+                {
+                    if(payload.Created == DateTime.MinValue)
+                    {
+                        var deviceToolPayload = SearchPayload(deviceToolPayloads, payload.Id);
+
+                        if(deviceToolPayload != null)
+                        {
+                            CopyPayload(deviceToolPayload, payload);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void CopyPayload(DeviceToolPayload source, DeviceToolPayload target)
+        {
+            if (target != null && source != null)
+            {
+                target.ChannelId = source.ChannelId;
+                target.NodeId = source.NodeId;
+                target.ToolId = source.ToolId;
+                target.FileName = source.FileName;
+                target.Content = source.Content;
+                target.HashCode = source.HashCode;
+                target.Version = source.Version;
+                target.Mode = source.Mode;
+                target.Type = source.Type;
+                target.Created = source.Created;
+                target.Modified = source.Modified;
+            }
+        }
+
+        private void ReadPayloadList(XmlNode payloadListNode, ref List<DeviceToolPayload> payloadList)
+        {
+            if(payloadListNode != null)
+            {
+                foreach(XmlNode childNode in payloadListNode.ChildNodes)
+                {
+                    if(childNode.Name.ToLower() == "payload" && childNode is XmlElement payloadNode)
+                    {
+                        var payload = ReadDeviceToolPayload(payloadNode);
+
+                        payloadList.Add(payload);
+                    }
+                }
+            }
+        }
+
+        private bool ReadDeviceTool(XmlNode toolNode)
+        {
+            bool result = false;
+
+            try
+            {
+
+                XmlAttribute uniqueIdAttribute = null;
+
+                foreach (XmlAttribute att in toolNode.Attributes)
+                {
+                    if (att.Name.ToLower() == "uuid")
+                    {
+                        uniqueIdAttribute = att;
+                        break;
+                    }
+                    else if (att.Name.ToLower() == "uniqueID")
+                    {
+                        uniqueIdAttribute = att;
+                        break;
+                    }
+                }
+
+                if (uniqueIdAttribute == null)
+                {
+                    throw new Exception("device tool uniqueID attribute not specified!");
+                }
+
+                var deviceTool = Device.FindTool(uniqueIdAttribute.InnerXml);
+
+                if (deviceTool == null)
+                {
+                    deviceTool = new DeviceTool();
+
+                    Device.AddTool(deviceTool);
+                }
+
+                var nameAttribute = toolNode.Attributes["name"];
+
+                if (nameAttribute == null)
+                {
+                    nameAttribute = toolNode.Attributes["Name"];
+                }
+
+                var statusAttribute = toolNode.Attributes["status"];
+
+                if (statusAttribute == null)
+                {
+                    statusAttribute = toolNode.Attributes["Status"];
+                }
+
+                AddDeviceTool(toolNode, deviceTool, uniqueIdAttribute, nameAttribute, statusAttribute);
+            }
+            catch (Exception e)
+            {
+                MsgLogger.Exception($"{GetType().Name} - ReadDeviceTool", e);
+
                 result = false;
             }
 
@@ -158,10 +284,20 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
 
                         foreach(XmlElement childNode in toolNode.ChildNodes)
                         {
-                            if(childNode.Name == "Payload")
+                            if(childNode.Name.ToLower() == "payload")
                             {
-                                AddDeviceToolPayload(childNode, deviceTool);
-                            }
+                                var payload = ReadDeviceToolPayload(childNode);
+
+                                if (payload == null)
+                                {
+                                    payload = ReadBareDeviceToolPayload(childNode);
+                                }
+                                
+                                if(payload!=null)
+                                { 
+                                    deviceTool.AddPayload(payload);
+                                }
+                            }                            
                         }
 
                         DeviceTools.Add(deviceTool);
@@ -169,71 +305,109 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
                 }
             }
         }
-
-        private void AddDeviceToolPayload(XmlElement payloadNode, DeviceTool deviceTool)
+        
+        private DeviceToolPayload ReadDeviceToolPayload(XmlElement payloadNode)
         {
-            var fileNameAttribute = payloadNode.Attributes["fileName"];
-            var hashCodeAttribute = payloadNode.Attributes["hashCode"];
-            var uniqueIdAttribute = payloadNode.Attributes["uniqueID"];
-            var versionAttribute = payloadNode.Attributes["version"];
-            var modeAttribute = payloadNode.Attributes["mode"];
-            var typeAttribute = payloadNode.Attributes["type"];
+            DeviceToolPayload result = null;
 
-            if (fileNameAttribute==null)
+            try
             {
-                fileNameAttribute = payloadNode.Attributes["FileName"];
-            }
+                var payload = ReadBareDeviceToolPayload(payloadNode);
 
-            if(hashCodeAttribute==null)
-            {
-                hashCodeAttribute = payloadNode.Attributes["HashCode"];
-            }
+                var fileNameAttribute = payloadNode.Attributes["fileName"];
+                var hashCodeAttribute = payloadNode.Attributes["hashCode"];                
+                var versionAttribute = payloadNode.Attributes["version"];
+                var modeAttribute = payloadNode.Attributes["mode"];
+                var typeAttribute = payloadNode.Attributes["type"];
 
-            if (versionAttribute == null)
-            {
-                versionAttribute = payloadNode.Attributes["Version"];
-            }
-
-            if(typeAttribute == null)
-            {
-                throw new Exception("missing type attribute");
-            }
-
-            if (uniqueIdAttribute != null && fileNameAttribute != null && 
-                hashCodeAttribute != null && versionAttribute != null && typeAttribute != null)
-            {
-                var payload = new DeviceToolPayload() { Modified = DateTime.Now, Created = DateTime.Now };
-                
-                payload.Id = uniqueIdAttribute.InnerXml;
-                payload.FileName = fileNameAttribute.InnerXml;
-                payload.HashCode = hashCodeAttribute.InnerXml;
-                payload.Version = versionAttribute.InnerXml;
-                payload.Type = typeAttribute.InnerXml;
-
-                if (modeAttribute!=null)
+                if (fileNameAttribute == null)
                 {
-                    string mode = modeAttribute.InnerXml.ToLower();
+                    fileNameAttribute = payloadNode.Attributes["FileName"];
+                }
 
-                    switch(mode)
+                if (hashCodeAttribute == null)
+                {
+                    hashCodeAttribute = payloadNode.Attributes["HashCode"];
+                }
+
+                if (versionAttribute == null)
+                {
+                    versionAttribute = payloadNode.Attributes["Version"];
+                }
+
+                if (payload != null && fileNameAttribute != null &&
+                    hashCodeAttribute != null && versionAttribute != null && typeAttribute != null)
+                {
+                    payload.FileName = fileNameAttribute.InnerXml;
+                    payload.HashCode = hashCodeAttribute.InnerXml;
+                    payload.Version = versionAttribute.InnerXml;
+                    payload.Type = typeAttribute.InnerXml;
+
+                    if (modeAttribute != null)
                     {
-                        case "development":
-                            payload.Mode = DeviceToolPayloadMode.Development;
-                            break;
-                        case "production":
-                            payload.Mode = DeviceToolPayloadMode.Production;
-                            break;
-                        default:
-                            payload.Mode = DeviceToolPayloadMode.Undefined;
-                            break;
-                    }
-                }
-                else
-                {
-                    payload.Mode = DeviceToolPayloadMode.Production;
-                }
+                        string mode = modeAttribute.InnerXml.ToLower();
 
-                deviceTool.AddPayload(payload);
+                        switch (mode)
+                        {
+                            case "development":
+                                payload.Mode = DeviceToolPayloadMode.Development;
+                                break;
+                            case "production":
+                                payload.Mode = DeviceToolPayloadMode.Production;
+                                break;
+                            default:
+                                payload.Mode = DeviceToolPayloadMode.Undefined;
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        payload.Mode = DeviceToolPayloadMode.Production;
+                    }
+
+                    result = payload;
+                }
             }
+            catch(Exception e)
+            {
+                MsgLogger.Exception($"{GetType().Name} - ReadDeviceToolPayload", e);
+            }
+
+            return result;
+        }
+
+        private DeviceToolPayload ReadBareDeviceToolPayload(XmlElement payloadNode)
+        {
+            DeviceToolPayload result = null;
+
+            try
+            {
+                var uniqueIdAttribute = payloadNode.Attributes["uniqueID"];
+                var uniqueIdRefAttribute = payloadNode.Attributes["uniqueIDRef"];
+
+                if (uniqueIdAttribute != null)
+                {
+                    var payload = new DeviceToolPayload() { Created = DateTime.Now, Modified = DateTime.Now };
+
+                    payload.Id = uniqueIdAttribute.InnerXml;
+
+                    result = payload;
+                }
+                else if (uniqueIdRefAttribute != null)
+                {
+                    var payload = new DeviceToolPayload();
+
+                    payload.Id = uniqueIdRefAttribute.InnerXml;
+
+                    result = payload;
+                }
+            }
+            catch (Exception e)
+            {
+                MsgLogger.Exception($"{GetType().Name} - ReadDeviceToolPayloadRef", e);
+            }
+
+            return result;
         }
 
         protected override void ReadProductName()
