@@ -55,6 +55,7 @@ namespace EltraCommon.Contracts.Devices
             if (!DeviceExists(deviceNode) && Channel != null)
             {
                 deviceNode.ChannelId = Channel.Id;
+                deviceNode.ChannelLocalHost = Channel.LocalHost;
 
                 Devices.Add(deviceNode);
 

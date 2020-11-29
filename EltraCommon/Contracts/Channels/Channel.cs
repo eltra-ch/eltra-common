@@ -52,6 +52,7 @@ namespace EltraCommon.Contracts.Channels
 
             Id = channelBase.Id;
             Timeout = channelBase.Timeout;
+            LocalHost = channelBase.LocalHost;
 
             UpdateInterval = DefaultUpdateInterval;
         }

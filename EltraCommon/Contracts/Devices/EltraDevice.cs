@@ -119,6 +119,12 @@ namespace EltraCommon.Contracts.Devices
         public string ChannelId { get; set; }
 
         /// <summary>
+        /// Channel local host
+        /// </summary>
+        [IgnoreDataMember]
+        public string ChannelLocalHost { get; set; }
+
+        /// <summary>
         /// NodeId
         /// </summary>
         [DataMember]
