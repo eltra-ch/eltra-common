@@ -20,5 +20,11 @@ namespace EltraCommon.Contracts.Channels
         /// </summary>
         [DataMember]
         public ChannelStatus Status { get; set; }
+
+        /// <summary>
+        /// Local host
+        /// </summary>
+        [DataMember]
+        public string LocalHost { get; set; }
     }
 }
