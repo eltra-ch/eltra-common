@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -7,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using EltraCommon.Contracts.Users;
 using EltraCommon.Logger;
 using EltraCommon.Transport.Events;
 
@@ -26,7 +28,7 @@ namespace EltraCommon.Transport
 
         private SocketError _socketError;
 
-        private static HttpClient _client;
+        private Dictionary<string, HttpClient> _clients;
 
         #endregion
 
@@ -37,6 +39,8 @@ namespace EltraCommon.Transport
         /// </summary>
         public CloudTransporter()
         {
+            _clients = new Dictionary<string, HttpClient>();
+
             MaxRetryTimeout = DefaultRetryTimeout;
             MaxRetryCount = DefaultMaxRetryCount;
             MaxWaitTimeInSec = DefaultMaxWaitTimeInSec;
@@ -65,8 +69,6 @@ namespace EltraCommon.Transport
         /// Max wait time in sec.
         /// </summary>
         public int MaxWaitTimeInSec { get; set; }
-
-        private HttpClient Client => _client ?? (_client = CreateHttpClient());
 
         /// <summary>
         /// SocketError
@@ -137,15 +139,44 @@ namespace EltraCommon.Transport
             }
         }
 
+        private HttpClient GetHttpClient(UserIdentity identity)
+        {
+            HttpClient result = null;
+
+            if (identity != null)
+            {
+                lock (this)
+                {
+                    if (_clients.ContainsKey(identity.Login))
+                    {
+                        result = _clients[identity.Login];
+                    }
+                    else
+                    {
+                        result = CreateHttpClient();
+
+                        _clients.Add(identity.Login, result);
+                    }
+                }
+            }
+            else
+            {
+                throw new Exception("Identity not specified!");
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Post
         /// </summary>
+        /// <param name="identity"></param>
         /// <param name="url"></param>
         /// <param name="path"></param>
         /// <param name="json"></param>
         /// <param name="apiVersion"></param>
         /// <returns></returns>
-        public async Task<TransporterResponse> Post(string url, string path, string json, string apiVersion = "1")
+        public async Task<TransporterResponse> Post(UserIdentity identity, string url, string path, string json, string apiVersion = "1")
         {
             TransporterResponse result = new TransporterResponse();
             
@@ -153,6 +184,8 @@ namespace EltraCommon.Transport
             int redirectCount = 0;
 
             ResetSocketError();
+            
+            var client = GetHttpClient(identity);
 
             do
             {
@@ -173,8 +206,8 @@ namespace EltraCommon.Transport
                         
                         builder.Query = query.ToString();
                     }
-                    
-                    var postResult = await Client.PostAsync(builder.ToString(), message);
+
+                    var postResult = await client.PostAsync(builder.ToString(), message);
 
                     result.StatusCode = postResult.StatusCode;
 
@@ -221,15 +254,18 @@ namespace EltraCommon.Transport
         /// <summary>
         /// GetStream
         /// </summary>
+        /// <param name="identity"></param>
         /// <param name="url"></param>
         /// <returns></returns>
-        public async Task<byte[]> GetStream(string url)
+        public async Task<byte[]> GetStream(UserIdentity identity, string url)
         {
             byte[] result = null;
             int tryCount = 0;
             int redirectCount = 0;
 
             ResetSocketError();
+
+            var client = GetHttpClient(identity);
 
             do
             {
@@ -239,7 +275,7 @@ namespace EltraCommon.Transport
 
                     MsgLogger.WriteDebug($"{GetType().Name} - Get", $"get - url ='{url}' try count = {tryCount}/{MaxRetryCount}");
 
-                    using (var response = await Client.GetAsync(url))
+                    using (var response = await client.GetAsync(url))
                     {
                         if (response.IsSuccessStatusCode)
                         {
@@ -296,14 +332,17 @@ namespace EltraCommon.Transport
         /// <summary>
         /// Get
         /// </summary>
+        /// <param name="identity"></param>
         /// <param name="url"></param>
         /// <param name="cancelationToken"></param>
         /// <returns></returns>
-        public async Task<bool> Get(string url, CancellationToken cancelationToken)
+        public async Task<bool> Get(UserIdentity identity, string url, CancellationToken cancelationToken)
         {
             bool result = false;
 
             ResetSocketError();
+
+            var client = GetHttpClient(identity);
 
             try
             {
@@ -312,7 +351,7 @@ namespace EltraCommon.Transport
 
                 do
                 {
-                    using (var response = await Client.GetAsync(url, cancelationToken))
+                    using (var response = await client.GetAsync(url, cancelationToken))
                     {
                         if (response.StatusCode == HttpStatusCode.Redirect)
                         {
@@ -345,9 +384,10 @@ namespace EltraCommon.Transport
         /// <summary>
         /// Get
         /// </summary>
+        /// <param name="identity"></param>
         /// <param name="url"></param>
         /// <returns></returns>
-        public async Task<string> Get(string url)
+        public async Task<string> Get(UserIdentity identity, string url)
         {
             string result = string.Empty;
             int tryCount = 0;
@@ -355,6 +395,8 @@ namespace EltraCommon.Transport
 
             ResetSocketError();
             
+            var client = GetHttpClient(identity);
+
             do
             {
                 try
@@ -363,7 +405,7 @@ namespace EltraCommon.Transport
 
                     MsgLogger.WriteDebug($"{GetType().Name} - Get", $"get - url ='{url}' try count = {tryCount}/{MaxRetryCount}");
                     
-                    using (var response = await Client.GetAsync(url))
+                    using (var response = await client.GetAsync(url))
                     {
                         if (response.IsSuccessStatusCode)
                         {
@@ -417,16 +459,19 @@ namespace EltraCommon.Transport
         /// <summary>
         /// Delete
         /// </summary>
+        /// <param name="identity"></param>
         /// <param name="url"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<bool> Delete(string url, CancellationToken cancellationToken)
+        public async Task<bool> Delete(UserIdentity identity, string url, CancellationToken cancellationToken)
         {
             bool result = false;
 
             int tryCount = 0;
 
             ResetSocketError();
+
+            var client = GetHttpClient(identity);
 
             do
             {
@@ -436,7 +481,7 @@ namespace EltraCommon.Transport
 
                     MsgLogger.WriteDebug($"{GetType().Name} - Delete", $"delete - url ='{url}' try count = {tryCount}/{MaxRetryCount}");
 
-                    var deleteResult = await Client.DeleteAsync(url, cancellationToken);
+                    var deleteResult = await client.DeleteAsync(url, cancellationToken);
 
                     if (deleteResult.IsSuccessStatusCode)
                     {
@@ -472,9 +517,10 @@ namespace EltraCommon.Transport
         /// <summary>
         /// Delete
         /// </summary>
+        /// <param name="identity"></param>
         /// <param name="url"></param>
         /// <returns></returns>
-        public async Task<string> Delete(string url)
+        public async Task<string> Delete(UserIdentity identity, string url)
         {
             string result = string.Empty;
 
@@ -482,6 +528,8 @@ namespace EltraCommon.Transport
             int redirectCount = 0;
 
             ResetSocketError();
+
+            var client = GetHttpClient(identity);
 
             do
             {
@@ -491,7 +539,7 @@ namespace EltraCommon.Transport
 
                     MsgLogger.WriteDebug($"{GetType().Name} - Delete", $"delete - url ='{url}' try count = {tryCount}/{MaxRetryCount}");
                     
-                    var deleteResult = await Client.DeleteAsync(url);
+                    var deleteResult = await client.DeleteAsync(url);
 
                     if (deleteResult.IsSuccessStatusCode)
                     {
@@ -528,18 +576,21 @@ namespace EltraCommon.Transport
         /// <summary>
         /// Put
         /// </summary>
+        /// <param name="identity"></param>
         /// <param name="url"></param>
         /// <param name="path"></param>
         /// <param name="json"></param>
         /// <param name="apiVersion"></param>
         /// <returns></returns>
-        public async Task<TransporterResponse> Put(string url, string path, string json, string apiVersion = "1")
+        public async Task<TransporterResponse> Put(UserIdentity identity, string url, string path, string json, string apiVersion = "1")
         {
             var result = new TransporterResponse();
             int tryCount = 0;
             int redirectCount = 0;
 
             ResetSocketError();
+
+            var client = GetHttpClient(identity);
 
             do
             {
@@ -559,7 +610,7 @@ namespace EltraCommon.Transport
 
                     tryCount++;
                     
-                    var postResult = await Client.PutAsync(builder.ToString(), message);
+                    var postResult = await client.PutAsync(builder.ToString(), message);
 
                     result.StatusCode = postResult.StatusCode;
 
