@@ -1,6 +1,7 @@
 ﻿using DryIoc;
 using EltraCommon.Contracts.Devices;
 using EltraCommon.Contracts.ToolSet;
+using EltraCommon.Contracts.Users;
 using EltraCommon.Helpers;
 using EltraCommon.Logger;
 using EltraCommon.Transport;
@@ -105,7 +106,7 @@ namespace EltraXamCommon.Plugins
             return result;
         }
 
-        public async Task<bool> DownloadTool(EltraDevice device)
+        public async Task<bool> DownloadTool(UserIdentity identity, EltraDevice device)
         {
             bool result = false;
 
@@ -125,7 +126,7 @@ namespace EltraXamCommon.Plugins
                 {
                     if (tool.Status == DeviceToolStatus.Enabled)
                     {
-                        result = await UpdateTool(tool);
+                        result = await UpdateTool(identity, tool);
 
                         if (!result)
                         {
@@ -143,9 +144,14 @@ namespace EltraXamCommon.Plugins
             return Path.Combine(LocalPath, fileName);
         }
 
-        private async Task<bool> DownloadTool(string payloadId, string hashCode, DeviceToolPayloadMode mode)
+        private async Task<bool> DownloadTool(UserIdentity identity, string payloadId, string hashCode, DeviceToolPayloadMode mode)
         {
             bool result = false;
+
+            if(identity == null)
+            {
+                throw new Exception("Identity not defined!");
+            }
 
             try
             {
@@ -161,7 +167,7 @@ namespace EltraXamCommon.Plugins
 
                 var url = UrlHelper.BuildUrl(Url, "api/description/payload-download", query);
 
-                var json = await transport.Get(url);
+                var json = await transport.Get(identity, url);
 
                 if (!string.IsNullOrEmpty(json))
                 {
@@ -314,7 +320,7 @@ namespace EltraXamCommon.Plugins
             return result;
         }
 
-        private async Task<bool> UpdateTool(DeviceTool deviceTool)
+        private async Task<bool> UpdateTool(UserIdentity identity, DeviceTool deviceTool)
         {
             bool result = false;
 
@@ -338,7 +344,7 @@ namespace EltraXamCommon.Plugins
                     }
                     else
                     {
-                        if (await DownloadTool(payload.Id, payload.HashCode, payload.Mode))
+                        if (await DownloadTool(identity, payload.Id, payload.HashCode, payload.Mode))
                         {
                             result = UpdatePluginCache(payload);
                         }
