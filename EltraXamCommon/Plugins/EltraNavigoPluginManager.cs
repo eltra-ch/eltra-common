@@ -57,7 +57,7 @@ namespace EltraXamCommon.Plugins
 
         #region Properties
 
-        public string Url { get; set; }
+        public CloudControllerAdapter CloudAdapter { get; set; }
 
         public List<EltraPluginCacheItem> PluginCache => _pluginCache ?? (_pluginCache = new List<EltraPluginCacheItem>());
 
@@ -157,17 +157,15 @@ namespace EltraXamCommon.Plugins
             {
                 var assemblyPath = GetPluginFilePath(GetPluginFileName(Guid.NewGuid().ToString()));
 
-                var transport = new CloudTransporter();
-
                 var query = HttpUtility.ParseQueryString(string.Empty);
 
                 query["uniqueId"] = payloadId;
                 query["hashCode"] = hashCode;
                 query["mode"] = $"{(int)mode}";
 
-                var url = UrlHelper.BuildUrl(Url, "api/description/payload-download", query);
+                var url = UrlHelper.BuildUrl(CloudAdapter.Url, "api/description/payload-download", query);
 
-                var json = await transport.Get(identity, url);
+                var json = await CloudAdapter.Get(identity, url);
 
                 if (!string.IsNullOrEmpty(json))
                 {

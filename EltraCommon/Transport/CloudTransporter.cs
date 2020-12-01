@@ -246,7 +246,7 @@ namespace EltraCommon.Transport
                     result.Exception = e;
                     tryCount = MaxRetryCount;
                 }
-            } while (tryCount < MaxRetryCount);
+            } while (tryCount < MaxRetryCount && redirectCount < MaxRedirectCount);
             
             return result;
         }
@@ -324,7 +324,7 @@ namespace EltraCommon.Transport
                     ExceptionHandling(e); 
                     tryCount = MaxRetryCount;
                 }
-            } while (tryCount < MaxRetryCount);
+            } while (tryCount < MaxRetryCount && redirectCount < MaxRedirectCount);
 
             return result;
         }
@@ -339,6 +339,7 @@ namespace EltraCommon.Transport
         public async Task<bool> Get(UserIdentity identity, string url, CancellationToken cancelationToken)
         {
             bool result = false;
+            int redirectCount = 0;
 
             ResetSocketError();
 
@@ -356,6 +357,7 @@ namespace EltraCommon.Transport
                         if (response.StatusCode == HttpStatusCode.Redirect)
                         {
                             tryCount = 0;
+                            redirectCount++;
                             MsgLogger.WriteDebug($"{GetType().Name} - Get", $"get - url ='{url}' redirection!");
                         }
                         else if(response.StatusCode == HttpStatusCode.OK)
@@ -367,7 +369,7 @@ namespace EltraCommon.Transport
 
                     tryCount++;
 
-                } while (tryCount < MaxRetryCount);
+                } while (tryCount < MaxRetryCount && redirectCount < MaxRedirectCount);
             }
             catch (HttpRequestException e)
             {
@@ -451,7 +453,7 @@ namespace EltraCommon.Transport
                     ExceptionHandling(e);
                     tryCount = MaxRetryCount;
                 }
-            } while (tryCount < MaxRetryCount && redirectCount < MaxRetryCount);
+            } while (tryCount < MaxRetryCount && redirectCount < MaxRedirectCount);
 
             return result;
         }
@@ -468,6 +470,7 @@ namespace EltraCommon.Transport
             bool result = false;
 
             int tryCount = 0;
+            int redirectCount = 0;
 
             ResetSocketError();
 
@@ -492,6 +495,7 @@ namespace EltraCommon.Transport
                     {
                         MsgLogger.WriteDebug($"{GetType().Name} - Get", $"get - url ='{url}' redirection!");
                         tryCount = 0;
+                        redirectCount++;
                     }
                     else
                     {
@@ -509,7 +513,7 @@ namespace EltraCommon.Transport
                     ExceptionHandling(e);
                     tryCount = MaxRetryCount;
                 }
-            } while (tryCount < MaxRetryCount);
+            } while (tryCount < MaxRetryCount && redirectCount < MaxRedirectCount);
 
             return result;
         }
@@ -648,7 +652,7 @@ namespace EltraCommon.Transport
                     tryCount = MaxRetryCount;
                     result.Exception = e;
                 }
-            } while (tryCount < MaxRetryCount);
+            } while (tryCount < MaxRetryCount && redirectCount < MaxRedirectCount);
 
             return result;
         }
