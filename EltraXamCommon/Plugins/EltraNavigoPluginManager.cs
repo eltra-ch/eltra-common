@@ -412,6 +412,8 @@ namespace EltraXamCommon.Plugins
                                 MsgLogger.WriteDebug($"{GetType().Name} - UpdatePluginCache", $"create instance $ {t.FullName}");
 
                                 var assemblyInstace = pluginAssembly.CreateInstance(t.FullName, false);
+                                string name = pluginAssembly.GetName().Name;
+                                string version = pluginAssembly.GetName().Version.ToString();
 
                                 if (assemblyInstace is IEltraNavigoPluginService pluginService)
                                 {
@@ -421,8 +423,9 @@ namespace EltraXamCommon.Plugins
 
                                     if (FindPluginInCache(payload) == null)
                                     {
-                                        var pluginCacheItem = new EltraPluginCacheItem()
-                                        { FullPath = assemblyPath, HashCode = payload.HashCode, PayloadId = payload.Id, PluginService = pluginService };
+                                        var pluginCacheItem = new EltraPluginCacheItem() { Name = name, FullPath = assemblyPath, 
+                                                                                           HashCode = payload.HashCode, PayloadId = payload.Id, 
+                                                                                           PluginService = pluginService, Version = version };
 
                                         PluginCache.Add(pluginCacheItem);
 

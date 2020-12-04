@@ -2,6 +2,8 @@ namespace EltraXamCommon.Plugins
 {
     public class EltraPluginCacheItem
     {
+        public string Name { get; set; }
+
         public IEltraNavigoPluginService PluginService { get; set; }
 
         public string PayloadId { get; set; }
@@ -9,5 +11,7 @@ namespace EltraXamCommon.Plugins
         public string FullPath { get; set; }
 
         public string HashCode { get; set; }
+
+        public string Version { get; set; }
     }
 }
