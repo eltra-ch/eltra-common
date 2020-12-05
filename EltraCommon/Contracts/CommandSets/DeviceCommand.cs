@@ -74,7 +74,7 @@ namespace EltraCommon.Contracts.CommandSets
         public List<DeviceCommandParameter> Parameters
         {
             get => _parameters ?? (_parameters = new List<DeviceCommandParameter>());
-            private set => _parameters = value;
+            set => _parameters = value;
         }
 
         #endregion
