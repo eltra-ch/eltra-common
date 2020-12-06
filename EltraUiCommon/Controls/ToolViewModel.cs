@@ -36,7 +36,7 @@ namespace EltraUiCommon.Controls
             _updateViewModelsCts = new CancellationTokenSource();
 
             UpdateInterval = defaultUpdateInterval;
-            UpdateViewModels = true;
+            UpdateViewModels = false;
 
             IsSupported = true;
             Persistenced = true;
@@ -151,20 +151,18 @@ namespace EltraUiCommon.Controls
         {
             if (Agent != null)
             {
-                Agent.StatusChanged += OnAgentStatusChanged;
+                foreach(var child in SafeChildrenArray)
+                {
+                    if (child is ToolViewModel toolViewModel)
+                    {
+                        toolViewModel.Agent = Agent;
+                    }
+                }
 
                 if (Agent.Status == AgentStatus.Bound)
                 {
                     Init();
                 }
-            }
-        }
-
-        private void OnAgentStatusChanged(object sender, AgentStatusEventArgs e)
-        {
-            if (e.Status == AgentStatus.Bound)
-            {
-                //Init();
             }
         }
 
