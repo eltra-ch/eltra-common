@@ -297,7 +297,7 @@ namespace EltraUiCommon.Controls
             return result;
         }
 
-        public virtual async Task<bool> StartCommunication()
+        public virtual bool StartCommunication()
         {
             bool result = true;
 
@@ -307,7 +307,7 @@ namespace EltraUiCommon.Controls
 
                 foreach (var child in SafeChildrenArray)
                 {
-                    result = await child.StartCommunication();
+                    result = child.StartCommunication();
 
                     if (!result)
                     {
@@ -323,7 +323,7 @@ namespace EltraUiCommon.Controls
             return result;
         }
 
-        public virtual async Task<bool> StopCommunication()
+        public virtual bool StopCommunication()
         {
             bool result = true;
 
@@ -335,7 +335,7 @@ namespace EltraUiCommon.Controls
 
                 foreach (var child in SafeChildrenArray)
                 {
-                    result = await child.StopCommunication();
+                    result = child.StopCommunication();
 
                     if (!result)
                     {

@@ -17,13 +17,12 @@ namespace EltraUiCommon.Controls
 
         private AgentConnector _agent;
 
-        private readonly ManualResetEvent _stopRequestEvent;
-        private readonly ManualResetEvent _stopped;
-        private readonly ManualResetEvent _running;
         private EltraDevice _device;
         private bool _isOnline;
         private bool _isSetUp;
         private IDeviceVcsFactory _deviceFactory;
+        private Task _updateViewModelsTask;
+        private CancellationTokenSource _updateViewModelsCts;
 
         #endregion
 
@@ -33,9 +32,8 @@ namespace EltraUiCommon.Controls
         {
             const int defaultUpdateInterval = 1000;
 
-            _stopRequestEvent = new ManualResetEvent(false);
-            _stopped = new ManualResetEvent(false);
-            _running = new ManualResetEvent(false);
+            _updateViewModelsTask = Task.CompletedTask;
+            _updateViewModelsCts = new CancellationTokenSource();
 
             UpdateInterval = defaultUpdateInterval;
             UpdateViewModels = true;
@@ -49,9 +47,8 @@ namespace EltraUiCommon.Controls
         {
             const int defaultUpdateInterval = 1000;
 
-            _stopRequestEvent = new ManualResetEvent(false);
-            _stopped = new ManualResetEvent(false);
-            _running = new ManualResetEvent(false);
+            _updateViewModelsTask = Task.CompletedTask;
+            _updateViewModelsCts = new CancellationTokenSource();
 
             UpdateInterval = defaultUpdateInterval;
 
@@ -267,8 +264,6 @@ namespace EltraUiCommon.Controls
         {
             const int updateSessionInterval = 200;
 
-            _running.Set();
-
             while (ShouldRun())
             {
                 try
@@ -289,30 +284,25 @@ namespace EltraUiCommon.Controls
                     await Task.Delay(updateSessionInterval);
                 }
             }
-
-            _stopped.Set();
         }
         
         private bool ShouldRun()
         {
-            return !_stopRequestEvent.WaitOne(0);
+            return !_updateViewModelsCts.IsCancellationRequested;
         }
 
         private bool IsRunning()
         {
-            return _running.WaitOne(0);
+            return !_updateViewModelsTask.IsCompleted;
         }
 
         public void Stop()
         {
-            if (_running.WaitOne(0))
+            if (IsRunning())
             {
-                _stopRequestEvent.Set();
+                _updateViewModelsCts.Cancel();
 
-                _stopped.WaitOne();
-
-                _running.Reset();
-                _stopRequestEvent.Reset();
+                _updateViewModelsTask.Wait();
             }
         }
 
