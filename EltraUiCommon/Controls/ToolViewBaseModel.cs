@@ -21,6 +21,7 @@ namespace EltraUiCommon.Controls
         private bool _isMandatory;
         private bool _isSupported;
         private bool _isNavigable;
+        private bool _isInitialized;
 
         #endregion
 
@@ -29,6 +30,7 @@ namespace EltraUiCommon.Controls
         public ToolViewBaseModel()
         {
             _isNavigable = true;
+            _isInitialized = false;
         }
 
         public ToolViewBaseModel(ToolViewBaseModel parent)
@@ -112,6 +114,8 @@ namespace EltraUiCommon.Controls
             set => SetProperty(ref _isNavigable, value);
         }
 
+        public bool IsInitialized => _isInitialized;
+
         #endregion
 
         #region Events
@@ -145,25 +149,32 @@ namespace EltraUiCommon.Controls
 
         protected virtual void Init(VirtualCommandSet vcs)
         {
-            Vcs = vcs;
-
-            if (Vcs.DeviceStatus == DeviceStatus.Ready)
+            if (vcs != null && (Vcs != vcs || !_isInitialized))
             {
-                foreach (var child in SafeChildrenArray)
+                _isInitialized = false;
+
+                Vcs = vcs;
+
+                if (Vcs.DeviceStatus == DeviceStatus.Ready)
                 {
-                    child.Init(Vcs);
+                    foreach (var child in SafeChildrenArray)
+                    {
+                        child.Init(Vcs);
+                    }
                 }
+
+                Vcs.DeviceStatusChanged += (sender, args) =>
+                {
+                    foreach (var child in SafeChildrenArray)
+                    {
+                        child.Init(Vcs);
+                    }
+                };
+
+                OnInitialized();
+
+                _isInitialized = true;
             }
-
-            Vcs.DeviceStatusChanged += (sender, args) =>
-            {
-                foreach (var child in SafeChildrenArray)
-                {
-                    child.Init(Vcs);
-                }
-            }; 
-
-            OnInitialized();
         }
 
         private void AddChild(ToolViewBaseModel child)
@@ -172,10 +183,12 @@ namespace EltraUiCommon.Controls
             { 
                 Children.Add(child);
 
-                if (Vcs != null && Vcs.DeviceStatus == DeviceStatus.Ready)
-                {
-                    child.Init(Vcs);
-                }
+                Task.Run(()=> {
+                    if (Vcs != null && Vcs.DeviceStatus == DeviceStatus.Ready)
+                    {
+                        child.Init(Vcs);
+                    }
+                });
             }
 
             OnPropertyChanged("Children");

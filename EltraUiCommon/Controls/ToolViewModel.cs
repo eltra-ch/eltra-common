@@ -16,13 +16,17 @@ namespace EltraUiCommon.Controls
         #region Private fields
 
         private AgentConnector _agent;
-
         private EltraDevice _device;
+
         private bool _isOnline;
         private bool _isSetUp;
         private IDeviceVcsFactory _deviceFactory;
         private Task _updateViewModelsTask;
         private CancellationTokenSource _updateViewModelsCts;
+        
+        private Task _updateTask = Task.CompletedTask;
+        private Task _registerUpdateTask = Task.CompletedTask;
+        private Task _unregisterUpdateTask = Task.CompletedTask;
 
         #endregion
 
@@ -51,6 +55,11 @@ namespace EltraUiCommon.Controls
             _updateViewModelsCts = new CancellationTokenSource();
 
             UpdateInterval = defaultUpdateInterval;
+
+            if (parent is ToolViewModel toolViewModel)
+            {
+                Agent = toolViewModel.Agent;
+            }
 
             IsSupported = true;
             Persistenced = true;
@@ -133,6 +142,14 @@ namespace EltraUiCommon.Controls
         #endregion
 
         #region Methods
+
+        protected override void Init(VirtualCommandSet vcs)
+        {
+            _device = vcs.Device;
+            _agent = vcs.Connector;
+
+            base.Init(vcs);
+        }
 
         public virtual void SetUp()
         {
@@ -334,6 +351,101 @@ namespace EltraUiCommon.Controls
             IsOnline = false;
 
             return base.StopUpdate();
+        }
+
+        protected virtual Task RegisterAutoUpdate()
+        {
+            return Task.CompletedTask;
+        }
+
+        private Task RegisterAutoUpdateAsync()
+        {
+            if (_registerUpdateTask.IsCompleted)
+            {
+                _registerUpdateTask = Task.Run(async () => { await RegisterAutoUpdate(); });
+            }
+
+            _registerUpdateTask.Wait(TimeSpan.FromMilliseconds(100));
+
+            return _registerUpdateTask;
+        }
+
+        protected virtual Task UnregisterAutoUpdate()
+        {
+            return Task.CompletedTask;
+        }
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+
+            RegisterAutoUpdateAsync();
+
+            UpdateAllControlsAsync();
+        }
+
+        private Task UnregisterAutoUpdateAsync()
+        {
+            if (_unregisterUpdateTask.IsCompleted)
+            {
+                _unregisterUpdateTask = Task.Run(async () => { await UnregisterAutoUpdate(); });
+            }
+
+            _unregisterUpdateTask.Wait(TimeSpan.FromMilliseconds(100));
+
+            return _unregisterUpdateTask;
+        }
+
+        protected virtual Task UpdateAllControls()
+        {
+            return Task.CompletedTask;
+        }
+
+        private Task UpdateAllControlsAsync()
+        {
+            if (_updateTask.IsCompleted)
+            {
+                _updateTask = Task.Run(async () =>
+                {
+                    await UpdateAllControls();
+                });
+
+                _updateTask.Wait(TimeSpan.FromMilliseconds(100));
+            }
+
+            return _updateTask;
+        }
+
+        public override bool StartCommunication()
+        {
+            RegisterAutoUpdateAsync();
+
+            UpdateAllControlsAsync();
+
+            return base.StartCommunication();
+        }
+
+        public override bool StopCommunication()
+        {
+            UnregisterAutoUpdateAsync();
+
+            return base.StopCommunication();
+        }
+
+        public override Task Show()
+        {
+            RegisterAutoUpdateAsync();
+
+            UpdateAllControlsAsync();
+
+            return base.Show();
+        }
+
+        public override Task Hide()
+        {
+            UnregisterAutoUpdateAsync();
+
+            return base.Hide();
         }
 
         #endregion
