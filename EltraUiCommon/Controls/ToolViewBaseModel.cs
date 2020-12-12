@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using EltraCommon.Contracts.Devices;
 using EltraCommon.Logger;
 using EltraConnector.Agent;
+using EltraCommon.Contracts.Channels;
 
 namespace EltraUiCommon.Controls
 {
@@ -22,6 +23,7 @@ namespace EltraUiCommon.Controls
         private bool _isSupported;
         private bool _isNavigable;
         private bool _isInitialized;
+        private bool _isOnline;
 
         #endregion
 
@@ -116,6 +118,12 @@ namespace EltraUiCommon.Controls
 
         public bool IsInitialized => _isInitialized;
 
+        public bool IsOnline
+        {
+            get => _isOnline;
+            set => SetProperty(ref _isOnline, value);
+        }
+
         #endregion
 
         #region Events
@@ -168,6 +176,19 @@ namespace EltraUiCommon.Controls
                     foreach (var child in SafeChildrenArray)
                     {
                         child.Init(Vcs);
+                    }
+                };
+
+                Vcs.DeviceChannelStatusChanged += (sender, args) =>
+                {
+                    switch(args.Status)
+                    {
+                        case ChannelStatus.Online:
+                            GoingOnline();       
+                            break;
+                        case ChannelStatus.Offline:
+                            GoingOffline();
+                            break;
                     }
                 };
 
@@ -358,6 +379,16 @@ namespace EltraUiCommon.Controls
             }
 
             return result;
+        }
+
+        protected virtual void GoingOnline()
+        {
+            IsOnline = true;
+        }
+
+        protected virtual void GoingOffline()
+        {
+            IsOnline = false;
         }
 
         #endregion

@@ -17,8 +17,7 @@ namespace EltraUiCommon.Controls
 
         private AgentConnector _agent;
         private EltraDevice _device;
-
-        private bool _isOnline;
+                
         private bool _isSetUp;
         private IDeviceVcsFactory _deviceFactory;
         private Task _updateViewModelsTask;
@@ -114,12 +113,6 @@ namespace EltraUiCommon.Controls
             }
         }
 
-        public bool IsOnline
-        {
-            get => _isOnline;
-            set => SetProperty(ref _isOnline, value);
-        }
-		
 		public bool Persistenced { get; set; }
 
         public bool CanSetUp { get => !_isSetUp; }

@@ -5,7 +5,7 @@
 	<LangVersion>7.2</LangVersion>
 	<Company>eltra.ch</Company>
 	<Authors>Dawid Sienkiewicz</Authors>
-	<Configurations>Debug;Release;</Configurations>
+	<Configurations>Debug;Release;Debug - UWP</Configurations>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 	<PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -21,11 +21,15 @@
 	<Product>Eltra.Common</Product>	
 	<Description>Eltra - CANOpen based IoT Framework - SDK</Description>
 	<PackageTags>CANOpen IoT Eltra OPCUA OPC</PackageTags>
-    <Version>1.7.0</Version>
+    <Version>1.7.2</Version>
     <PackageIcon>eltra_logo.png</PackageIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>EltraCommon.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug - UWP|AnyCPU'">
     <DocumentationFile>EltraCommon.xml</DocumentationFile>
   </PropertyGroup>
 
