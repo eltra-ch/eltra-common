@@ -39,6 +39,18 @@ namespace EltraCommon.Contracts.Users
         [DataMember]
         public string Role { get; set; }
 
+        /// <summary>
+        /// Is valid
+        /// </summary>
+        [IgnoreDataMember]
+        public bool IsValid
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(Login) && !string.IsNullOrEmpty(Password);
+            }
+        }
+
         #endregion
     }
 }

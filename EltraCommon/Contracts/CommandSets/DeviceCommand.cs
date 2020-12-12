@@ -15,8 +15,13 @@ namespace EltraCommon.Contracts.CommandSets
     [DataContract]
     public class DeviceCommand
     {
+        /// <summary>
+        /// Default command timeout in miliseconds
+        /// </summary>
+        public const int DefaultTimeout = 10000;
+
         #region Private fields
-        
+
         private List<DeviceCommandParameter> _parameters;
 
         #endregion
@@ -28,6 +33,7 @@ namespace EltraCommon.Contracts.CommandSets
         /// </summary>
         public DeviceCommand()
         {
+            Timeout = DefaultTimeout;
         }
 
         /// <summary>
@@ -66,6 +72,12 @@ namespace EltraCommon.Contracts.CommandSets
         /// </summary>
         [DataMember]
         public ExecCommandStatus Status { get; set; }
+
+        /// <summary>
+        /// Timeout
+        /// </summary>
+        [DataMember]
+        public int Timeout { get; set; }
 
         /// <summary>
         /// Parameter list
