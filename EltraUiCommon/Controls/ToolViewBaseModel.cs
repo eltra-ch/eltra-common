@@ -151,6 +151,19 @@ namespace EltraUiCommon.Controls
             VisibilityChanged?.Invoke(this, EventArgs.Empty);
         }
 
+        private void OnDeviceChannelStatusChanged(ChannelStatus channelStatus)
+        {
+            switch (channelStatus)
+            {
+                case ChannelStatus.Online:
+                    GoingOnline();
+                    break;
+                case ChannelStatus.Offline:
+                    GoingOffline();
+                    break;
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -181,15 +194,9 @@ namespace EltraUiCommon.Controls
 
                 Vcs.DeviceChannelStatusChanged += (sender, args) =>
                 {
-                    switch(args.Status)
-                    {
-                        case ChannelStatus.Online:
-                            GoingOnline();       
-                            break;
-                        case ChannelStatus.Offline:
-                            GoingOffline();
-                            break;
-                    }
+                    var channelStatus = args.Status;
+
+                    OnDeviceChannelStatusChanged(channelStatus);
                 };
 
                 OnInitialized();
