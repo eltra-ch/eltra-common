@@ -42,6 +42,8 @@ namespace EltraCommon.Contracts.CommandSets
         /// <param name="device">{EltraDevice}</param>
         public DeviceCommand(EltraDevice device)
         {
+            Timeout = DefaultTimeout;
+
             Device = device;
         }
 
