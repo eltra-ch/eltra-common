@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using EltraCommon.Logger;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace EltraCommon.Contracts.CommandSets
@@ -64,13 +65,20 @@ namespace EltraCommon.Contracts.CommandSets
         {
             DeviceCommand result = null;
 
-            foreach (var command in Commands)
+            if (!string.IsNullOrEmpty(name))
             {
-                if (command.Name.ToLower() == name.ToLower())
+                foreach (var command in Commands)
                 {
-                    result = command;
-                    break;
+                    if (command.Name.ToLower() == name.ToLower())
+                    {
+                        result = command;
+                        break;
+                    }
                 }
+            }
+            else
+            {
+                MsgLogger.WriteError($"{GetType().Name} - FindCommandByName", $"name not specified!");
             }
 
             return result;
