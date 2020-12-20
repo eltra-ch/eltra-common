@@ -109,7 +109,13 @@ namespace EltraUiCommon.Controls
         {
             var changed = PropertyChanged;
 
-            changed?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            try
+            {
+                changed?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
+            catch(Exception)
+            {
+            }
         }
 
         #endregion

@@ -15,10 +15,10 @@
     <PackageTags>CANOpen IoT Eltra Xamarin</PackageTags>
     <PackageReleaseNotes>Initial release - support for UI plugin system (Eltra framework)</PackageReleaseNotes>
     <PackageProjectUrl>www.eltra.ch</PackageProjectUrl>
-    <Version>1.2.8</Version>
+    <Version>1.2.9</Version>
     <PackageIcon>eltra_logo.png</PackageIcon>
-    <AssemblyVersion>1.2.8.0</AssemblyVersion>
-    <FileVersion>1.2.8.0</FileVersion>
+    <AssemblyVersion>1.2.9.0</AssemblyVersion>
+    <FileVersion>1.2.9.0</FileVersion>
     <Configurations>Debug;Release;Debug - UWP</Configurations>
   </PropertyGroup>
 
@@ -34,12 +34,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Forms9Patch" Version="2.4.8" />
+    <PackageReference Include="Forms9Patch" Version="2.4.9" />
     <PackageReference Include="Prism.Core" Version="8.0.0.1909" />
     <PackageReference Include="Prism.DryIoc.Forms" Version="8.0.0.1909" />
     <PackageReference Include="Prism.Forms" Version="8.0.0.1909" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
-    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1687" />
+    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1821" />
   </ItemGroup>
 
   <ItemGroup>
