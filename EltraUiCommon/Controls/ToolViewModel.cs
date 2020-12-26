@@ -358,8 +358,6 @@ namespace EltraUiCommon.Controls
                 _registerUpdateTask = Task.Run(async () => { await RegisterAutoUpdate(); });
             }
 
-            _registerUpdateTask.Wait(TimeSpan.FromMilliseconds(100));
-
             return _registerUpdateTask;
         }
 
@@ -384,7 +382,6 @@ namespace EltraUiCommon.Controls
                 _unregisterUpdateTask = Task.Run(async () => { await UnregisterAutoUpdate(); });
             }
 
-            _unregisterUpdateTask.Wait(TimeSpan.FromMilliseconds(100));
 
             return _unregisterUpdateTask;
         }
@@ -403,7 +400,6 @@ namespace EltraUiCommon.Controls
                     await UpdateAllControls();
                 });
 
-                _updateTask.Wait(TimeSpan.FromMilliseconds(100));
             }
 
             return _updateTask;
