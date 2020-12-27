@@ -3,7 +3,12 @@
 using EltraCommon.Contracts.CommandSets;
 using EltraCommon.Contracts.Channels;
 using EltraCommon.Contracts.Devices;
-using Newtonsoft.Json;
+using System.Text.Json;
+using EltraCommon.Logger;
+using EltraCommon.Contracts.Users;
+using EltraCommon.ObjectDictionary.DeviceDescription;
+using EltraCommon.Contracts.ToolSet;
+using EltraCommon.Contracts.Parameters;
 
 namespace EltraCommon.Extensions
 {
@@ -19,7 +24,7 @@ namespace EltraCommon.Extensions
         /// <returns></returns>
         public static string ToJson(this EltraDevice device)
         {
-            return JsonConvert.SerializeObject(device);
+            return JsonSerializer.Serialize(device);
         }
 
         /// <summary>
@@ -31,7 +36,7 @@ namespace EltraCommon.Extensions
         {
             if (device == null) throw new ArgumentNullException(nameof(device));
 
-            device = JsonConvert.DeserializeObject<EltraDevice>(json);
+            device = TryDeserializeObject<EltraDevice>(json);
         }
 
         /// <summary>
@@ -41,7 +46,7 @@ namespace EltraCommon.Extensions
         /// <returns></returns>
         public static string ToJson(this ChannelBase channel)
         {
-            return JsonConvert.SerializeObject(channel);
+            return JsonSerializer.Serialize(channel);
         }
 
         /// <summary>
@@ -53,7 +58,7 @@ namespace EltraCommon.Extensions
         {
             if (session == null) throw new ArgumentNullException(nameof(session));
 
-            session = JsonConvert.DeserializeObject<Channel>(json);
+            session = TryDeserializeObject<Channel>(json);
         }
 
         /// <summary>
@@ -63,7 +68,7 @@ namespace EltraCommon.Extensions
         /// <returns></returns>
         public static string ToJson(this EltraDeviceSet sessionDevices)
         {
-            return JsonConvert.SerializeObject(sessionDevices);
+            return JsonSerializer.Serialize(sessionDevices);
         }
 
         /// <summary>
@@ -75,7 +80,7 @@ namespace EltraCommon.Extensions
         {
             if (sessionDevices == null) throw new ArgumentNullException(nameof(sessionDevices));
 
-            sessionDevices = JsonConvert.DeserializeObject<EltraDeviceSet>(json);
+            sessionDevices = TryDeserializeObject<EltraDeviceSet>(json);
         }
 
         /// <summary>
@@ -85,7 +90,79 @@ namespace EltraCommon.Extensions
         /// <returns></returns>
         public static string ToJson(this ExecuteCommand execCommand)
         {
-            return JsonConvert.SerializeObject(execCommand);
+            return JsonSerializer.Serialize(execCommand);
+        }
+
+        /// <summary>
+        /// ToJson
+        /// </summary>
+        /// <param name="identity"></param>
+        /// <returns></returns>
+        public static string ToJson(this UserIdentity identity)
+        {
+            return JsonSerializer.Serialize(identity);
+        }
+
+        /// <summary>
+        /// ToJson
+        /// </summary>
+        /// <param name="payload"></param>
+        /// <returns></returns>
+        public static string ToJson(this DeviceDescriptionPayload payload)
+        {
+            return JsonSerializer.Serialize(payload);
+        }
+
+        /// <summary>
+        /// ToJson
+        /// </summary>
+        /// <param name="payload"></param>
+        /// <returns></returns>
+        public static string ToJson(this DeviceToolPayload payload)
+        {
+            return JsonSerializer.Serialize(payload);
+        }
+
+        /// <summary>
+        /// ToJson
+        /// </summary>
+        /// <param name="update"></param>
+        /// <returns></returns>
+        public static string ToJson(this ParameterUpdate update)
+        {
+            return JsonSerializer.Serialize(update);
+        }
+
+        /// <summary>
+        /// ToJson
+        /// </summary>
+        /// <param name="update"></param>
+        /// <returns></returns>
+        public static string ToJson(this ParameterValueUpdate update)
+        {
+            return JsonSerializer.Serialize(update);
+        }
+
+        /// <summary>
+        /// TryDeserializeObject
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="json"></param>
+        /// <returns></returns>
+        public static T TryDeserializeObject<T>(this string json)
+        {
+            T result = default;
+
+            try
+            {
+                result = JsonSerializer.Deserialize<T>(json);
+            }
+            catch (Exception e)
+            {
+                MsgLogger.Exception($"JsonExtensions - DeserializeFromJson", e);
+            }
+
+            return result;
         }
     }
 }
