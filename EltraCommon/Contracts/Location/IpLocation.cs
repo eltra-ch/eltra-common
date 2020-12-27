@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace EltraCommon.Contracts.Location
 {
@@ -62,6 +63,7 @@ namespace EltraCommon.Contracts.Location
         /// Is IP address private
         /// </summary>
         [IgnoreDataMember]
+        [JsonIgnore]
         public bool IsPrivateAddress { get; set; }
 
         private void OnIpChanged()

@@ -5,6 +5,7 @@ using System.Xml;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Common;
 using EltraCommon.Logger;
 using EltraCommon.Contracts.Devices;
+using System.Text.Json.Serialization;
 
 #pragma warning disable 1591
 
@@ -35,9 +36,11 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         #region Properties
 
         [IgnoreDataMember]
+        [JsonIgnore]
         public EltraDevice Device { get; set; }
 
         [IgnoreDataMember]
+        [JsonIgnore]
         protected XmlNode Source => _source;
 
         [DataMember]

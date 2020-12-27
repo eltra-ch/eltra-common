@@ -13,6 +13,7 @@ using EltraCommon.ObjectDictionary.DeviceDescription;
 using System.Threading.Tasks;
 using EltraCommon.Contracts.Interfaces;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace EltraCommon.Contracts.Devices
 {
@@ -52,6 +53,7 @@ namespace EltraCommon.Contracts.Devices
         /// Connector
         /// </summary>
         [IgnoreDataMember]
+        [JsonIgnore]
         public ICloudConnector CloudConnector { get; set; }
 
         #endregion
@@ -122,6 +124,7 @@ namespace EltraCommon.Contracts.Devices
         /// Channel local host
         /// </summary>
         [IgnoreDataMember]
+        [JsonIgnore]
         public string ChannelLocalHost { get; set; }
 
         /// <summary>
@@ -201,6 +204,7 @@ namespace EltraCommon.Contracts.Devices
         /// ObjectDictionary - optional
         /// </summary>
         [IgnoreDataMember]
+        [JsonIgnore]
         public DeviceObjectDictionary ObjectDictionary { get; set; }
 
         /// <summary>
@@ -213,6 +217,7 @@ namespace EltraCommon.Contracts.Devices
         /// DeviceDescription - optional
         /// </summary>
         [IgnoreDataMember]
+        [JsonIgnore]
         public IDeviceDescription DeviceDescription
         {
             get => _deviceDescription;
@@ -230,6 +235,7 @@ namespace EltraCommon.Contracts.Devices
         /// ProductPicture - optional
         /// </summary>
         [IgnoreDataMember]
+        [JsonIgnore]
         public string ProductPicture { get; set; }
 
         #endregion

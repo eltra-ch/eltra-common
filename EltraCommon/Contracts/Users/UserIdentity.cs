@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace EltraCommon.Contracts.Users
 {
@@ -43,6 +44,7 @@ namespace EltraCommon.Contracts.Users
         /// Is valid
         /// </summary>
         [IgnoreDataMember]
+        [JsonIgnore]
         public bool IsValid
         {
             get

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using EltraCommon.Contracts.Channels.Events;
 using EltraCommon.Contracts.Devices;
 using EltraCommon.Contracts.Location;
@@ -116,6 +117,7 @@ namespace EltraCommon.Contracts.Channels
         /// <summary>
         /// Update interval
         /// </summary>
+        [JsonIgnore]
         [IgnoreDataMember]
         public uint UpdateInterval { get; set; }
 

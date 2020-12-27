@@ -1,6 +1,7 @@
 ﻿using EltraCommon.Contracts.Devices;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace EltraCommon.Contracts.ToolSet
 {
@@ -47,6 +48,7 @@ namespace EltraCommon.Contracts.ToolSet
         /// Device - optional
         /// </summary>
         [IgnoreDataMember]
+        [JsonIgnore]
         public EltraDevice Device { get; set; }
 
         /// <summary>

@@ -6,6 +6,7 @@ using EltraCommon.Logger;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.DataTypes;
 using EltraCommon.Contracts.Devices;
 using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace EltraCommon.Contracts.CommandSets
 {
@@ -61,6 +62,7 @@ namespace EltraCommon.Contracts.CommandSets
         /// Device - optional
         /// </summary>
         [IgnoreDataMember]
+        [JsonIgnore]
         public EltraDevice Device { get; set; }
 
         /// <summary>

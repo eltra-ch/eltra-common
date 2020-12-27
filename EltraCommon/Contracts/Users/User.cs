@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace EltraCommon.Contracts.Users
 {
@@ -36,6 +37,7 @@ namespace EltraCommon.Contracts.Users
         /// UniqueId
         /// </summary>
         [IgnoreDataMember]
+        [JsonIgnore]
         public string UniqueId { get; set; }
 
         /// <summary>
