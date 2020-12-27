@@ -159,7 +159,7 @@ namespace EltraCommon.Extensions
             }
             catch (Exception e)
             {
-                MsgLogger.Exception($"JsonExtensions - DeserializeFromJson", e);
+                MsgLogger.Exception($"JsonExtensions - TryDeserializeObject", e);
             }
 
             return result;

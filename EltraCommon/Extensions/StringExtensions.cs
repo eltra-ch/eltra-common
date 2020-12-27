@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 #pragma warning disable 1591
 
@@ -6,6 +7,34 @@ namespace EltraCommon.Extensions
 {
     public static class StringExtensions
     {
+        public static string ToBase64(this string text)
+        {
+            string result = string.Empty;
+
+            if (!string.IsNullOrEmpty(text))
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(text);
+
+                result = Convert.ToBase64String(bytes);
+            }
+
+            return result;
+        }
+
+        public static string FromBase64(this string base64)
+        {
+            string result = string.Empty;
+
+            if (!string.IsNullOrEmpty(base64))
+            {
+                var bytes = Convert.FromBase64String(base64);
+
+                result = Encoding.UTF8.GetString(bytes);
+            }
+
+            return result;
+        }
+
         public static bool IsPhoneNumber(this string phoneNumber)
         {
             const int RegionalPhoneLength = 9;
