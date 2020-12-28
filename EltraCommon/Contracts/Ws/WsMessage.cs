@@ -15,8 +15,20 @@ namespace EltraCommon.Contracts.Ws
         /// </summary>
         public WsMessage()
         {
+            Header = "366B0F3";
             Timestamp = DateTime.Now;
         }
+
+        /// <summary>
+        /// Header
+        /// </summary>
+        public string Header { get; set; }
+
+        /// <summary>
+        /// User authorization data
+        /// </summary>
+        [DataMember]
+        public UserIdentity Identity { get; set; }
 
         /// <summary>
         /// ChannelName
@@ -43,10 +55,10 @@ namespace EltraCommon.Contracts.Ws
         public DateTime Timestamp { get; set; }
 
         /// <summary>
-        /// User authorization data
+        /// Checksum
         /// </summary>
         [DataMember]
-        public UserIdentity Identity { get; set; }
+        public string Checksum { get; set; }
 
         /// <summary>
         /// Equals
