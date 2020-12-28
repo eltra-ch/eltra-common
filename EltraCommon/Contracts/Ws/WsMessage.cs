@@ -22,6 +22,7 @@ namespace EltraCommon.Contracts.Ws
         /// <summary>
         /// Header
         /// </summary>
+        [DataMember]
         public string Header { get; set; }
 
         /// <summary>
