@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using System.Text;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.DataTypes;
 
 namespace EltraCommon.Contracts.CommandSets
@@ -177,7 +178,13 @@ namespace EltraCommon.Contracts.CommandSets
                     } break;
                     case TypeCode.String:
                     {
-                        value = (T)(object)Value;
+                        var byteArray = Convert.FromBase64String(Value);
+
+                        if (byteArray.Length > 0)
+                        {
+                            value = (T)(object)Encoding.UTF8.GetString(byteArray);
+                        }
+
                         result = true;
                     } break;
                     case TypeCode.Double:
@@ -337,7 +344,9 @@ namespace EltraCommon.Contracts.CommandSets
 
                 DataType = new DataType { Type = TypeCode.String, SizeInBytes = (uint)text.Length };
 
-                Value = text;
+                var byteArray = Encoding.UTF8.GetBytes(text);
+
+                Value = Convert.ToBase64String(byteArray);
             }
             else if (typeof(T) == typeof(byte[]))
             {
