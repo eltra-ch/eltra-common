@@ -122,6 +122,7 @@ namespace EltraUiCommon.Controls
         #region Events
 
         public event EventHandler DeviceInitialized;
+        public event EventHandler RefreshRequested;
 
         #endregion
 
@@ -130,6 +131,11 @@ namespace EltraUiCommon.Controls
         private void OnDeviceInitialized()
         {
             DeviceInitialized?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void OnRefresh()
+        {
+            RefreshRequested?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion

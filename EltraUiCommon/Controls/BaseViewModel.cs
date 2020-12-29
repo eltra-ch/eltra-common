@@ -1,5 +1,6 @@
 ﻿using EltraCommon.Logger;
 using EltraUiCommon.Framework;
+using EltraUiCommon.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -72,21 +73,12 @@ namespace EltraUiCommon.Controls
                 {
                     backingStore = value;
 
-                    if (_invokeOnMainThread != null)
-                    {
-                        _invokeOnMainThread.BeginInvokeOnMainThread(() =>
-                        {
-                            onChanged?.Invoke();
-
-                            OnPropertyChanged(propertyName);
-                        });
-                    }
-                    else
+                    ThreadHelper.RunOnMainThread(() =>
                     {
                         onChanged?.Invoke();
 
                         OnPropertyChanged(propertyName);
-                    }
+                    });
 
                     result = true;
                 }
