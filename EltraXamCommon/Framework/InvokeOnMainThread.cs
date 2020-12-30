@@ -7,7 +7,7 @@ namespace EltraXamCommon.Framework
     {
         public void BeginInvokeOnMainThread(Action action)
         {
-            Xamarin.Forms.Device.InvokeOnMainThreadAsync(action);    
+            Xamarin.Forms.Device.BeginInvokeOnMainThread(action);    
         }
     }
 }
