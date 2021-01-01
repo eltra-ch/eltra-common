@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EltraCommon.Threads;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,6 +30,19 @@ namespace EltraCommon.Extensions
             }
 
             return task.Result;
+        }
+
+        /// <summary>
+        /// UseWaitAsync
+        /// </summary>
+        /// <param name="semaphore"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public static async Task<IDisposable> UseWaitAsync(this SemaphoreSlim semaphore, CancellationToken token = default(CancellationToken))
+        {
+            await semaphore.WaitAsync(token).ConfigureAwait(false);
+
+            return new SemaphoreSlimReleaseWrapper(semaphore);
         }
     }
 }
