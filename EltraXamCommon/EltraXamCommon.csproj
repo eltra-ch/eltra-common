@@ -8,17 +8,17 @@
     <Company>eltra.ch</Company>
     <Product>Eltra.Xam.Common</Product>
     <Description>Eltra - CANOpen based IoT Framework - SDK - Xamarin UI</Description>
-    <Copyright>Dawid Sienkiewicz, (c) 2020</Copyright>
+    <Copyright>Dawid Sienkiewicz, (c) 2020-2021</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RepositoryUrl>https://github.com/eltra-ch/eltra-common</RepositoryUrl>
     <RepositoryType>GIT</RepositoryType>
     <PackageTags>CANOpen IoT Eltra Xamarin</PackageTags>
     <PackageReleaseNotes>Initial release - support for UI plugin system (Eltra framework)</PackageReleaseNotes>
     <PackageProjectUrl>www.eltra.ch</PackageProjectUrl>
-    <Version>1.3.8</Version>
+    <Version>1.3.9</Version>
     <PackageIcon>eltra_logo.png</PackageIcon>
-    <AssemblyVersion>1.3.8.0</AssemblyVersion>
-    <FileVersion>1.3.8.0</FileVersion>
+    <AssemblyVersion>1.3.9.0</AssemblyVersion>
+    <FileVersion>1.3.9.0</FileVersion>
     <Configurations>Debug;Release;Debug - UWP</Configurations>
   </PropertyGroup>
 

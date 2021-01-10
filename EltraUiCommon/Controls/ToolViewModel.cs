@@ -20,12 +20,13 @@ namespace EltraUiCommon.Controls
                 
         private bool _isSetUp;
         private IDeviceVcsFactory _deviceFactory;
+        
         private Task _updateViewModelsTask;
         private CancellationTokenSource _updateViewModelsCts;
         
-        private Task _updateTask = Task.CompletedTask;
-        private Task _registerUpdateTask = Task.CompletedTask;
-        private Task _unregisterUpdateTask = Task.CompletedTask;
+        private DateTime _updateTaskTimestamp;
+        private Task _registerUpdateTask;
+        private Task _unregisterUpdateTask;
 
         #endregion
 
@@ -34,9 +35,8 @@ namespace EltraUiCommon.Controls
         public ToolViewModel()
         {
             const int defaultUpdateInterval = 1000;
-
-            _updateViewModelsTask = Task.CompletedTask;
-            _updateViewModelsCts = new CancellationTokenSource();
+            
+            InitTasks();
 
             UpdateInterval = defaultUpdateInterval;
             UpdateViewModels = false;
@@ -50,8 +50,7 @@ namespace EltraUiCommon.Controls
         {
             const int defaultUpdateInterval = 1000;
 
-            _updateViewModelsTask = Task.CompletedTask;
-            _updateViewModelsCts = new CancellationTokenSource();
+            InitTasks();
 
             UpdateInterval = defaultUpdateInterval;
 
@@ -142,8 +141,19 @@ namespace EltraUiCommon.Controls
 
         #region Methods
 
+        private void InitTasks()
+        {
+            _updateTaskTimestamp = DateTime.MinValue;
+            _updateViewModelsTask = Task.CompletedTask;
+            _updateViewModelsCts = new CancellationTokenSource();
+            _registerUpdateTask = Task.CompletedTask;
+            _unregisterUpdateTask = Task.CompletedTask;
+        }
+
         protected override void Init(VirtualCommandSet vcs)
         {
+            InitTasks();
+
             _device = vcs.Device;
             _agent = vcs.Connector;
 
@@ -310,13 +320,15 @@ namespace EltraUiCommon.Controls
             return !_updateViewModelsTask.IsCompleted;
         }
 
-        public void Stop()
+        private void Stop()
         {
             if (IsRunning())
             {
                 _updateViewModelsCts.Cancel();
 
                 _updateViewModelsTask.Wait();
+                _registerUpdateTask.Wait();
+                _unregisterUpdateTask.Wait();
             }
         }
 
@@ -359,9 +371,14 @@ namespace EltraUiCommon.Controls
 
         private Task RegisterAutoUpdateAsync()
         {
-            if (_registerUpdateTask.IsCompleted)
+            const int minWaitTime = 10;
+
+            if (_registerUpdateTask.Wait(minWaitTime))
             {
-                _registerUpdateTask = Task.Run(async () => { await RegisterAutoUpdate(); });
+                _registerUpdateTask = Task.Run(async () => 
+                { 
+                    await RegisterAutoUpdate(); 
+                });
             }
 
             return _registerUpdateTask;
@@ -383,11 +400,12 @@ namespace EltraUiCommon.Controls
 
         private Task UnregisterAutoUpdateAsync()
         {
-            if (_unregisterUpdateTask.IsCompleted)
+            const int minWaitTime = 10;
+
+            if (_unregisterUpdateTask.Wait(minWaitTime))
             {
                 _unregisterUpdateTask = Task.Run(async () => { await UnregisterAutoUpdate(); });
             }
-
 
             return _unregisterUpdateTask;
         }
@@ -399,16 +417,20 @@ namespace EltraUiCommon.Controls
 
         private Task UpdateAllControlsAsync()
         {
-            if (_updateTask.IsCompleted)
+            const int minWaitTime = 100;
+            const double minUpdateDelayInSec = 3;
+
+            if ((DateTime.Now - _updateTaskTimestamp) > TimeSpan.FromSeconds(minUpdateDelayInSec) && _updateViewModelsTask.Wait(minWaitTime))
             {
-                _updateTask = Task.Run(async () =>
+                _updateTaskTimestamp = DateTime.Now;
+
+                _updateViewModelsTask = Task.Run(async () =>
                 {
                     await UpdateAllControls();
                 });
-
             }
 
-            return _updateTask;
+            return _updateViewModelsTask;
         }
 
         public override bool StartCommunication()

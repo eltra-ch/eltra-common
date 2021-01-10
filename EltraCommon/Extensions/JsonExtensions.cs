@@ -155,7 +155,10 @@ namespace EltraCommon.Extensions
 
             try
             {
-                result = JsonSerializer.Deserialize<T>(json);
+                if (!string.IsNullOrEmpty(json))
+                {
+                    result = JsonSerializer.Deserialize<T>(json);
+                }
             }
             catch (Exception e)
             {
