@@ -8,7 +8,7 @@ namespace EltraCommon.Contracts.CommandSets
     /// DeviceCommandSet
     /// </summary>
     [DataContract]
-    public class DeviceCommandSet
+    public class DeviceCommandList
     {
         #region Private fields
 
@@ -21,7 +21,7 @@ namespace EltraCommon.Contracts.CommandSets
         /// <summary>
         /// DeviceCommandSet
         /// </summary>
-        public DeviceCommandSet()
+        public DeviceCommandList()
         {
             Header = DefaultHeader;
         }

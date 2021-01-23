@@ -7,14 +7,14 @@ namespace EltraCommon.Contracts.Parameters
     /// ParameterValueUpdateSet
     /// </summary>
     [DataContract]
-    public class ParameterValueUpdateSet
+    public class ParameterValueUpdateList
     {
         private List<ParameterValueUpdate> _items;
 
         /// <summary>
         /// ParameterValueUpdateSet
         /// </summary>
-        public ParameterValueUpdateSet()
+        public ParameterValueUpdateList()
         {
             Header = DefaultHeader;
         }

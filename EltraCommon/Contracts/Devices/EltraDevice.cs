@@ -26,7 +26,7 @@ namespace EltraCommon.Contracts.Devices
         #region Private fields
 
         private DeviceVersion _version;
-        private DeviceCommandSet _commandSet;
+        private DeviceCommandList _commandSet;
         private DeviceToolSet _toolSet;
         private DeviceIdentification _deviceIdentification;
         private DeviceStatus _status;
@@ -176,7 +176,7 @@ namespace EltraCommon.Contracts.Devices
         /// CommandSet
         /// </summary>
         [DataMember]
-        public DeviceCommandSet CommandSet => _commandSet ?? (_commandSet = new DeviceCommandSet());
+        public DeviceCommandList CommandSet => _commandSet ?? (_commandSet = new DeviceCommandList());
 
         /// <summary>
         /// ToolSet
