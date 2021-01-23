@@ -20,16 +20,30 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
 
         public DeviceDescriptionPayload()
         {
+            Header = DefaultHeader;
         }
 
         public DeviceDescriptionPayload(EltraDevice device)
         {
+            Header = DefaultHeader;
+
             Init(device);
         }
 
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// DefaultHeader
+        /// </summary>
+        public static string DefaultHeader = "AIP5";
+
+        /// <summary>
+        /// Header
+        /// </summary>
+        [DataMember]
+        public string Header { get; set; }
 
         [DataMember]
         public string ChannelId { get; set; }

@@ -2,6 +2,7 @@
 using EltraCommon.Contracts.Devices;
 using EltraCommon.Contracts.ToolSet;
 using EltraCommon.Contracts.Users;
+using EltraCommon.Extensions;
 using EltraCommon.Helpers;
 using EltraCommon.Logger;
 using EltraCommon.Transport;
@@ -169,7 +170,7 @@ namespace EltraXamCommon.Plugins
 
                 if (!string.IsNullOrEmpty(json))
                 {
-                    var payload = JsonConvert.DeserializeObject<DeviceToolPayload>(json);
+                    var payload = json.TryDeserializeObject<DeviceToolPayload>();
 
                     if (payload != null)
                     {

@@ -16,27 +16,43 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
         public ParameterValue()
         {
+            Header = DefaultHeader;
         }
 
         public ParameterValue(byte[] data)
         {
+            Header = DefaultHeader;
             Value = Convert.ToBase64String(data, Base64FormattingOptions.None);
         }
 
         public ParameterValue(ParameterValue parameterValue)
         {
+            Header = DefaultHeader;
             Value = parameterValue.Value;
         }
 
         public ParameterValue(TypeCode type, string defaultValue)
         {
+            Header = DefaultHeader;
             SetDefaultValue(type, defaultValue);
         }
 
         public ParameterValue(DataType type, string defaultValue)
         {
+            Header = DefaultHeader;
             SetDefaultValue(type, defaultValue);
         }
+
+        /// <summary>
+        /// DefaultHeader
+        /// </summary>
+        public static string DefaultHeader = "AJQ7";
+
+        /// <summary>
+        /// Header
+        /// </summary>
+        [DataMember]
+        public string Header { get; set; }
 
         [DataMember]
         public string Value

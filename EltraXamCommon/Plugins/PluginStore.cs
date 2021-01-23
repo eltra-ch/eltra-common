@@ -10,6 +10,28 @@ namespace EltraXamCommon.Plugins
     [DataContract]
     internal class PluginStore
     {
+        #region Constructors
+
+        public PluginStore()
+        {
+            Header = DefaultHeader;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// DefaultHeader
+        /// </summary>
+        public static string DefaultHeader = "AXR7";
+
+        /// <summary>
+        /// Header
+        /// </summary>
+        [DataMember]
+        public string Header { get; set; }
+
         private List<PluginStoreItem> _items;
 
         public string LocalPath { get; set; }
@@ -18,6 +40,17 @@ namespace EltraXamCommon.Plugins
         {
             get => Path.Combine(LocalPath, ".pluginStore");
         }
+
+        [DataMember]
+        public List<PluginStoreItem> Items
+        {
+            get => _items ?? (_items = new List<PluginStoreItem>());
+            set => _items = value;
+        }
+
+        #endregion
+
+        #region Methods
 
         public void Purge()
         {
@@ -103,13 +136,6 @@ namespace EltraXamCommon.Plugins
             return result;
         }
 
-        [DataMember]
-        public List<PluginStoreItem> Items 
-        {
-            get => _items ?? (_items = new List<PluginStoreItem>());
-            set => _items = value;
-        }
-
         internal string GetAssemblyFile(string pluginId)
         {
             string result = string.Empty;
@@ -133,5 +159,7 @@ namespace EltraXamCommon.Plugins
 
             return result;
         }
+
+        #endregion
     }
 }

@@ -12,6 +12,25 @@ namespace EltraCommon.Contracts.Parameters
         private List<ParameterValueUpdate> _items;
 
         /// <summary>
+        /// ParameterValueUpdateSet
+        /// </summary>
+        public ParameterValueUpdateSet()
+        {
+            Header = DefaultHeader;
+        }
+
+        /// <summary>
+        /// DefaultHeader
+        /// </summary>
+        public static string DefaultHeader = "AC12";
+
+        /// <summary>
+        /// Header
+        /// </summary>
+        [DataMember]
+        public string Header { get; set; }
+
+        /// <summary>
         /// Items
         /// </summary>
         [DataMember]

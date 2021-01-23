@@ -16,7 +16,30 @@ namespace EltraCommon.Contracts.CommandSets
 
         #endregion
 
+        #region Constructors
+
+        /// <summary>
+        /// DeviceCommandSet
+        /// </summary>
+        public DeviceCommandSet()
+        {
+            Header = DefaultHeader;
+        }
+
+        #endregion
+
         #region Properties
+
+        /// <summary>
+        /// DefaultHeader
+        /// </summary>
+        public static string DefaultHeader = "AOP5";
+
+        /// <summary>
+        /// Header
+        /// </summary>
+        [DataMember]
+        public string Header { get; set; }
 
         /// <summary>
         /// Commands list

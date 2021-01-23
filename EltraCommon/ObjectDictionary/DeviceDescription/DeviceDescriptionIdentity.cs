@@ -9,6 +9,25 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
     public class DeviceDescriptionIdentity
     {
         /// <summary>
+        /// DeviceDescriptionIdentity
+        /// </summary>
+        public DeviceDescriptionIdentity()
+        {
+            Header = DefaultHeader;
+        }
+
+        /// <summary>
+        /// DefaultHeader
+        /// </summary>
+        public static string DefaultHeader = "AIP5";
+
+        /// <summary>
+        /// Header
+        /// </summary>
+        [DataMember]
+        public string Header { get; set; }
+
+        /// <summary>
         /// Hash code encoding algorithm
         /// </summary>
         [DataMember]

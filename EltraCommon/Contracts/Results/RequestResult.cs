@@ -13,10 +13,22 @@ namespace EltraCommon.Contracts.Results
         /// </summary>
         public RequestResult()
         {
+            Header = DefaultHeader;
             Result = true;
             Message = "Success";
             ErrorCode = ErrorCodes.Success;
         }
+
+        /// <summary>
+        /// DefaultHeader
+        /// </summary>
+        public static string DefaultHeader = "AZF7";
+
+        /// <summary>
+        /// Header
+        /// </summary>
+        [DataMember]
+        public string Header { get; set; }
 
         /// <summary>
         /// Result

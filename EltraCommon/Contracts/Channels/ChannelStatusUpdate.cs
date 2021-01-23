@@ -9,6 +9,25 @@ namespace EltraCommon.Contracts.Channels
     public class ChannelStatusUpdate
     {
         /// <summary>
+        /// ChannelStatusUpdate
+        /// </summary>
+        public ChannelStatusUpdate()
+        {
+            Header = DefaultHeader;
+        }
+
+        /// <summary>
+        /// DefaultHeader
+        /// </summary>
+        public static string DefaultHeader = "ACF5";
+
+        /// <summary>
+        /// Header
+        /// </summary>
+        [DataMember]
+        public string Header { get; set; }
+
+        /// <summary>
         /// Channel id
         /// </summary>
         [DataMember]

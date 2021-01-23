@@ -157,12 +157,36 @@ namespace EltraCommon.Extensions
             {
                 if (!string.IsNullOrEmpty(json))
                 {
-                    result = JsonSerializer.Deserialize<T>(json);
+                    string headerIdentification = string.Empty;
+
+                    headerIdentification = GetClassIdentification<T>();
+
+                    if (json.Contains(headerIdentification))
+                    {
+                        result = JsonSerializer.Deserialize<T>(json);
+                    }
                 }
             }
             catch (Exception e)
             {
                 MsgLogger.Exception($"JsonExtensions - TryDeserializeObject", e);
+            }
+
+            return result;
+        }
+
+        private static string GetClassIdentification<T>()
+        {
+            string result = string.Empty;
+            
+            var instance = (T)Activator.CreateInstance(typeof(T));
+            var type = instance?.GetType();
+            var headerProperty = type?.GetProperty("Header");
+            var headerValue = headerProperty?.GetValue(instance);
+
+            if (headerValue != null)
+            {
+                result = Convert.ToString(headerValue);
             }
 
             return result;

@@ -10,6 +10,25 @@ namespace EltraCommon.Contracts.History
     public class ParameterValueHistoryStatistics
     {
         /// <summary>
+        /// ParameterValueHistoryStatistics
+        /// </summary>
+        public ParameterValueHistoryStatistics()
+        {
+            Header = DefaultHeader;
+        }
+
+        /// <summary>
+        /// DefaultHeader
+        /// </summary>
+        public static string DefaultHeader = "AJQ7";
+
+        /// <summary>
+        /// Header
+        /// </summary>
+        [DataMember]
+        public string Header { get; set; }
+
+        /// <summary>
         /// EntriesCount
         /// </summary>
         [DataMember]

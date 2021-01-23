@@ -41,6 +41,8 @@ namespace EltraCommon.Contracts.Devices
         /// </summary>
         public EltraDevice()
         {
+            Header = DefaultHeader;
+
             Modified = DateTime.Now;
             Created = DateTime.Now;
         }
@@ -113,6 +115,17 @@ namespace EltraCommon.Contracts.Devices
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// DefaultHeader
+        /// </summary>
+        public static string DefaultHeader = "ALR8";
+
+        /// <summary>
+        /// Header
+        /// </summary>
+        [DataMember]
+        public string Header { get; set; }
 
         /// <summary>
         /// ChannelId

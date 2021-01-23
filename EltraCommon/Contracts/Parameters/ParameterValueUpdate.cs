@@ -10,6 +10,25 @@ namespace EltraCommon.Contracts.Parameters
     public class ParameterValueUpdate
     {
         /// <summary>
+        /// ParameterValueUpdate
+        /// </summary>
+        public ParameterValueUpdate()
+        {
+            Header = DefaultHeader;
+        }
+
+        /// <summary>
+        /// DefaultHeader
+        /// </summary>
+        public static string DefaultHeader = "ACB6";
+
+        /// <summary>
+        /// Header
+        /// </summary>
+        [DataMember]
+        public string Header { get; set; }
+
+        /// <summary>
         /// ChannelId
         /// </summary>
         [DataMember]

@@ -15,6 +15,7 @@ namespace EltraCommon.Contracts.ToolSet
         /// </summary>
         public DeviceToolPayload()
         {
+            Header = DefaultHeader;
             Modified = DateTime.MinValue;
             Created = DateTime.MinValue;
         }
@@ -22,6 +23,17 @@ namespace EltraCommon.Contracts.ToolSet
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// DefaultHeader
+        /// </summary>
+        public static string DefaultHeader = "ASP4";
+
+        /// <summary>
+        /// Header
+        /// </summary>
+        [DataMember]
+        public string Header { get; set; }
 
         /// <summary>
         /// Channel Id

@@ -34,6 +34,7 @@ namespace EltraCommon.Contracts.CommandSets
         /// </summary>
         public DeviceCommand()
         {
+            Header = DefaultHeader;
             Timeout = DefaultTimeout;
         }
 
@@ -43,14 +44,25 @@ namespace EltraCommon.Contracts.CommandSets
         /// <param name="device">{EltraDevice}</param>
         public DeviceCommand(EltraDevice device)
         {
+            Header = DefaultHeader;
             Timeout = DefaultTimeout;
-
             Device = device;
         }
 
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// DefaultHeader
+        /// </summary>
+        public static string DefaultHeader = "ARP9";
+
+        /// <summary>
+        /// Header
+        /// </summary>
+        [DataMember]
+        public string Header { get; set; }
 
         /// <summary>
         /// Command Id

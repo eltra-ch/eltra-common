@@ -35,12 +35,24 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         public Parameter(EltraDevice device, XmlNode source)
             : base(device, source)
         {
+            Header = DefaultHeader;
             DateTimeFormat = "dd MMM HH:mm:ss";
         }
 
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// DefaultHeader
+        /// </summary>
+        public static string DefaultHeader = "AGG7";
+
+        /// <summary>
+        /// Header
+        /// </summary>
+        [DataMember]
+        public string Header { get; set; }
 
         [DataMember]
         public byte SubIndex { get; set; }

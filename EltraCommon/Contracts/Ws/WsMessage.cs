@@ -15,9 +15,14 @@ namespace EltraCommon.Contracts.Ws
         /// </summary>
         public WsMessage()
         {
-            Header = "366B0F3";
+            Header = DefaultHeader;
             Timestamp = DateTime.Now;
         }
+
+        /// <summary>
+        /// DefaultHeader
+        /// </summary>
+        public static string DefaultHeader = "366B0F3";
 
         /// <summary>
         /// Header

@@ -32,6 +32,8 @@ namespace EltraCommon.Contracts.Channels
         /// </summary>
         public Channel()
         {
+            Header = DefaultHeader;
+
             Modified = DateTime.Now;
             Created = DateTime.Now;
 
@@ -47,6 +49,8 @@ namespace EltraCommon.Contracts.Channels
         /// <param name="channelBase"></param>
         public Channel(ChannelBase channelBase)
         {
+            Header = DefaultHeader;
+
             Modified = DateTime.Now;
             Created = DateTime.Now;
             Status = ChannelStatus.Offline;
@@ -75,6 +79,17 @@ namespace EltraCommon.Contracts.Channels
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// DefaultHeader
+        /// </summary>
+        public static string DefaultHeader = "AMA2";
+
+        /// <summary>
+        /// Header
+        /// </summary>
+        [DataMember]
+        public string Header { get; set; }
 
         /// <summary>
         /// Channel User Name

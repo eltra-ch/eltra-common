@@ -9,6 +9,24 @@ namespace EltraCommon.Contracts.Channels
     public class ChannelIdentification
     {
         /// <summary>
+        /// ChannelIdentification
+        /// </summary>
+        public ChannelIdentification()
+        {
+            Header = DefaultHeader;
+        }
+
+        /// <summary>
+        /// DefaultHeader
+        /// </summary>
+        public static string DefaultHeader = "AKR3";
+
+        /// <summary>
+        /// Header
+        /// </summary>
+        [DataMember]
+        public string Header { get; set; }
+        /// <summary>
         /// Id
         /// </summary>
         [DataMember]

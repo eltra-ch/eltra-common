@@ -10,7 +10,26 @@ namespace EltraCommon.Contracts.Users
     [DataContract]
     public class UserIdentity
     {
+        /// <summary>
+        /// UserIdentity
+        /// </summary>
+        public UserIdentity()
+        {
+            Header = DefaultHeader;
+        }
+
         #region Properties
+
+        /// <summary>
+        /// DefaultHeader
+        /// </summary>
+        public static string DefaultHeader = "ABA0";
+
+        /// <summary>
+        /// Header
+        /// </summary>
+        [DataMember]
+        public string Header { get; set; }
 
         /// <summary>
         /// Login

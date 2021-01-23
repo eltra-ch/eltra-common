@@ -9,7 +9,36 @@ namespace EltraCommon.Contracts.CommandSets
     [DataContract]
     public class ExecuteCommand
     {
+        #region Private fields
+
         private DeviceCommand _command;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// ExecuteCommand
+        /// </summary>
+        public ExecuteCommand()
+        {
+            Header = DefaultHeader;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// DefaultHeader
+        /// </summary>
+        public static string DefaultHeader = "ACD1";
+
+        /// <summary>
+        /// Header
+        /// </summary>
+        [DataMember]
+        public string Header { get; set; }
 
         /// <summary>
         /// CommandId
@@ -74,5 +103,7 @@ namespace EltraCommon.Contracts.CommandSets
         /// </summary>
         [DataMember]
         public DateTime Modified { get; set; }
+        
+        #endregion
     }
 }
