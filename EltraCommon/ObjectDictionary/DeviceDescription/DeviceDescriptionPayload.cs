@@ -37,7 +37,7 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "AIP5";
+        public static string DefaultHeader = "AYR2";
 
         /// <summary>
         /// Header

@@ -32,7 +32,7 @@ namespace EltraCommon.Contracts.Devices
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "ALR8";
+        public static string DefaultHeader = "AWR9";
 
         /// <summary>
         /// Header
