@@ -161,9 +161,20 @@ namespace EltraCommon.Extensions
 
                     headerIdentification = GetClassIdentification<T>();
 
-                    if (json.Contains(headerIdentification))
+                    if (!string.IsNullOrEmpty(headerIdentification))
                     {
-                        result = JsonSerializer.Deserialize<T>(json);
+                        if (json.Contains($"\"Header\":\"{headerIdentification}\""))
+                        {
+                            result = JsonSerializer.Deserialize<T>(json);
+                        }
+                        else
+                        {
+                            MsgLogger.WriteError("TryDeserializeObject", $"json, doesn't contain header {headerIdentification}");
+                        }
+                    }
+                    else
+                    {
+                        MsgLogger.WriteError("TryDeserializeObject", $"json, doesn't contain class identification");
                     }
                 }
             }
