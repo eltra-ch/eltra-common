@@ -20,7 +20,7 @@ namespace EltraCommon.Contracts.History
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "AJQ7";
+        public static string DefaultHeader = "AJF2";
 
         /// <summary>
         /// Header
