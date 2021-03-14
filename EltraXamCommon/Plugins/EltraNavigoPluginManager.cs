@@ -259,12 +259,26 @@ namespace EltraXamCommon.Plugins
             {
                 var pluginFilePath = GetPluginFilePath(payload.FileName);
 
-                if (Debugging && File.Exists(pluginFilePath))
+                if (Debugging)
                 {
-                    if (payload.Mode == DeviceToolPayloadMode.Development)
+                    var currentPathFileName = Path.GetFileName(pluginFilePath);
+                    var binFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    var currentPathFullPath = Path.Combine(binFolder, currentPathFileName);
+                    
+                    if(File.Exists(currentPathFullPath))
                     {
-                        result = UpdateCache(payload, pluginFilePath);
+                        if (payload.Mode == DeviceToolPayloadMode.Development)
+                        {
+                            result = UpdateCache(payload, currentPathFullPath);
+                        }
                     }
+                    else if(File.Exists(pluginFilePath))
+                    {
+                        if (payload.Mode == DeviceToolPayloadMode.Development)
+                        {
+                            result = UpdateCache(payload, pluginFilePath);
+                        }
+                    }                    
                 }
             }
             catch (Exception e)
