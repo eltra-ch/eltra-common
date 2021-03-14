@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using EltraCommon.Contracts.Devices;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters;
@@ -215,17 +216,22 @@ namespace EltraUiCommon.Controls.Parameters
             }
         }
 
+        private void UpdateParameter()
+        {
+            if (_parameter == null)
+            {
+                if (Vcs.Device.SearchParameter(UniqueId) is Parameter parameter)
+                {
+                    _parameter = parameter;
+                }
+            }
+        }
+
         public override void InitModelData()
         {
             if (Vcs != null && Vcs.Device != null)
             {
-                if (_parameter == null)
-                {
-                    if (Vcs.Device.SearchParameter(UniqueId) is Parameter parameter)
-                    {
-                        _parameter = parameter;
-                    }
-                }
+                UpdateParameter();
 
                 if (_parameter != null)
                 {
@@ -287,9 +293,15 @@ namespace EltraUiCommon.Controls.Parameters
 
                 if (result)
                 {
+                    UpdateParameter();
+
                     if (_parameter != null)
                     {
                         _parameter.AutoUpdate();
+                    }
+                    else
+                    {
+                        Debug.Print($"Parameter {UniqueId} not defined!");
                     }
 
                     InitModelData();
@@ -309,9 +321,16 @@ namespace EltraUiCommon.Controls.Parameters
 
                 if (result)
                 {
-                    if (_parameter != null)
+                    try
                     {
-                        _parameter.StopUpdate();
+                        if (_parameter != null)
+                        {
+                            _parameter.StopUpdate();
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        Debug.Print(e.Message);
                     }
                 }
             }

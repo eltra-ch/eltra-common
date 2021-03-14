@@ -369,19 +369,11 @@ namespace EltraUiCommon.Controls
             return Task.CompletedTask;
         }
 
-        private Task RegisterAutoUpdateAsync()
+        private void RegisterAutoUpdateAsync()
         {
-            const int minWaitTime = 10;
-
-            if (_registerUpdateTask.Wait(minWaitTime))
-            {
-                _registerUpdateTask = Task.Run(async () => 
-                { 
-                    await RegisterAutoUpdate(); 
-                });
-            }
-
-            return _registerUpdateTask;
+            Task.Run(async ()=> {
+                await RegisterAutoUpdate();
+            });            
         }
 
         protected virtual Task UnregisterAutoUpdate()
@@ -398,16 +390,11 @@ namespace EltraUiCommon.Controls
             UpdateAllControlsAsync();
         }
 
-        private Task UnregisterAutoUpdateAsync()
+        private void UnregisterAutoUpdateAsync()
         {
-            const int minWaitTime = 10;
-
-            if (_unregisterUpdateTask.Wait(minWaitTime))
-            {
-                _unregisterUpdateTask = Task.Run(async () => { await UnregisterAutoUpdate(); });
-            }
-
-            return _unregisterUpdateTask;
+            Task.Run(async () => {
+                await UnregisterAutoUpdate();
+            });
         }
 
         protected virtual Task UpdateAllControls()
