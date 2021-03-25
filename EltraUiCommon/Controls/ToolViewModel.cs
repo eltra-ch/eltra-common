@@ -8,6 +8,8 @@ using EltraConnector.Agent;
 using EltraCommon.Contracts.Channels;
 using EltraConnector.UserAgent.Definitions;
 using EltraUiCommon.Device.Factory;
+using EltraUiCommon.Controls.Definitions;
+using System.Collections.Generic;
 
 namespace EltraUiCommon.Controls
 {
@@ -25,8 +27,10 @@ namespace EltraUiCommon.Controls
         private CancellationTokenSource _updateViewModelsCts;
         
         private DateTime _updateTaskTimestamp;
-        private Task _registerUpdateTask;
-        private Task _unregisterUpdateTask;
+        
+        private List<AutoUpdateRegistration> _autoUpdateTasks;
+        private SemaphoreSlim _autoUpdateLock;
+        private AutoUpdateMode _autoUpdateMode;
 
         #endregion
 
@@ -43,6 +47,7 @@ namespace EltraUiCommon.Controls
 
             IsSupported = true;
             Persistenced = true;
+            AutoUpdateMode = AutoUpdateMode.Visibility;
         }
 
         public ToolViewModel(ToolViewBaseModel parent)
@@ -52,11 +57,14 @@ namespace EltraUiCommon.Controls
 
             InitTasks();
 
+            AutoUpdateMode = AutoUpdateMode.Visibility;
+
             UpdateInterval = defaultUpdateInterval;
 
             if (parent is ToolViewModel toolViewModel)
             {
                 Agent = toolViewModel.Agent;
+                AutoUpdateMode = toolViewModel.AutoUpdateMode;
             }
 
             IsSupported = true;
@@ -116,6 +124,22 @@ namespace EltraUiCommon.Controls
 
         public bool CanSetUp { get => !_isSetUp; }
 
+        public AutoUpdateMode AutoUpdateMode 
+        { 
+            get => _autoUpdateMode;
+            set 
+            {
+                if(_autoUpdateMode != value)
+                {
+                    _autoUpdateMode = value;
+
+                    OnAutoUpdateModeChanged();
+                }                
+            }             
+        }
+
+        protected List<AutoUpdateRegistration> AutoUpdateTasks => _autoUpdateTasks ?? (_autoUpdateTasks = new List<AutoUpdateRegistration>());
+
         #endregion
 
         #region Events
@@ -143,11 +167,11 @@ namespace EltraUiCommon.Controls
 
         private void InitTasks()
         {
+            _autoUpdateLock = new SemaphoreSlim(1);
+
             _updateTaskTimestamp = DateTime.MinValue;
             _updateViewModelsTask = Task.CompletedTask;
             _updateViewModelsCts = new CancellationTokenSource();
-            _registerUpdateTask = Task.CompletedTask;
-            _unregisterUpdateTask = Task.CompletedTask;
         }
 
         protected override void Init(VirtualCommandSet vcs)
@@ -327,8 +351,6 @@ namespace EltraUiCommon.Controls
                 _updateViewModelsCts.Cancel();
 
                 _updateViewModelsTask.Wait();
-                _registerUpdateTask.Wait();
-                _unregisterUpdateTask.Wait();
             }
         }
 
@@ -371,9 +393,88 @@ namespace EltraUiCommon.Controls
 
         private void RegisterAutoUpdateAsync()
         {
-            Task.Run(async ()=> {
+            var id = Guid.NewGuid();
+
+            var tr = new Thread(new ThreadStart(async () =>
+            {
+                WaitAllAutoUpdateTasks(id);
+
                 await RegisterAutoUpdate();
-            });            
+            }));
+
+            AddAutoUpdateTask(tr, id);
+        }
+
+        private void WaitAllAutoUpdateTasks(Guid id)
+        {
+            var awaitableTasks = new List<AutoUpdateRegistration>();
+
+            _autoUpdateLock.Wait();
+
+            try
+            {
+                AutoUpdateRegistration currentTask = null;
+
+                foreach (var autoUpdateTask in AutoUpdateTasks)
+                {
+                    if (autoUpdateTask.Id != id)
+                    {
+                        awaitableTasks.Add(autoUpdateTask);
+                    }
+                    else
+                    {
+                        currentTask = autoUpdateTask;
+                    }
+                }
+
+                AutoUpdateTasks.Clear();
+
+                if (currentTask != null)
+                {
+                    AutoUpdateTasks.Add(currentTask);
+                }
+            }
+            catch (Exception)
+            {
+            }
+            finally
+            {
+                _autoUpdateLock.Release();
+            }
+
+            try
+            {
+                foreach(var t in awaitableTasks)
+                {
+                    //t.Thread.ThreadState == System.Threading.ThreadState.
+
+                    t.Wait();
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private void AddAutoUpdateTask(Thread t, Guid id)
+        {
+            var aur = new AutoUpdateRegistration() { Thread = t, Id = id };
+
+            _autoUpdateLock.Wait();
+
+            try
+            {
+                AutoUpdateTasks.Add(aur);
+            }
+            catch(Exception)
+            {
+            }
+            finally
+            {
+                _autoUpdateLock.Release();
+            }
+
+            t.Start();
         }
 
         protected virtual Task UnregisterAutoUpdate()
@@ -385,16 +486,31 @@ namespace EltraUiCommon.Controls
         {
             base.OnInitialized();
 
-            RegisterAutoUpdateAsync();
+            if (AutoUpdateMode == AutoUpdateMode.Initialization || 
+                AutoUpdateMode == AutoUpdateMode.Any)
+            {
+                UnregisterAutoUpdateAsync();
+
+                RegisterAutoUpdateAsync();
+            }
 
             UpdateAllControlsAsync();
         }
 
         private void UnregisterAutoUpdateAsync()
         {
-            Task.Run(async () => {
+            var id = Guid.NewGuid();
+
+            var tr = new Thread(new ThreadStart(async () =>
+            {
+                WaitAllAutoUpdateTasks(id);
+
                 await UnregisterAutoUpdate();
-            });
+
+                return;
+            }));
+
+            AddAutoUpdateTask(tr,id);
         }
 
         protected virtual Task UpdateAllControls()
@@ -422,7 +538,12 @@ namespace EltraUiCommon.Controls
 
         public override bool StartCommunication()
         {
-            RegisterAutoUpdateAsync();
+            if (AutoUpdateMode == AutoUpdateMode.Visibility ||
+                AutoUpdateMode == AutoUpdateMode.Initialization ||
+                AutoUpdateMode == AutoUpdateMode.Any)
+            {
+                RegisterAutoUpdateAsync();
+            }
 
             UpdateAllControlsAsync();
 
@@ -431,14 +552,23 @@ namespace EltraUiCommon.Controls
 
         public override bool StopCommunication()
         {
-            UnregisterAutoUpdateAsync();
+            if (AutoUpdateMode == AutoUpdateMode.Visibility ||
+                AutoUpdateMode == AutoUpdateMode.Initialization ||
+                AutoUpdateMode == AutoUpdateMode.Any)
+            {
+                UnregisterAutoUpdateAsync();
+            }
 
             return base.StopCommunication();
         }
 
         public override Task Show()
         {
-            RegisterAutoUpdateAsync();
+            if (AutoUpdateMode == AutoUpdateMode.Visibility ||
+                AutoUpdateMode == AutoUpdateMode.Any)
+            {
+                RegisterAutoUpdateAsync();
+            }
 
             UpdateAllControlsAsync();
 
@@ -447,9 +577,24 @@ namespace EltraUiCommon.Controls
 
         public override Task Hide()
         {
-            UnregisterAutoUpdateAsync();
+            if (AutoUpdateMode == AutoUpdateMode.Visibility ||
+                AutoUpdateMode == AutoUpdateMode.Any)
+            {
+                UnregisterAutoUpdateAsync();
+            }
 
             return base.Hide();
+        }
+
+        protected virtual void OnAutoUpdateModeChanged()
+        {
+            foreach(var child in SafeChildrenArray)
+            {
+                if(child is ToolViewModel viewModel)
+                {
+                    viewModel.AutoUpdateMode = AutoUpdateMode;
+                }
+            }
         }
 
         #endregion
