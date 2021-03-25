@@ -209,6 +209,13 @@ namespace EltraUiCommon.Controls
                     }
                 }
 
+                Agent.StatusChanged += (o, a) => {
+                    if(a.Status == AgentStatus.Bound)
+                    {
+                        Init();
+                    }
+                };
+
                 if (Agent.Status == AgentStatus.Bound)
                 {
                     Init();
