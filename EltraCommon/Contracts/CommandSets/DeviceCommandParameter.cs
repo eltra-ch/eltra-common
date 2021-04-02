@@ -342,6 +342,11 @@ namespace EltraCommon.Contracts.CommandSets
             {
                 string text = (string)(object)value;
 
+                if(string.IsNullOrEmpty(text))
+                {
+                    text = string.Empty;
+                }
+
                 DataType = new DataType { Type = TypeCode.String, SizeInBytes = (uint)text.Length };
 
                 var byteArray = Encoding.UTF8.GetBytes(text);
