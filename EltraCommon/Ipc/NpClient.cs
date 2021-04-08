@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EltraCommon.Ipc.Events;
+using EltraCommon.Logger;
+using System;
 using System.IO;
 using System.IO.Pipes;
 
@@ -8,16 +10,48 @@ namespace EltraCommon.Ipc
 {
     public class NpClient
     {
+        #region Constructors
+
         public NpClient()
         {
             Name = "NpServer";
             Timeout = 30000;
         }
 
+        #endregion
+
+        #region Events
+
+        public event EventHandler<NpMessageEventArgs> MessageSent;
+        
+        public event EventHandler<NpMessageEventArgs> ErrorOccured;
+
+        #endregion
+
+        #region Properties
+
         public string Name { get; set; }
 
         public int Timeout { get; set; }
-        
+
+        #endregion
+
+        #region Events handling
+
+        private void OnMessageSent(string message, bool error = false, string reason = "")
+        {
+            MessageSent?.Invoke(this, new NpMessageEventArgs() { Message = message, Error = error, Reason = reason });
+        }
+
+        private void OnErrorOccured(string message, string reason)
+        {
+            ErrorOccured?.Invoke(this, new NpMessageEventArgs() { Message = message, Error = true, Reason = reason });
+        }
+
+        #endregion
+
+        #region Methods
+
         public bool Echo()
         {
             return SendMessage("echo");
@@ -28,36 +62,55 @@ namespace EltraCommon.Ipc
             return SendMessage("Stop");
         }
 
-        private bool SendMessage(string msg)
+        public bool SendMessage(string msg)
         {
            bool result = false;
 
             try
             {
-                using (var pc = new NamedPipeClientStream(".", Name, PipeDirection.Out))
+                if (!string.IsNullOrEmpty(msg))
                 {
-                    pc.Connect(Timeout);
-
-                    using (var writer = new StreamWriter(pc))
+                    using (var namedPipeClientStream = new NamedPipeClientStream(".", Name, PipeDirection.Out))
                     {
-                        writer.AutoFlush = true;
+                        namedPipeClientStream.Connect(Timeout);
 
-                        writer.WriteLine(msg);
+                        using (var writer = new StreamWriter(namedPipeClientStream))
+                        {
+                            writer.AutoFlush = true;
 
-                        result = true;
+                            writer.WriteLine(msg);
+
+                            OnMessageSent(msg);
+
+                            result = true;
+                        }
                     }
                 }
+                else
+                {
+                    OnErrorOccured(msg, "empty message");
+                }
             }
-            catch (TimeoutException)
+            catch (TimeoutException e)
             {
+                MsgLogger.Exception($"{GetType().Name} - SendMessage", e);
+
+                OnErrorOccured("Timeout exception", e.Message);
+
                 result = false;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                MsgLogger.Exception($"{GetType().Name} - SendMessage", e);
+
+                OnErrorOccured("Exception", e.Message);
+
                 result = false;
             }
            
             return result;
         }
+
+        #endregion
     }
 }

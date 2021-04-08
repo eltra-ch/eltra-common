@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EltraCommon.Ipc.Events;
+using EltraCommon.Logger;
+using System;
 using System.IO;
 using System.IO.Pipes;
 using System.Threading.Tasks;
@@ -33,11 +35,34 @@ namespace EltraCommon.Ipc
 
         public event EventHandler StepRequested;
 
-        protected virtual void OnStopRequested(EventArgs e)
-        {
-            EventHandler handler = StepRequested;
+        public event EventHandler EchoReceived;
 
-            handler?.Invoke(this, e);
+        public event EventHandler<NpMessageEventArgs> MessageReceived;
+
+        public event EventHandler<NpMessageEventArgs> ErrorOccured;
+
+        #endregion
+
+        #region Events handling
+
+        private void OnStopRequested()
+        {
+            StepRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnEchoReceived()
+        {
+            EchoReceived?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnMessageReceived(string message, bool error = false, string reason = "")
+        {
+            MessageReceived?.Invoke(this, new NpMessageEventArgs() { Message = message, Error = error, Reason = reason });
+        }
+
+        private void OnErrorOccured(string message, string reason)
+        {
+            ErrorOccured?.Invoke(this, new NpMessageEventArgs() { Message = message, Error = true, Reason = reason });
         }
 
         #endregion
@@ -49,6 +74,7 @@ namespace EltraCommon.Ipc
             get
             {
                 bool result = false;
+                
                 var npc = new NpClient() { Name = Name, Timeout = 1000 };
 
                 if (npc.Echo() && ExclusiveMode)
@@ -74,7 +100,7 @@ namespace EltraCommon.Ipc
             }
             else
             {
-                Console.WriteLine("another server already running!");
+                MsgLogger.WriteError($"{GetType().Name} - Start", "another server with same name is already running!");
             }
 
             return result;
@@ -98,36 +124,49 @@ namespace EltraCommon.Ipc
 
         private void Execute()
         {
-            using (var ps = new NamedPipeServerStream(Name, PipeDirection.In))
+            using (var namedPipeServerStream = new NamedPipeServerStream(Name, PipeDirection.In))
             {
-                ps.WaitForConnection();
+                namedPipeServerStream.WaitForConnection();
 
                 try
                 {
-                    using (StreamReader reader = new StreamReader(ps))
+                    using (var reader = new StreamReader(namedPipeServerStream))
                     {
-                        string temp;
+                        string message;
 
-                        while ((temp = reader.ReadLine()) != null)
+                        while ((message = reader.ReadLine()) != null)
                         {
-                            temp = temp.ToLower();
+                            if (!string.IsNullOrEmpty(message))
+                            {
+                                message = message.ToLower();
 
-                            if(temp == "stop")
-                            {
-                                OnStopRequested(new EventArgs());
-                                
-                                break;
-                            }
-                            else if (temp == "echo")
-                            {
-                                //echo
+                                switch (message.ToLower())
+                                {
+                                    case "stop":
+                                        OnStopRequested();
+                                        break;
+                                    case "echo":
+                                        OnEchoReceived();
+                                        break;
+                                    default:
+                                        OnMessageReceived(message);
+                                        break;
+                                }
                             }
                         }
                     }
                 }
                 catch (IOException e)
                 {
-                    Console.WriteLine("ERROR: {0}", e.Message);
+                    MsgLogger.Exception($"{GetType().Name} - Execute", e);
+
+                    OnErrorOccured("I/O Exception", e.Message);
+                }
+                catch(Exception e)
+                {
+                    MsgLogger.Exception($"{GetType().Name} - Execute", e);
+
+                    OnErrorOccured("Exception", e.Message);
                 }
             }            
         }
