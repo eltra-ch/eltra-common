@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml;
 using EltraCommon.Logger;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters;
@@ -32,9 +33,27 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
         {
             bool result = true;
 
-            UniqueId = node.Attributes["uniqueID"].InnerXml;
-            Type = node.Attributes["type"].InnerXml;
-            
+            var typeAttribute = node.Attributes["type"];
+            var uniqueIdAttribute = node.Attributes["uniqueID"];
+
+            if (uniqueIdAttribute != null)
+            {
+                UniqueId = uniqueIdAttribute.InnerXml;
+            }
+            else
+            {
+                throw new Exception($"{GetType().Name} - missing uniqueID attribute");
+            }
+
+            if (typeAttribute != null)
+            {
+                Type = typeAttribute.InnerXml;
+            }
+            else
+            {
+                throw new Exception($"{GetType().Name} - missing type attribute");
+            }
+
             foreach (XmlNode childNode in node.ChildNodes)
             {
                 if (childNode.Name == "label")

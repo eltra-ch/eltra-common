@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using EltraCommon.Contracts.Devices;
+using EltraCommon.Logger;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles;
@@ -83,8 +84,10 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                MsgLogger.Exception($"{GetType().Name} - Parse", e);
+
                 result = false;
             }
             
