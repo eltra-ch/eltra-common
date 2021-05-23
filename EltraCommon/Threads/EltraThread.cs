@@ -133,26 +133,39 @@ namespace EltraCommon.Threads
 
         private void Run()
         {
+            const int minDelay = 1;
+            const int maxErrorCount = 100;
+
             SetRunning();
 
-            const int minDelay = 1;
+            int errorCount = 0;
 
             while (ShouldRun())
             {
-                var t = Task.Run(async ()=> {
+                Task.Run(async ()=> {
+                    
                     try
                     {
                         await Execute();
+
+                        errorCount = 0;
                     }
                     catch (Exception e)
                     {
-                        MsgLogger.Exception("EltraThread - Run", e);
+                        MsgLogger.Exception($"{GetType().Name} - Run", e);
+                        errorCount++;
                     }
 
                     await Task.Delay(minDelay);
-                });
 
-                t.Wait();
+                    if(errorCount > maxErrorCount)
+                    {
+                        MsgLogger.WriteError($"{GetType().Name} - Run", $"Stop processing, max error count {maxErrorCount} reached!");
+
+                        RequestStop();
+                    }
+
+                }).Wait();
             }
 
             SetStopped();
