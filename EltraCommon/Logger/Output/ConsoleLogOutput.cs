@@ -32,30 +32,71 @@ namespace EltraCommon.Logger.Output
 
         public void Write(string source, LogMsgType type, string msg, bool newLine)
         {
-            string formattedMsg = Formatter.Format(source, type, msg);
-
-            if (!string.IsNullOrEmpty(formattedMsg))
+            try
             {
-                if (newLine)
+                string formattedMsg = Formatter.Format(source, type, msg);
+                var previuosFgColor = Console.ForegroundColor;
+
+                if (!string.IsNullOrEmpty(formattedMsg))
                 {
-                    if (!_newLineActive)
+                    bool fgColorChanged = ChangeForegroundColor(type);
+
+                    if (newLine)
                     {
-                        Console.Write("\r\n");
+                        if (!_newLineActive)
+                        {
+                            Console.Write("\r\n");
+                        }
+
+                        Console.ForegroundColor = ConsoleColor.Red;
+
+                        Console.WriteLine(formattedMsg);
+
+                        _newLineActive = true;
+                    }
+                    else
+                    {
+                        formattedMsg += "\r";
+
+                        Console.Write(formattedMsg);
+
+                        _newLineActive = false;
                     }
 
-                    Console.WriteLine(formattedMsg);
-
-                    _newLineActive = true;
+                    if (fgColorChanged)
+                    {
+                        Console.ForegroundColor = previuosFgColor;
+                    }
                 }
-                else
-                {
-                    formattedMsg += "\r";
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine($"{GetType().Name} - Write", e.Message);
+            }
+        }
 
-                    Console.Write(formattedMsg);
+        private static bool ChangeForegroundColor(LogMsgType type)
+        {
+            bool result = false;
 
-                    _newLineActive = false;
-                }
-            }            
+            switch (type)
+            {
+                case LogMsgType.Error:
+                case LogMsgType.Exception:
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    result = true;
+                    break;
+                case LogMsgType.Warning:
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    result = true;
+                    break;
+                case LogMsgType.Success:
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    result = true;
+                    break;
+            }
+
+            return result;
         }
 
         #endregion

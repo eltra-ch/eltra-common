@@ -11,6 +11,7 @@
         Info,
         Warning,
         Timing,
-        Workflow
+        Workflow,
+        Success
     }
 }

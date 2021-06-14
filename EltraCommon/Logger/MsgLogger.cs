@@ -119,6 +119,16 @@ namespace EltraCommon.Logger
             Engine.EndTimeMeasure(source, stopWatch, msg);
         }
 
+        public static void WriteLine(string msg)
+        {
+            Engine.WriteLine(string.Empty, LogMsgType.Info, msg);
+        }
+
+        public static void WriteLine(string source, string msg)
+        {
+            Engine.WriteLine(source, LogMsgType.Info, msg);
+        }
+
         public static void WriteLine(LogMsgType type, string msg)
         {
             Engine.WriteLine(string.Empty, type, msg);
@@ -150,9 +160,9 @@ namespace EltraCommon.Logger
             Engine.Info(string.Empty, msg);
         }
 
-        public static void WriteLine(string msg)
+        public static void Print(string source, string msg)
         {
-            Engine.WriteLine(string.Empty, msg);
+            Engine.Info(source, msg);
         }
 
         public static void WriteError(string source, string msg)
