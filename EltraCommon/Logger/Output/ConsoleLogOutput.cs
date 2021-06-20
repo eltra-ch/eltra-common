@@ -48,8 +48,6 @@ namespace EltraCommon.Logger.Output
                             Console.Write("\r\n");
                         }
 
-                        Console.ForegroundColor = ConsoleColor.Red;
-
                         Console.WriteLine(formattedMsg);
 
                         _newLineActive = true;
