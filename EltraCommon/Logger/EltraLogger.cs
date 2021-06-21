@@ -12,8 +12,9 @@ namespace EltraCommon.Logger
     {
         #region Private fields
                 
-        private List<ILogOutput> _logOutputs;
+        private readonly List<ILogOutput> _logOutputs;
         private string _types;
+        private List<string> _filterOutSources;
         private string _outputs;
 
         #endregion
@@ -34,6 +35,8 @@ namespace EltraCommon.Logger
         #endregion
 
         #region Properties
+
+        public List<string> FilterOutSources => _filterOutSources ?? (_filterOutSources = new List<string>());
 
         public string Types
         {
@@ -228,13 +231,32 @@ namespace EltraCommon.Logger
 
         private void LogMsg(string source, LogMsgType type, string msg, bool newLine = true)
         {
-            if (IsLogTypeActive(type) && !string.IsNullOrEmpty(msg))
+            if (IsLogTypeActive(type) && !string.IsNullOrEmpty(msg) && !IsSourceFilteredOut(source))
             {
                 foreach (var output in GetLogOutputs())
                 {
                     output.Write(source, type, msg, newLine);
                 }
             }
+        }
+
+        private bool IsSourceFilteredOut(string source)
+        {
+            bool result = false;
+
+            if (!string.IsNullOrEmpty(source))
+            {
+                foreach (var filterOutSource in FilterOutSources)
+                {
+                    if (source.Contains(filterOutSource))
+                    {
+                        result = true;
+                        break;
+                    }
+                }
+            }
+
+            return result;
         }
 
         private bool IsLogTypeActive(LogMsgType type)
