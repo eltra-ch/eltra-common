@@ -30,7 +30,7 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
             }
             catch (Exception e)
             {
-                MsgLogger.Exception("Epos2DeviceDescriptionFile - ReadProductName", e);
+                MsgLogger.Exception($"{GetType().Name} - ReadProductName", e);
             }
         }
     }

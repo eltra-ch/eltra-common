@@ -294,7 +294,7 @@ namespace EltraCommon.Contracts.CommandSets
             }
             catch (Exception e)
             {
-                MsgLogger.Exception("DeviceCommand - Sync", e);
+                MsgLogger.Exception($"{GetType().Name} - Sync", e);
             }
         }
 
@@ -406,7 +406,7 @@ namespace EltraCommon.Contracts.CommandSets
             }
             catch (Exception e)
             {
-                MsgLogger.Exception("DeviceCommand - Clone", e);    
+                MsgLogger.Exception($"{GetType().Name} - Clone", e);    
             }
             
             return result;

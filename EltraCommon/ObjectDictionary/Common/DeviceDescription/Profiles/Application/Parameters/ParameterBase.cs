@@ -102,7 +102,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             }
             catch (Exception e)
             {
-                MsgLogger.Exception("ParameterBase - Parse", e);
+                MsgLogger.Exception($"{GetType().Name} - Parse", e);
             }
 
             return result;

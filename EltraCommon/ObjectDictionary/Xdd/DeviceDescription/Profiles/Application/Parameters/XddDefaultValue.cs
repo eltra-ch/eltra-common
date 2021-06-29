@@ -80,7 +80,7 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
             }
             catch(Exception e)
             {
-                MsgLogger.Exception("Epos4DefaultValue - Parse", e);
+                MsgLogger.Exception($"{GetType().Name} - Parse", e);
             }
 
             return result;

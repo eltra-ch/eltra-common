@@ -165,7 +165,7 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
                 }
                 catch (Exception e)
                 {
-                    MsgLogger.Exception("Epos4Parameter - Parse", e);
+                    MsgLogger.Exception($"{GetType().Name} - Parse", e);
                 }
             }
             

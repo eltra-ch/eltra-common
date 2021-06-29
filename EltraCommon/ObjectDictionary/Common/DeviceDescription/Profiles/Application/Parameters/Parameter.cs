@@ -160,7 +160,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                 }
                 catch (Exception e)
                 {
-                    MsgLogger.Exception("Parameter - Parse", e);
+                    MsgLogger.Exception($"{GetType().Name} - Parse", e);
                 }
             }
 
@@ -1001,7 +1001,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             }
             catch (Exception e)
             {
-                MsgLogger.Exception("Parameter - GetValue", e);
+                MsgLogger.Exception($"{GetType().Name} - GetValue", e);
             }
 
             return result;

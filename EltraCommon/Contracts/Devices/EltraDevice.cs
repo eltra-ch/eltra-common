@@ -294,7 +294,7 @@ namespace EltraCommon.Contracts.Devices
             }
             catch (Exception e)
             {
-                MsgLogger.Exception("Device - FindCommand", e);
+                MsgLogger.Exception($"{GetType().Name} - FindCommand", e);
             }
             
             return result;
@@ -329,7 +329,7 @@ namespace EltraCommon.Contracts.Devices
             }
             catch (Exception e)
             {
-                MsgLogger.Exception("Device - FindTool", e);
+                MsgLogger.Exception($"{GetType().Name} - FindTool", e);
             }
 
             return result;
@@ -408,7 +408,7 @@ namespace EltraCommon.Contracts.Devices
                         }
                         else
                         {
-                            MsgLogger.WriteError("Device - CreateObjectDictionary", "Cannot open object dictionary!");
+                            MsgLogger.WriteError($"{GetType().Name} - CreateObjectDictionary", "Cannot open object dictionary!");
                             ObjectDictionary = null;
                         }
                     }

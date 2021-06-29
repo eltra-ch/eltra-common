@@ -112,7 +112,7 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
                     }
                     else
                     {
-                        MsgLogger.WriteError("Epos4UnitPhysicalQuantity - GetActiveUnit", $"GetActiveUnit - Parameter '{uniqueIdRef}' not found!");
+                        MsgLogger.WriteError($"{GetType().Name} - GetActiveUnit", $"GetActiveUnit - Parameter '{uniqueIdRef}' not found!");
                     }
                 }
             }

@@ -169,12 +169,12 @@ namespace EltraCommon.Extensions
                         }
                         else
                         {
-                            MsgLogger.WriteError("TryDeserializeObject", $"json, doesn't contain header {headerIdentification}");
+                            MsgLogger.WriteError("JsonExtensions - TryDeserializeObject", $"json, doesn't contain header {headerIdentification}");
                         }
                     }
                     else
                     {
-                        MsgLogger.WriteError("TryDeserializeObject", $"json, doesn't contain class identification");
+                        MsgLogger.WriteError("JsonExtensions - TryDeserializeObject", $"json, doesn't contain class identification");
                     }
                 }
             }

@@ -86,19 +86,19 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common
                     }
                     else
                     {
-                        MsgLogger.WriteError("Epos4Value - ToDouble", $"Cannot convert base64 value = {Value}, to data type {DataType.Type}!");                        
+                        MsgLogger.WriteError($"{GetType().Name} - ToDouble", $"Cannot convert base64 value = {Value}, to data type {DataType.Type}!");                        
                     }
                 }
                 else
                 {
-                    MsgLogger.WriteWarning("Epos4Value - ToDouble", $"Cannot convert base64 value = {Value}, unknown data type!");
+                    MsgLogger.WriteWarning($"{GetType().Name} - ToDouble", $"Cannot convert base64 value = {Value}, unknown data type!");
 
                     result = BitConverter.ToInt32(byteArray, 0);
                 }
             }
             catch (Exception e)
             {
-                MsgLogger.Exception("Epos4Value - ToDouble", e);
+                MsgLogger.Exception($"{GetType().Name} - ToDouble", e);
             }
 
             return result;
@@ -132,20 +132,20 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common
                             result = BitConverter.ToInt64(byteArray, 0);
                             break;
                         default:
-                            MsgLogger.WriteError("Epos4Value - ToLong", $"Cannot convert base64 value = {Value}, to data type {DataType.Type}!");
+                            MsgLogger.WriteError($"{GetType().Name} - ToLong", $"Cannot convert base64 value = {Value}, to data type {DataType.Type}!");
                             break;
                     }
                 }
                 else
                 {
-                    MsgLogger.WriteWarning("Epos4Value - ToLong", $"Cannot convert base64 value = {Value}, unknown data type!");
+                    MsgLogger.WriteWarning($"{GetType().Name} - ToLong", $"Cannot convert base64 value = {Value}, unknown data type!");
 
                     result = BitConverter.ToInt64(byteArray, 0);
                 }
             }
             catch (Exception e)
             {
-                MsgLogger.Exception("Epos4Value - ToLong", e);
+                MsgLogger.Exception($"{GetType().Name} - ToLong", e);
             }
             
             return result;
@@ -179,20 +179,20 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common
                             result = BitConverter.ToUInt64(byteArray, 0);
                             break;
                         default:
-                            MsgLogger.WriteError("Epos4Value - ToULong", $"Cannot convert base64 value = {Value}, to data type {DataType.Type}!");
+                            MsgLogger.WriteError($"{GetType().Name} - ToULong", $"Cannot convert base64 value = {Value}, to data type {DataType.Type}!");
                             break;
                     }
                 }
                 else
                 {
-                    MsgLogger.WriteWarning("Epos4Value - ToULong", $"Cannot convert base64 value = {Value}, unknown data type!");
+                    MsgLogger.WriteWarning($"{GetType().Name} - ToULong", $"Cannot convert base64 value = {Value}, unknown data type!");
 
                     result = BitConverter.ToUInt64(byteArray, 0);
                 }
             }
             catch (Exception e)
             {
-                MsgLogger.Exception("Epos4Value - ToULong", e);
+                MsgLogger.Exception($"{GetType().Name} - ToULong", e);
             }
 
             return result;
@@ -223,20 +223,20 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common
                             result = BitConverter.ToInt32(byteArray, 0);
                             break;
                         default:
-                            MsgLogger.WriteError("Epos4Value - ToInt", $"Cannot convert base64 value = {Value}, to data type {DataType.Type}!");
+                            MsgLogger.WriteError($"{GetType().Name} - ToInt", $"Cannot convert base64 value = {Value}, to data type {DataType.Type}!");
                             break;
                     }
                 }
                 else
                 {
-                    MsgLogger.WriteWarning("Epos4Value - ToInt", $"Cannot convert base64 value = {Value}, unknown data type!");
+                    MsgLogger.WriteWarning($"{GetType().Name} - ToInt", $"Cannot convert base64 value = {Value}, unknown data type!");
 
                     result = BitConverter.ToInt32(byteArray, 0);
                 }
             }
             catch (Exception e)
             {
-                MsgLogger.Exception("Epos4Value - ToInt", e);
+                MsgLogger.Exception($"{GetType().Name} - ToInt", e);
             }
 
             return result;
@@ -267,20 +267,20 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common
                             result = BitConverter.ToUInt32(byteArray, 0);
                             break;
                         default:
-                            MsgLogger.WriteError("Epos4Value - ToUInt", $"Cannot convert base64 value = {Value}, to data type {DataType.Type}!");
+                            MsgLogger.WriteError($"{GetType().Name} - ToUInt", $"Cannot convert base64 value = {Value}, to data type {DataType.Type}!");
                             break;
                     }
                 }
                 else
                 {
-                    MsgLogger.WriteWarning("Epos4Value - ToUInt", $"Cannot convert base64 value = {Value}, unknown data type!");
+                    MsgLogger.WriteWarning($"{GetType().Name} - ToUInt", $"Cannot convert base64 value = {Value}, unknown data type!");
 
                     result = BitConverter.ToUInt32(byteArray, 0);
                 }
             }
             catch (Exception e)
             {
-                MsgLogger.Exception("Epos4Value - ToUInt", e);
+                MsgLogger.Exception($"{GetType().Name} - ToUInt", e);
             }
 
             return result;
@@ -308,20 +308,20 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common
                             result = BitConverter.ToInt16(byteArray, 0);
                             break;
                         default:
-                            MsgLogger.WriteError("Epos4Value - ToShort", $"Cannot convert base64 value = {Value}, to data type {DataType.Type}!");
+                            MsgLogger.WriteError($"{GetType().Name} - ToShort", $"Cannot convert base64 value = {Value}, to data type {DataType.Type}!");
                             break;
                     }
                 }
                 else
                 {
-                    MsgLogger.WriteWarning("Epos4Value - ToShort", $"Cannot convert base64 value = {Value}, unknown data type!");
+                    MsgLogger.WriteWarning($"{GetType().Name} - ToShort", $"Cannot convert base64 value = {Value}, unknown data type!");
 
                     result = BitConverter.ToInt16(byteArray, 0);
                 }
             }
             catch (Exception e)
             {
-                MsgLogger.Exception("Epos4Value - ToShort", e);
+                MsgLogger.Exception($"{GetType().Name} - ToShort", e);
             }
 
             return result;
@@ -349,20 +349,20 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common
                             result = BitConverter.ToUInt16(byteArray, 0);
                             break;
                         default:
-                            MsgLogger.WriteError("Epos4Value - ToUShort", $"Cannot convert base64 value = {Value}, to data type {DataType.Type}!");
+                            MsgLogger.WriteError($"{GetType().Name} - ToUShort", $"Cannot convert base64 value = {Value}, to data type {DataType.Type}!");
                             break;
                     }
                 }
                 else
                 {
-                    MsgLogger.WriteWarning("Epos4Value - ToUShort", $"Cannot convert base64 value = {Value}, unknown data type!");
+                    MsgLogger.WriteWarning($"{GetType().Name} - ToUShort", $"Cannot convert base64 value = {Value}, unknown data type!");
 
                     result = BitConverter.ToUInt16(byteArray, 0);
                 }
             }
             catch (Exception e)
             {
-                MsgLogger.Exception("Epos4Value - ToUShort", e);
+                MsgLogger.Exception($"{GetType().Name} - ToUShort", e);
             }
 
             return result;
@@ -387,20 +387,20 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common
                             result = (byte)BitConverter.ToChar(byteArray, 0);
                             break;
                         default:
-                            MsgLogger.WriteError("Epos4Value - ToByte", $"Cannot convert base64 value = {Value}, to data type {DataType.Type}!");
+                            MsgLogger.WriteError($"{GetType().Name} - ToByte", $"Cannot convert base64 value = {Value}, to data type {DataType.Type}!");
                             break;
                     }
                 }
                 else
                 {
-                    MsgLogger.WriteWarning("Epos4Value - ToByte", $"Cannot convert base64 value = {Value}, unknown data type!");
+                    MsgLogger.WriteWarning($"{GetType().Name} - ToByte", $"Cannot convert base64 value = {Value}, unknown data type!");
 
                     result = (byte)BitConverter.ToChar(byteArray, 0);
                 }
             }
             catch (Exception e)
             {
-                MsgLogger.Exception("Epos4Value - ToByte", e);
+                MsgLogger.Exception($"{GetType().Name} - ToByte", e);
             }
 
             return result;
@@ -425,20 +425,20 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common
                             result = (sbyte)BitConverter.ToChar(byteArray, 0);
                             break;
                         default:
-                            MsgLogger.WriteError("Epos4Value - ToUbyte", $"Cannot convert base64 value = {Value}, to data type {DataType.Type}!");
+                            MsgLogger.WriteError($"{GetType().Name} - ToUbyte", $"Cannot convert base64 value = {Value}, to data type {DataType.Type}!");
                             break;
                     }
                 }
                 else
                 {
-                    MsgLogger.WriteWarning("Epos4Value - ToUbyte", $"Cannot convert base64 value = {Value}, unknown data type!");
+                    MsgLogger.WriteWarning($"{GetType().Name} - ToUbyte", $"Cannot convert base64 value = {Value}, unknown data type!");
 
                     result = (sbyte)BitConverter.ToChar(byteArray, 0);
                 }
             }
             catch (Exception e)
             {
-                MsgLogger.Exception("Epos4Value - ToUbyte", e);
+                MsgLogger.Exception($"{GetType().Name} - ToUbyte", e);
             }
 
             return result;
