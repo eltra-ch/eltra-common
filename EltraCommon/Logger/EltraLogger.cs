@@ -16,7 +16,7 @@ namespace EltraCommon.Logger
         private string _types;
         private List<string> _filterOutSources;
         private string _outputs;
-
+        
         #endregion
 
         #region Constructors

@@ -32,44 +32,47 @@ namespace EltraCommon.Logger.Output
 
         public void Write(string source, LogMsgType type, string msg, bool newLine)
         {
-            try
+            lock (this)
             {
-                string formattedMsg = Formatter.Format(source, type, msg);
-                var previuosFgColor = Console.ForegroundColor;
-
-                if (!string.IsNullOrEmpty(formattedMsg))
+                try
                 {
-                    bool fgColorChanged = ChangeForegroundColor(type);
+                    string formattedMsg = Formatter.Format(source, type, msg);
+                    var previuosFgColor = Console.ForegroundColor;
 
-                    if (newLine)
+                    if (!string.IsNullOrEmpty(formattedMsg))
                     {
-                        if (!_newLineActive)
+                        bool fgColorChanged = ChangeForegroundColor(type);
+
+                        if (newLine)
                         {
-                            Console.Write("\r\n");
+                            if (!_newLineActive)
+                            {
+                                Console.Write("\r\n");
+                            }
+
+                            Console.WriteLine(formattedMsg);
+
+                            _newLineActive = true;
+                        }
+                        else
+                        {
+                            formattedMsg += "\r";
+
+                            Console.Write(formattedMsg);
+
+                            _newLineActive = false;
                         }
 
-                        Console.WriteLine(formattedMsg);
-
-                        _newLineActive = true;
-                    }
-                    else
-                    {
-                        formattedMsg += "\r";
-
-                        Console.Write(formattedMsg);
-
-                        _newLineActive = false;
-                    }
-
-                    if (fgColorChanged)
-                    {
-                        Console.ForegroundColor = previuosFgColor;
+                        if (fgColorChanged)
+                        {
+                            Console.ForegroundColor = previuosFgColor;
+                        }
                     }
                 }
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine($"{GetType().Name} - Write", e.Message);
+                catch (Exception e)
+                {
+                    Console.WriteLine($"{GetType().Name} - Write", e.Message);
+                }
             }
         }
 

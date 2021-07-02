@@ -1,16 +1,10 @@
 ﻿using EltraCommon.Logger.Formatter;
-using System;
 using System.Diagnostics;
 
 namespace EltraCommon.Logger.Output
 {
     class DebugLogOutput : ILogOutput
     {
-        #region Private fields
-
-
-        #endregion
-
         #region Constructors
 
         public DebugLogOutput()
@@ -31,12 +25,15 @@ namespace EltraCommon.Logger.Output
 
         public void Write(string source, LogMsgType type, string msg, bool newLine)
         {
-            string formattedMsg = Formatter.Format(source, type, msg);
-
-            if (!string.IsNullOrEmpty(formattedMsg) && type == LogMsgType.Debug)
+            lock (this)
             {
-                Debug.WriteLine(formattedMsg);
-            }            
+                string formattedMsg = Formatter.Format(source, type, msg);
+
+                if (!string.IsNullOrEmpty(formattedMsg) && type == LogMsgType.Debug)
+                {
+                    Debug.WriteLine(formattedMsg);
+                }
+            }
         }
 
         #endregion

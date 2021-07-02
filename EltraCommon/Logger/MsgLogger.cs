@@ -1,7 +1,6 @@
 ﻿/* Copyright (c) Dawid Sienkiewicz - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Dawid Sienkiewicz <dsienkiewicz@outlook.com>, February 2018
+ * License-Identifier: Apache-2.0 License
+ * Written by Dawid Sienkiewicz <dsienkiewicz@outlook.com>, July 2021
  */
 
 using EltraCommon.Logger.Output;
@@ -14,9 +13,15 @@ namespace EltraCommon.Logger
 {
     public static class MsgLogger
     {
+        #region Private members
+
+        private static EltraLogger _engine;
+
+        #endregion
+
         #region Properties
 
-        public static EltraLogger Engine { get; } = new EltraLogger();
+        public static EltraLogger Engine => _engine ?? (_engine = new EltraLogger());
 
         public static string LogPath 
         { 
