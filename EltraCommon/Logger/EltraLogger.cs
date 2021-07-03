@@ -1,4 +1,5 @@
 ﻿using EltraCommon.Helpers;
+using EltraCommon.Logger.Config;
 using EltraCommon.Logger.Output;
 using System;
 using System.Collections.Generic;
