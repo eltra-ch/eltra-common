@@ -3,13 +3,13 @@ using System;
 
 namespace EltraCommon.Logger.Output
 {
-    class ConsoleLogOutput : ILogOutput
+    class ConsoleLogOutput : LogOutput, ILogOutput
     {
         #region Private fields
 
         private readonly ILogFormatter _formatter;
         private bool _newLineActive;
-
+        
         #endregion
 
         #region Constructors
@@ -32,48 +32,49 @@ namespace EltraCommon.Logger.Output
 
         public void Write(string source, LogMsgType type, string msg, bool newLine)
         {
-            lock (this)
+            Lock();
+            
+            try
             {
-                try
+                string formattedMsg = Formatter.Format(source, type, msg);
+                var previuosFgColor = Console.ForegroundColor;
+
+                if (!string.IsNullOrEmpty(formattedMsg))
                 {
-                    string formattedMsg = Formatter.Format(source, type, msg);
-                    var previuosFgColor = Console.ForegroundColor;
+                    bool fgColorChanged = ChangeForegroundColor(type);
 
-                    if (!string.IsNullOrEmpty(formattedMsg))
+                    if (newLine)
                     {
-                        bool fgColorChanged = ChangeForegroundColor(type);
-
-                        if (newLine)
+                        if (!_newLineActive)
                         {
-                            if (!_newLineActive)
-                            {
-                                Console.Write("\r\n");
-                            }
-
-                            Console.WriteLine(formattedMsg);
-
-                            _newLineActive = true;
-                        }
-                        else
-                        {
-                            formattedMsg += "\r";
-
-                            Console.Write(formattedMsg);
-
-                            _newLineActive = false;
+                            Console.Write("\r\n");
                         }
 
-                        if (fgColorChanged)
-                        {
-                            Console.ForegroundColor = previuosFgColor;
-                        }
+                        Console.WriteLine(formattedMsg);
+
+                        _newLineActive = true;
+                    }
+                    else
+                    {
+                        formattedMsg += "\r";
+
+                        Console.Write(formattedMsg);
+
+                        _newLineActive = false;
+                    }
+
+                    if (fgColorChanged)
+                    {
+                        Console.ForegroundColor = previuosFgColor;
                     }
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"{GetType().Name} - Write", e.Message);
-                }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine($"{GetType().Name} - Write", e.Message);
+            }
+
+            Unlock();
         }
 
         private static bool ChangeForegroundColor(LogMsgType type)

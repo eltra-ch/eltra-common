@@ -3,15 +3,13 @@ using EltraCommon.Logger.Formatter;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
 
 namespace EltraCommon.Logger.Output
 {
-    class FileLogOutput : ILogOutput
+    class FileLogOutput : LogOutput, ILogOutput 
     {
         #region Private fields
-
-        private readonly Mutex _logMutex = new Mutex();
+                
         private readonly ILogOutput _fallback;
         private readonly string defaultFilePrefix = "log";
         private readonly ILogFormatter _formatter;
@@ -124,7 +122,7 @@ namespace EltraCommon.Logger.Output
 
                         string errorLogPath = Path.Combine(LogPath, $"{LogFilePrefix}_{currentProcess.Id}.log");
 
-                        _logMutex.WaitOne();
+                        Lock();
 
                         try
                         {
@@ -146,7 +144,7 @@ namespace EltraCommon.Logger.Output
                             _fallback?.Write(source, LogMsgType.Exception, e.Message);
                         }
 
-                        _logMutex.ReleaseMutex();
+                        Unlock();
                     }
                     else
                     {

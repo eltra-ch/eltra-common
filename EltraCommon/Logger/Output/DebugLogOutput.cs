@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace EltraCommon.Logger.Output
 {
-    class DebugLogOutput : ILogOutput
+    class DebugLogOutput : LogOutput, ILogOutput
     {
         #region Constructors
 
@@ -25,15 +25,16 @@ namespace EltraCommon.Logger.Output
 
         public void Write(string source, LogMsgType type, string msg, bool newLine)
         {
-            lock (this)
-            {
-                string formattedMsg = Formatter.Format(source, type, msg);
+            Lock();
+            
+            string formattedMsg = Formatter.Format(source, type, msg);
 
-                if (!string.IsNullOrEmpty(formattedMsg) && type == LogMsgType.Debug)
-                {
-                    Debug.WriteLine(formattedMsg);
-                }
+            if (!string.IsNullOrEmpty(formattedMsg) && type == LogMsgType.Debug)
+            {
+                Debug.WriteLine(formattedMsg);
             }
+            
+            Unlock();
         }
 
         #endregion
