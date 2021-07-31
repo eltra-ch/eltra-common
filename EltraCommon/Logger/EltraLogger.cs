@@ -4,8 +4,6 @@ using EltraCommon.Logger.Output;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Text.Json;
 
 #pragma warning disable 1591
 
@@ -15,12 +13,9 @@ namespace EltraCommon.Logger
     {
         #region Private fields
 
-        private const string ConfigFileName = "logconfig.json";
-
         private readonly List<ILogOutput> _logOutputs;
         private LoggerConfiguration _loggerConfiguration;
-        private string _configPath;
-
+        
         #endregion
 
         #region Constructors
@@ -28,7 +23,6 @@ namespace EltraCommon.Logger
         public EltraLogger()
         {
             _logOutputs = new List<ILogOutput>();
-            _loggerConfiguration = new LoggerConfiguration();
 
             AddOutput(new ConsoleLogOutput());
             AddOutput(new DebugLogOutput());
@@ -39,39 +33,23 @@ namespace EltraCommon.Logger
 
         #region Properties
 
-        protected string ConfigPath 
-        { 
-            get
-            {
-                if (string.IsNullOrEmpty(_configPath))
-                {
-                    if(CreateLogConfigurationPath(out string path))
-                    {
-                        _configPath = path;
-                    }
-                }
+        private LoggerConfiguration LoggerConfiguration => _loggerConfiguration ?? (_loggerConfiguration = new LoggerConfiguration(false));
 
-                return _configPath;
-            }
-        }
-
-        protected string ConfigFilePath => Path.Combine(ConfigPath, ConfigFileName);
-
-        public List<string> FilterOutSources => _loggerConfiguration.FilterOutSources;
+        public List<string> FilterOutSources => LoggerConfiguration.FilterOutSources;
 
         public string Types
         {
-            get => _loggerConfiguration.Types;
-            set => _loggerConfiguration.Types = value;
+            get => LoggerConfiguration.Types;
+            set => LoggerConfiguration.Types = value;
         }
 
         public string Outputs
         {
-            get => _loggerConfiguration.Outputs;
-            set => _loggerConfiguration.Outputs = value;
+            get => LoggerConfiguration.Outputs;
+            set => LoggerConfiguration.Outputs = value;
         }
 
-        public string DefaultTypeRange => _loggerConfiguration.DefaultTypeRange;
+        public string DefaultTypeRange => LoggerConfiguration.DefaultTypeRange;
        
         public string TypeRange
         {
@@ -95,7 +73,7 @@ namespace EltraCommon.Logger
             }
         }
 
-        public string DefaultOutputRange => _loggerConfiguration.DefaultOutputRange;
+        public string DefaultOutputRange => LoggerConfiguration.DefaultOutputRange;
 
         public string OutputRange
         {
@@ -232,7 +210,7 @@ namespace EltraCommon.Logger
 
         private void LogMsg(string source, LogMsgType type, string msg, bool newLine = true)
         {
-            UpdateConfiguration();
+            LoggerConfiguration.Update();
 
             if (IsLogTypeActive(type) && !string.IsNullOrEmpty(msg) && !IsSourceFilteredOut(source))
             {
@@ -240,115 +218,6 @@ namespace EltraCommon.Logger
                 {
                     output.Write(source, type, msg, newLine);
                 }
-            }
-        }
-
-        private bool CreateLogConfigurationPath(out string path)
-        {
-            bool result = false;
-            
-            path = string.Empty;
-
-            try
-            {
-                var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                var processName = AppHelper.GetProcessFileName(false);
-                var configPath = Path.Combine(appDataPath, "eltra", processName, "config");
-
-                if (!Directory.Exists(configPath))
-                {
-                    Directory.CreateDirectory(configPath);
-                }
-
-                path = configPath;
-                result = true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"{GetType().Name} - CreateLogConfigurationPath, {LogMsgType.Exception}, {e.Message}");
-            }
-
-            return result;
-        }
-
-        private void UpdateConfiguration()
-        {
-            const double UpdateIntervalInSec = 1;
-
-            try
-            {
-                if (_loggerConfiguration != null)
-                {
-                    var lastAccessed = _loggerConfiguration.Accessed;
-                    var lastDiff = DateTime.Now - lastAccessed;
-
-                    if (lastDiff.TotalSeconds >= UpdateIntervalInSec)
-                    {
-                        try
-                        {
-                            if (File.Exists(ConfigFilePath))
-                            {
-                                UpdateExistingConfiguration();
-                            }
-                            else
-                            {
-                                CreateNewConfiguration();
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            System.Diagnostics.Debug.Print($"{GetType().Name} - UpdateConfiguration, {LogMsgType.Exception}, {e.Message}");
-                        }
-
-                        _loggerConfiguration.Accessed = DateTime.Now;
-                    }
-                }
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine($"{GetType().Name} - UpdateConfiguration, ERROR: processing log configuration failed, reason = '{e.Message}'");
-            }
-        }
-
-        private void CreateNewConfiguration()
-        {
-            try
-            {
-                if (_loggerConfiguration != null)
-                {
-                    var content = JsonSerializer.Serialize(_loggerConfiguration);
-                    var hashCode = CryptHelpers.ToMD5(content);
-
-                    _loggerConfiguration.HashCode = hashCode;
-
-                    File.WriteAllText(ConfigFilePath, content);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"{GetType().Name} - CreateNewConfiguration - ERROR: Create log configuration failed!, reason = '{e.Message}'");
-            }
-        }
-
-        private void UpdateExistingConfiguration()
-        {
-            try
-            {
-                var content = File.ReadAllText(ConfigFilePath);
-                var hashCode = CryptHelpers.ToMD5(content);
-
-                var loggerConfiguration = JsonSerializer.Deserialize<LoggerConfiguration>(content);
-
-                if (loggerConfiguration != null && _loggerConfiguration.HashCode != hashCode)
-                {
-                    _loggerConfiguration = loggerConfiguration;
-
-                    _loggerConfiguration.HashCode = hashCode;
-                }
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine($"ERROR: Update log configuration failed!, reason = '{e.Message}'");
             }
         }
 

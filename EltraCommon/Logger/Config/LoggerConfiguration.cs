@@ -1,19 +1,24 @@
 ﻿using EltraCommon.Helpers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Serialization;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace EltraCommon.Logger.Config
 {
     [DataContract]
-    class LoggerConfiguration
+    internal class LoggerConfiguration
     {
         #region Private fields
 
+        private const string ConfigFileName = "logconfig.json";
         private string _types;
         private List<string> _filterOutSources;
         private string _outputs;
+        private string _configPath;
+        private bool _serializing;
 
         #endregion
 
@@ -21,9 +26,23 @@ namespace EltraCommon.Logger.Config
 
         public LoggerConfiguration()
         {
+            _serializing = true;
             _types = DefaultTypeRange;
         }
 
+        public LoggerConfiguration(bool serializing)
+        {
+            _serializing = serializing;
+            _types = DefaultTypeRange;
+        }
+
+        #endregion
+
+        #region Events
+
+        public event EventHandler BeforeChange;
+        public event EventHandler AfterChange;
+        
         #endregion
 
         #region Properties
@@ -32,21 +51,42 @@ namespace EltraCommon.Logger.Config
         public List<string> FilterOutSources
         {
             get => _filterOutSources ?? (_filterOutSources = new List<string>());
-            set => _filterOutSources = value;
+            set
+            {
+                OnBeforeChange();
+                
+                _filterOutSources = value;
+                
+                OnAfterChange();
+            }
         }
 
         [DataMember]
         public string Types
         {
             get => _types ?? (_types = DefaultTypeRange);
-            set => _types = value;
+            set
+            {
+                OnBeforeChange();
+                
+                _types = value;
+
+                OnAfterChange();
+            }
         }
 
         [DataMember]
         public string Outputs
         {
             get => _outputs ?? (_outputs = DefaultOutputRange);
-            set => _outputs = value;
+            set
+            {
+                OnBeforeChange();
+                
+                _outputs = value;
+
+                OnAfterChange();
+            }
         }
 
         [IgnoreDataMember]
@@ -84,6 +124,178 @@ namespace EltraCommon.Logger.Config
         [IgnoreDataMember]
         [JsonIgnore]
         public DateTime Accessed { get; set; }
+
+        [IgnoreDataMember]
+        [JsonIgnore]
+        protected string ConfigFilePath => Path.Combine(ConfigPath, ConfigFileName);
+
+        [IgnoreDataMember]
+        [JsonIgnore]
+        protected string ConfigPath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_configPath))
+                {
+                    if (CreateLogConfigurationPath(out string path))
+                    {
+                        _configPath = path;
+                    }
+                }
+
+                return _configPath;
+            }
+        }
+
+        #endregion
+
+        #region Events handling
+
+        private void OnBeforeChange()
+        {
+            if (!_serializing)
+            {
+                LoadConfiguration();
+
+                BeforeChange?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private void OnAfterChange()
+        {
+            if (!_serializing)
+            {
+                SaveConfiguration();
+
+                AfterChange?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        private bool CreateLogConfigurationPath(out string path)
+        {
+            bool result = false;
+
+            path = string.Empty;
+
+            try
+            {
+                var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                var processName = AppHelper.GetProcessFileName(false);
+                var configPath = Path.Combine(appDataPath, "eltra", processName, "config");
+
+                if (!Directory.Exists(configPath))
+                {
+                    Directory.CreateDirectory(configPath);
+                }
+
+                path = configPath;
+                result = true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"{GetType().Name} - CreateLogConfigurationPath, {LogMsgType.Exception}, {e.Message}");
+            }
+
+            return result;
+        }
+
+        public void Update()
+        {
+            const double UpdateIntervalInSec = 1;
+
+            try
+            {
+                {
+                    var lastAccessed = Accessed;
+                    var lastDiff = DateTime.Now - lastAccessed;
+
+                    if (lastDiff.TotalSeconds >= UpdateIntervalInSec)
+                    {
+                        try
+                        {
+                            if (File.Exists(ConfigFilePath))
+                            {
+                                LoadConfiguration();
+                            }
+                            else
+                            {
+                                SaveConfiguration();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            System.Diagnostics.Debug.Print($"{GetType().Name} - UpdateConfiguration, {LogMsgType.Exception}, {e.Message}");
+                        }
+
+                        Accessed = DateTime.Now;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"{GetType().Name} - UpdateConfiguration, ERROR: processing log configuration failed, reason = '{e.Message}'");
+            }
+        }
+
+        private void SaveConfiguration()
+        {
+            try
+            {
+                var content = JsonSerializer.Serialize(this);
+                var hashCode = CryptHelpers.ToMD5(content);
+
+                HashCode = hashCode;
+
+                File.WriteAllText(ConfigFilePath, content);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"{GetType().Name} - CreateNewConfiguration - ERROR: Create log configuration failed!, reason = '{e.Message}'");
+            }
+        }
+
+        private void LoadConfiguration()
+        {
+            try
+            {
+                if (File.Exists(ConfigFilePath))
+                {
+                    var content = File.ReadAllText(ConfigFilePath);
+                    var hashCode = CryptHelpers.ToMD5(content);
+
+                    var loggerConfiguration = JsonSerializer.Deserialize<LoggerConfiguration>(content);
+
+                    if (loggerConfiguration != null && HashCode != hashCode)
+                    {
+                        Copyfrom(loggerConfiguration);
+
+                        HashCode = hashCode;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"ERROR: Update log configuration failed!, reason = '{e.Message}'");
+            }
+        }
+
+        private void Copyfrom(LoggerConfiguration configuration)
+        {
+            if (configuration != null)
+            {
+                _serializing = true;
+
+                FilterOutSources = configuration.FilterOutSources;
+                Types = configuration.Types;
+                Outputs = configuration.Outputs;
+
+                _serializing = false;
+            }
+        }
 
         #endregion
     }
