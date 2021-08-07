@@ -57,6 +57,14 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
                         Backup = backup;
                     }
                 }
+                else if (childNode.Name == "Volatile")
+                {
+                    //fast changing parameter will queued & use optimized write operation
+                    if (int.TryParse(childNode.InnerXml, out int flagValue))
+                    {
+                        Volatile = flagValue;
+                    }
+                }
                 else if (childNode.Name == "Setting")
                 {
                     if(int.TryParse(childNode.InnerXml, out int setting))

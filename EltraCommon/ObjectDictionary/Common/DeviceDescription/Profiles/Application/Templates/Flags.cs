@@ -25,6 +25,9 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         [DataMember]
         public int Setting { get; set; }
 
+        [DataMember]
+        public int Volatile { get; set; }
+
         #endregion
     }
 }

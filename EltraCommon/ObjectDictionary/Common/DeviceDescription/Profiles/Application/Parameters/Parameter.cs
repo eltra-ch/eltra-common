@@ -1391,6 +1391,29 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             return result;
         }
 
+        /// <summary>
+        /// Write parameter value on the eltra server / master only method 
+        /// </summary>
+        /// <param name="parameterValue"></param>
+        /// <returns></returns>
+        public async Task<bool> SetParameterValue(ParameterValue parameterValue)
+        {
+            bool result = false;
+            var claudConnector = Device?.CloudConnector;
+
+            if (claudConnector != null && Device != null)
+            {
+                if (Device.SearchParameter(UniqueId) is Parameter parameter)
+                {
+                    result = await claudConnector.SetParameterValue(Device, parameter.Index, parameter.SubIndex, parameterValue);
+
+                    OnParameterWritten(new ParameterWrittenEventArgs(parameter, result));
+                }   
+            }
+
+            return result;
+        }
+
         public async Task<ParameterValue> ReadValue()
         {
             ParameterValue result = null;

@@ -108,5 +108,15 @@ namespace EltraCommon.Contracts.Interfaces
         /// <param name="deviceVersion"></param>
         /// <returns></returns>
         Task<DeviceDescriptionPayload> DownloadDeviceDescription(DeviceVersion deviceVersion);
+
+        /// <summary>
+        /// WriteValue
+        /// </summary>
+        /// <param name="device"></param>
+        /// <param name="index"></param>
+        /// <param name="subIndex"></param>
+        /// <param name="parameterValue"></param>
+        /// <returns></returns>
+        Task<bool> SetParameterValue(EltraDevice device, ushort index, byte subIndex, ParameterValue parameterValue);
     }
 }
