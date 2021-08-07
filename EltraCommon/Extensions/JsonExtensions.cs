@@ -169,7 +169,7 @@ namespace EltraCommon.Extensions
                         }
                         else
                         {
-                            MsgLogger.WriteError("JsonExtensions - TryDeserializeObject", $"json, doesn't contain header {headerIdentification}");
+                            MsgLogger.WriteDebug("JsonExtensions - TryDeserializeObject", $"json, doesn't contain header {headerIdentification}");
                         }
                     }
                     else
