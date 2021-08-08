@@ -96,6 +96,15 @@ namespace EltraCommon.Logger.Output
                     Console.ForegroundColor = ConsoleColor.Green;
                     result = true;
                     break;
+                default:
+                    {
+                        if(Console.ForegroundColor == ConsoleColor.Green ||
+                            Console.ForegroundColor == ConsoleColor.Yellow ||
+                            Console.ForegroundColor == ConsoleColor.Red)
+                        {
+                            Console.ResetColor();
+                        }
+                    } break;
             }
 
             return result;
