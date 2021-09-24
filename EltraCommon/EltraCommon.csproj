@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
 	<LangVersion>7.2</LangVersion>
 	<Company>eltra.ch</Company>
 	<Authors>Dawid Sienkiewicz</Authors>
@@ -20,7 +20,7 @@
 	<Product>Eltra.Common</Product>	
 	<Description>Eltra - CANOpen based IoT Framework - SDK</Description>
 	<PackageTags>CANOpen IoT Eltra OPCUA OPC</PackageTags>
-    <Version>1.9.2</Version>
+    <Version>1.9.3</Version>
     <PackageIcon>eltra_logo.png</PackageIcon>
     <AssemblyVersion>1.9.0.0</AssemblyVersion>
     <PackageReleaseNotes>-fixed issue with console log color #68</PackageReleaseNotes>
@@ -44,6 +44,13 @@
     <PackageReference Include="System.Buffers" Version="4.5.1" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="5.0.0" />
     <PackageReference Include="System.Text.Json" Version="5.0.2" />
+  </ItemGroup>
+  
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
+    <Reference Include="System.Web" />
+	<Reference Include="System.Net" />
+	<Reference Include="System.Net.Http" />
+	<Reference Include="System.IO.Compression" />
   </ItemGroup>
 
   <ItemGroup>
