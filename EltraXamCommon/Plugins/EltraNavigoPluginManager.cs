@@ -1,5 +1,4 @@
-﻿using DryIoc;
-using EltraCommon.Contracts.Devices;
+﻿using EltraCommon.Contracts.Devices;
 using EltraCommon.Contracts.ToolSet;
 using EltraCommon.Contracts.Users;
 using EltraCommon.Extensions;
@@ -9,7 +8,6 @@ using EltraCommon.Transport;
 using EltraUiCommon.Controls;
 using EltraUiCommon.Helpers;
 using EltraXamCommon.Plugins.Events;
-using Newtonsoft.Json;
 using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;

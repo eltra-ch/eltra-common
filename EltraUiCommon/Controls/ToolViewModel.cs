@@ -264,10 +264,26 @@ namespace EltraUiCommon.Controls
                     }
                 }
 
+                var channel = Agent.Channel;
+
+                if (channel != null)
+                {
+                    channel.StatusChanged += (sender, args) =>
+                    {
+                        IsOnline = args.Status == ChannelStatus.Online;
+                    };
+
+                    IsOnline = channel.Status == ChannelStatus.Online;
+                }
+                else
+                {
+                    MsgLogger.WriteError($"{GetType().Name} - Init", "channel not defined!");
+                }
+
                 VirtualCommandSet agentVcs;
 
                 var deviceFactory = GetDeviceFactory();
-                
+
                 if (deviceFactory != null)
                 {
                     agentVcs = deviceFactory.CreateVcs(Agent, Device);
@@ -275,18 +291,6 @@ namespace EltraUiCommon.Controls
                 else
                 {
                     agentVcs = new VirtualCommandSet(Agent, Device);
-                }
-                
-                var channel = Agent.Channel;
-
-                if (channel != null)
-                {
-                    IsOnline = channel.Status == ChannelStatus.Online;
-
-                    channel.StatusChanged += (sender, args) =>
-                    {
-                        IsOnline = args.Status == ChannelStatus.Online;
-                    };
                 }
 
                 if (Device.Status == DeviceStatus.Ready)
@@ -378,9 +382,22 @@ namespace EltraUiCommon.Controls
 
         public override Task<bool> StartUpdate()
         {
-            if (Agent != null && Agent.Channel != null)
+            if (Agent != null)
             {
-                IsOnline = Agent.Channel.Status == ChannelStatus.Online;
+                var agentChannel = Agent.Channel;
+
+                if (agentChannel != null)
+                {
+                    IsOnline = agentChannel.Status == ChannelStatus.Online;
+
+                    agentChannel.StatusChanged += (o, e) =>
+                    {
+                        if (o is Channel channel)
+                        {
+                            IsOnline = channel.Status == ChannelStatus.Online;
+                        }
+                    };
+                }
             }
 
             return base.StartUpdate();
