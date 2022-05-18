@@ -61,6 +61,8 @@ namespace EltraCommon.Logger
                 result += ";";
                 result += LogTypeHelper.TypeToString(LogMsgType.Error);
                 result += ";";
+                result += LogTypeHelper.TypeToString(LogMsgType.Warning);
+                result += ";";
                 result += LogTypeHelper.TypeToString(LogMsgType.Exception);
                 result += ";";
                 result += LogTypeHelper.TypeToString(LogMsgType.Info);

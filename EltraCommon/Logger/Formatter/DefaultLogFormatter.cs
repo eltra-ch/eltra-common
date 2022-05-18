@@ -53,6 +53,18 @@ namespace EltraCommon.Logger.Formatter
                         }
                     }
                     break;
+                case LogMsgType.Warning:
+                    {
+                        if (!string.IsNullOrEmpty(source))
+                        {
+                            result = string.Format("{0} [{2}] [{3}] WARNING: {1}", time, msg, threadId, source);
+                        }
+                        else
+                        {
+                            result = string.Format("{0} [{2}] WARNING: {1}", time, msg, threadId);
+                        }
+                    }
+                    break;
                 case LogMsgType.Timing:
                     {
                         if (!string.IsNullOrEmpty(source))
