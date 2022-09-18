@@ -423,7 +423,13 @@ namespace EltraUiCommon.Controls
             {
                 WaitAllAutoUpdateTasks(id);
 
-                await RegisterAutoUpdate();
+                try
+                {
+                    await RegisterAutoUpdate();
+                }
+                catch(Exception)
+                {
+                }
             }));
 
             AddAutoUpdateTask(tr, id);
