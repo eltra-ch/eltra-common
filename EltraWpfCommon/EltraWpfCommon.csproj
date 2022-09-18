@@ -23,12 +23,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
-    <PackageReference Include="Prism.Wpf" Version="8.0.0.1909" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+    <PackageReference Include="Prism.Wpf" Version="8.1.97" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\connect\EltraConnector\EltraConnector.csproj" />
     <ProjectReference Include="..\EltraCommon\EltraCommon.csproj" />
     <ProjectReference Include="..\EltraUiCommon\EltraUiCommon.csproj" />
   </ItemGroup>

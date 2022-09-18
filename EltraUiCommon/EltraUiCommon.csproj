@@ -37,7 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\connect\EltraConnector\EltraConnector.csproj" />
+    <PackageReference Include="Eltra.Connector" Version="2.1.7" />
   </ItemGroup>
 
 </Project>
