@@ -9,11 +9,16 @@ namespace EltraCommon.Contracts.Ws
     public class WsMessageAck : WsMessage
     {
         /// <summary>
+        /// Content
+        /// </summary>
+        public static string RawData => "ACK";
+
+        /// <summary>
         /// WsMessageAck
         /// </summary>
         public WsMessageAck()
         {
-            Data = "ACK";
+            Data = RawData;
             TypeName = typeof(WsMessageAck).FullName;
         }
     }

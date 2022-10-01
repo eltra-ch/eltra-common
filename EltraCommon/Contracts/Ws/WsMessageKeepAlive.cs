@@ -9,11 +9,16 @@ namespace EltraCommon.Contracts.Ws
     public class WsMessageKeepAlive : WsMessage
     {
         /// <summary>
+        /// Content
+        /// </summary>
+        public static string RawData => "KEEPALIVE";
+
+        /// <summary>
         /// WsMessageKeepAlive
         /// </summary>
         public WsMessageKeepAlive()
         {
-            Data = "KEEPALIVE";
+            Data = RawData;
             TypeName = typeof(WsMessageAck).FullName;
         }
     }
