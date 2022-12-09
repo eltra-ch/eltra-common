@@ -14,7 +14,7 @@
 	<RepositoryUrl>https://github.com/eltra-ch/eltra-common</RepositoryUrl>
 	<RepositoryType>GIT</RepositoryType>
 	<dependencies>
-      <dependency id="System.Drawing.Common" version="4.7.0" />
+      <dependency id="System.Drawing.Common" version="7.0.0" />
     </dependencies>
 	<PackageId>Eltra.Common</PackageId>
 	<Product>Eltra.Common</Product>	
