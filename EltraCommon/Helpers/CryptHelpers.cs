@@ -36,20 +36,30 @@ namespace EltraCommon.Helpers
 
             if (!string.IsNullOrEmpty(text))
             {
-                using (MD5 md5 = MD5.Create())
+                var inputBytes = Encoding.ASCII.GetBytes(text);
+
+                result = ToMD5(inputBytes);
+            }
+
+            return result;
+        }
+
+        public static string ToMD5(byte[] inputBytes)
+        {
+            string result = string.Empty;
+
+            using (MD5 md5 = MD5.Create())
+            {
+                byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                StringBuilder sb = new StringBuilder();
+
+                for (int i = 0; i < hashBytes.Length; i++)
                 {
-                    byte[] inputBytes = Encoding.ASCII.GetBytes(text);
-                    byte[] hashBytes = md5.ComputeHash(inputBytes);
-
-                    StringBuilder sb = new StringBuilder();
-
-                    for (int i = 0; i < hashBytes.Length; i++)
-                    {
-                        sb.Append(hashBytes[i].ToString("X2"));
-                    }
-
-                    result = sb.ToString();
+                    sb.Append(hashBytes[i].ToString("X2"));
                 }
+
+                result = sb.ToString();
             }
 
             return result;
