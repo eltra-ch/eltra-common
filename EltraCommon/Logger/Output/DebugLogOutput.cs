@@ -29,7 +29,7 @@ namespace EltraCommon.Logger.Output
             
             string formattedMsg = Formatter.Format(source, type, msg);
 
-            if (!string.IsNullOrEmpty(formattedMsg) && type == LogMsgType.Debug)
+            if (!string.IsNullOrEmpty(formattedMsg))
             {
                 Debug.WriteLine(formattedMsg);
             }
