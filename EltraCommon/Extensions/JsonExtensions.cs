@@ -18,16 +18,6 @@ namespace EltraCommon.Extensions
     public static class JsonExtensions
     {
         /// <summary>
-        /// ToJson
-        /// </summary>
-        /// <param name="device"></param>
-        /// <returns></returns>
-        public static string ToJson(this EltraDevice device)
-        {
-            return JsonSerializer.Serialize(device);
-        }
-
-        /// <summary>
         /// FromJson
         /// </summary>
         /// <param name="device"></param>
@@ -37,16 +27,6 @@ namespace EltraCommon.Extensions
             if (device == null) throw new ArgumentNullException(nameof(device));
 
             device = TryDeserializeObject<EltraDevice>(json);
-        }
-
-        /// <summary>
-        /// ToJson
-        /// </summary>
-        /// <param name="channel"></param>
-        /// <returns></returns>
-        public static string ToJson(this ChannelBase channel)
-        {
-            return JsonSerializer.Serialize(channel);
         }
 
         /// <summary>
@@ -62,16 +42,6 @@ namespace EltraCommon.Extensions
         }
 
         /// <summary>
-        /// ToJson
-        /// </summary>
-        /// <param name="sessionDevices"></param>
-        /// <returns></returns>
-        public static string ToJson(this EltraDeviceSet sessionDevices)
-        {
-            return JsonSerializer.Serialize(sessionDevices);
-        }
-
-        /// <summary>
         /// FromJson
         /// </summary>
         /// <param name="sessionDevices"></param>
@@ -81,6 +51,36 @@ namespace EltraCommon.Extensions
             if (sessionDevices == null) throw new ArgumentNullException(nameof(sessionDevices));
 
             sessionDevices = TryDeserializeObject<EltraDeviceSet>(json);
+        }
+
+        /// <summary>
+        /// ToJson
+        /// </summary>
+        /// <param name="device"></param>
+        /// <returns></returns>
+        public static string ToJson(this EltraDevice device)
+        {
+            return JsonSerializer.Serialize(device);
+        }
+
+        /// <summary>
+        /// ToJson
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <returns></returns>
+        public static string ToJson(this ChannelBase channel)
+        {
+            return JsonSerializer.Serialize(channel);
+        }
+
+        /// <summary>
+        /// ToJson
+        /// </summary>
+        /// <param name="sessionDevices"></param>
+        /// <returns></returns>
+        public static string ToJson(this EltraDeviceSet sessionDevices)
+        {
+            return JsonSerializer.Serialize(sessionDevices);
         }
 
         /// <summary>
