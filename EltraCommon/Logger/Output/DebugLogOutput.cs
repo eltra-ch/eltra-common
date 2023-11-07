@@ -1,6 +1,8 @@
 ﻿using EltraCommon.Logger.Formatter;
 using System.Diagnostics;
 
+
+
 namespace EltraCommon.Logger.Output
 {
     class DebugLogOutput : LogOutput, ILogOutput
@@ -31,7 +33,7 @@ namespace EltraCommon.Logger.Output
 
             if (!string.IsNullOrEmpty(formattedMsg))
             {
-                Debug.WriteLine(formattedMsg);
+                Trace.WriteLine(formattedMsg);
             }
             
             Unlock();
