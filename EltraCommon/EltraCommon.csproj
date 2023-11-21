@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
@@ -9,7 +9,7 @@
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 	<PackageLicenseFile>LICENSE</PackageLicenseFile>
-	<Copyright>Dawid Sienkiewicz, (c) 2020-2022</Copyright>
+	<Copyright>Dawid Sienkiewicz, (c) 2020-2023</Copyright>
 	<PackageProjectUrl>www.eltra.ch</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/eltra-ch/eltra-common</RepositoryUrl>
 	<RepositoryType>GIT</RepositoryType>
@@ -20,12 +20,12 @@
 	<Product>Eltra.Common</Product>	
 	<Description>Eltra - CANOpen based IoT Framework - SDK</Description>
 	<PackageTags>CANOpen IoT Eltra OPCUA OPC</PackageTags>
-    <Version>1.9.9</Version>
+    <Version>2.0.0</Version>
     <PackageIcon>eltra_logo.png</PackageIcon>
-    <AssemblyVersion>1.9.0.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <PackageReleaseNotes>- update dependent libs #14</PackageReleaseNotes>
 	<PackageReadmeFile>readme.md</PackageReadmeFile>
-    <FileVersion>1.9.9.0</FileVersion>
+    <FileVersion>2.0.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -72,6 +72,11 @@
 		<Pack>True</Pack>
 		<PackagePath></PackagePath>
 	</None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EltraCommonBase\EltraCommonBase.csproj" />
+    <ProjectReference Include="..\EltraLogger\EltraLogger.csproj" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">    
