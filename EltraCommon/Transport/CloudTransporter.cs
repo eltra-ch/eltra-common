@@ -637,7 +637,7 @@ namespace EltraCommon.Transport
                     }
                     else
                     {
-                        MsgLogger.WriteError($"{GetType().Name} - Put", $"put - url ='{url}' failed! response = {postResult.IsSuccessStatusCode}");
+                        MsgLogger.WriteError($"{GetType().Name} - Put", $"put - uri ='{builder}' failed! status code = {result.StatusCode}");
 						tryCount = MaxRetryCount;
                     }
                 }
