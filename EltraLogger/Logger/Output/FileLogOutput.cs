@@ -52,15 +52,34 @@ namespace EltraCommon.Logger.Output
 
         #region Methods
 
-        private bool CreateDefaultLogPath()
+        private bool CreateDefaultLogPath(Environment.SpecialFolder folder)
         {
+            const string method = "CreateDefaultLogPath";
             bool result = false;
 
             try
             {
-                var logPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                var logPath = Environment.GetFolderPath(folder);
+
+                result = CreateDefaultLogPath(logPath);
+            }
+            catch (Exception e)
+            {
+                _fallback?.Write($"{GetType().Name} - {method}", LogMsgType.Exception, e.Message);
+            }
+
+            return result;
+        }
+
+        private bool CreateDefaultLogPath(string basePath)
+        {
+            bool result = false;
+            const string method = "CreateDefaultLogPath";
+
+            try
+            {
                 var processName = AppHelper.GetProcessFileName(false);
-                var eltraLogPath = Path.Combine(logPath, "eltra", processName);
+                var eltraLogPath = Path.Combine(basePath, "eltra", processName);
 
                 if (!Directory.Exists(eltraLogPath))
                 {
@@ -71,9 +90,13 @@ namespace EltraCommon.Logger.Output
 
                 result = true;
             }
-            catch(Exception e)
+            catch (UnauthorizedAccessException)
             {
-                _fallback?.Write($"{GetType().Name} - CreateDefaultLogPath", LogMsgType.Exception, e.Message);
+                Console.WriteLine($"{GetType().Name} - {method}, {LogMsgType.Exception}, unauthorized");
+            }
+            catch (Exception e)
+            {
+                _fallback?.Write($"{GetType().Name} - {method}", LogMsgType.Exception, e.Message);
             }
 
             return result;
@@ -82,12 +105,28 @@ namespace EltraCommon.Logger.Output
         private bool ValidateLogPath()
         {
             bool result = false;
+            const string method = "ValidateLogPath";
 
             try
             {
                 if (string.IsNullOrEmpty(LogPath))
                 {
-                    result = CreateDefaultLogPath();
+                    result = CreateDefaultLogPath(Environment.SpecialFolder.LocalApplicationData);
+
+                    if (!result)
+                    {
+                        result = CreateDefaultLogPath(Environment.SpecialFolder.MyDocuments);
+                    }
+
+                    if (!result)
+                    {
+                        result = CreateDefaultLogPath(Environment.SpecialFolder.InternetCache);
+                    }
+
+                    if (!result)
+                    {
+                        result = CreateDefaultLogPath(Path.GetTempPath());
+                    }
                 }
                 else if (!Directory.Exists(LogPath))
                 {
@@ -102,7 +141,7 @@ namespace EltraCommon.Logger.Output
             }
             catch(Exception e)
             {
-                _fallback?.Write($"{GetType().Name} - ValidateLogPath", LogMsgType.Exception, e.Message);
+                _fallback?.Write($"{GetType().Name} - {method}", LogMsgType.Exception, e.Message);
             }
 
             return result;

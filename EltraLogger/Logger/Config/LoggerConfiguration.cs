@@ -137,9 +137,25 @@ namespace EltraCommon.Logger.Config
             {
                 if (string.IsNullOrEmpty(_configPath))
                 {
-                    if (CreateLogConfigurationPath(out string path))
+                    if (CreateLogConfigurationPath(Environment.SpecialFolder.LocalApplicationData, out string localAppDataPath))
                     {
-                        _configPath = path;
+                        _configPath = localAppDataPath;
+                    }
+                    else if (CreateLogConfigurationPath(Environment.SpecialFolder.MyDocuments, out string myDocsPath))
+                    {
+                        _configPath = myDocsPath;
+                    }
+                    else if (CreateLogConfigurationPath(Environment.SpecialFolder.InternetCache, out string internetCachePath))
+                    {
+                        _configPath = internetCachePath;
+                    }
+                    else if (CreateLogConfigurationPath(Environment.CurrentDirectory, out string currentPath))
+                    {
+                        _configPath = currentPath;
+                    }
+                    else
+                    {
+                        _configPath = Environment.CurrentDirectory;
                     }
                 }
 
@@ -175,17 +191,17 @@ namespace EltraCommon.Logger.Config
 
         #region Methods
 
-        private bool CreateLogConfigurationPath(out string path)
+        private bool CreateLogConfigurationPath(string folderPath, out string path)
         {
             bool result = false;
+            const string method = "CreateLogConfigurationPath";
 
             path = string.Empty;
 
             try
             {
-                var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
                 var processName = AppHelper.GetProcessFileName(false);
-                var configPath = Path.Combine(appDataPath, "eltra", processName, "config");
+                var configPath = Path.Combine(folderPath, "eltra", processName, "config");
 
                 if (!Directory.Exists(configPath))
                 {
@@ -195,9 +211,34 @@ namespace EltraCommon.Logger.Config
                 path = configPath;
                 result = true;
             }
+            catch(UnauthorizedAccessException)
+            {
+                Console.WriteLine($"{GetType().Name} - {method}, {LogMsgType.Exception}, unauthorized");
+            }
             catch (Exception e)
             {
-                Console.WriteLine($"{GetType().Name} - CreateLogConfigurationPath, {LogMsgType.Exception}, {e.Message}");
+                Console.WriteLine($"{GetType().Name} - {method}, {LogMsgType.Exception}, {e.Message}");
+            }
+
+            return result;
+        }
+
+        private bool CreateLogConfigurationPath(Environment.SpecialFolder folder, out string path)
+        {
+            bool result = false;
+            const string method = "CreateLogConfigurationPath";
+
+            path = string.Empty;
+
+            try
+            {
+                var folderPath = Environment.GetFolderPath(folder);
+            
+                result = CreateLogConfigurationPath(folderPath, out path);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"{GetType().Name} - {method}, {LogMsgType.Exception}, {e.Message}");
             }
 
             return result;
