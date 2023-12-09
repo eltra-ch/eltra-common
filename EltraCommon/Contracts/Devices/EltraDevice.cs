@@ -31,6 +31,7 @@ namespace EltraCommon.Contracts.Devices
         private DeviceIdentification _deviceIdentification;
         private DeviceStatus _status;
         private IDeviceDescription _deviceDescription;
+        private ICloudConnector _cloudConnector;
 
         #endregion
 
@@ -56,7 +57,15 @@ namespace EltraCommon.Contracts.Devices
         /// </summary>
         [IgnoreDataMember]
         [JsonIgnore]
-        public ICloudConnector CloudConnector { get; set; }
+        public ICloudConnector CloudConnector 
+        {
+            get => _cloudConnector;
+            set
+            {
+                _cloudConnector = value;
+                OnConnectorChanged();
+            }
+        }
 
         #endregion
 
@@ -66,13 +75,24 @@ namespace EltraCommon.Contracts.Devices
         /// StatusChanged
         /// </summary>
         public event EventHandler StatusChanged;
-
+        /// <summary>
+        /// ConnectorChanged
+        /// </summary>
+        public event EventHandler ConnectorChanged;
         /// <summary>
         /// OnStatusChanged
         /// </summary>
         protected virtual void OnStatusChanged()
         {
             StatusChanged?.Invoke(this, new EventArgs());
+        }
+
+        /// <summary>
+        /// OnConnectorChanged
+        /// </summary>
+        protected virtual void OnConnectorChanged()
+        {
+            ConnectorChanged?.Invoke(this, new EventArgs());
         }
 
         #endregion

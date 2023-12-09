@@ -246,34 +246,32 @@ namespace EltraCommon.Logger.Config
 
         public void Update()
         {
-            const double UpdateIntervalInSec = 1;
+            const double UpdateIntervalInSec = 10;
 
             try
             {
+                var lastAccessed = Accessed;
+                var lastDiff = DateTime.Now - lastAccessed;
+
+                if (lastDiff.TotalSeconds >= UpdateIntervalInSec)
                 {
-                    var lastAccessed = Accessed;
-                    var lastDiff = DateTime.Now - lastAccessed;
-
-                    if (lastDiff.TotalSeconds >= UpdateIntervalInSec)
+                    try
                     {
-                        try
+                        if (File.Exists(ConfigFilePath))
                         {
-                            if (File.Exists(ConfigFilePath))
-                            {
-                                LoadConfiguration();
-                            }
-                            else
-                            {
-                                SaveConfiguration();
-                            }
+                            LoadConfiguration();
                         }
-                        catch (Exception e)
+                        else
                         {
-                            System.Diagnostics.Debug.Print($"{GetType().Name} - UpdateConfiguration, {LogMsgType.Exception}, {e.Message}");
+                            SaveConfiguration();
                         }
-
-                        Accessed = DateTime.Now;
                     }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.Print($"{GetType().Name} - UpdateConfiguration, {LogMsgType.Exception}, {e.Message}");
+                    }
+
+                    Accessed = DateTime.Now;
                 }
             }
             catch (Exception e)
@@ -306,15 +304,19 @@ namespace EltraCommon.Logger.Config
                 if (File.Exists(ConfigFilePath))
                 {
                     var content = File.ReadAllText(ConfigFilePath);
-                    var hashCode = CryptHelpers.ToMD5(content);
 
-                    var loggerConfiguration = JsonSerializer.Deserialize<LoggerConfiguration>(content);
-
-                    if (loggerConfiguration != null && HashCode != hashCode)
+                    if (!string.IsNullOrEmpty(content))
                     {
-                        Copyfrom(loggerConfiguration);
+                        var hashCode = CryptHelpers.ToMD5(content);
 
-                        HashCode = hashCode;
+                        var loggerConfiguration = JsonSerializer.Deserialize<LoggerConfiguration>(content);
+
+                        if (loggerConfiguration != null && HashCode != hashCode)
+                        {
+                            Copyfrom(loggerConfiguration);
+
+                            HashCode = hashCode;
+                        }
                     }
                 }
             }
