@@ -128,12 +128,6 @@ namespace EltraCommon.Logger.Output
                         result = CreateDefaultLogPath(Path.GetTempPath());
                     }
                 }
-                else if (!Directory.Exists(LogPath))
-                {
-                    Directory.CreateDirectory(LogPath);
-                    
-                    result = true;
-                }
                 else
                 {
                     result = true;

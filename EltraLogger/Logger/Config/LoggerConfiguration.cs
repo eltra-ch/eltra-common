@@ -17,9 +17,9 @@ namespace EltraCommon.Logger.Config
         private string _types;
         private List<string> _filterOutSources;
         private string _outputs;
-        private string _configPath;
+        private static string _configPath;
         private bool _serializing;
-
+        
         #endregion
 
         #region Constructors
