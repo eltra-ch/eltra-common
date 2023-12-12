@@ -16,12 +16,12 @@
 	<Product>Eltra.Common.Logger</Product>
 	<Description>Eltra - CANOpen based IoT Framework - SDK</Description>
 	<PackageTags>CANOpen IoT Eltra OPCUA OPC</PackageTags>
-	<Version>1.0.2</Version>
+	<Version>1.0.3</Version>
 	<PackageIcon>eltra_logo.png</PackageIcon>
-	<AssemblyVersion>1.0.2.0</AssemblyVersion>
+	<AssemblyVersion>1.0.3.0</AssemblyVersion>
 	<PackageReleaseNotes>initial release</PackageReleaseNotes>
 	<PackageReadmeFile>readme.md</PackageReadmeFile>
-	<FileVersion>1.0.2.0</FileVersion>
+	<FileVersion>1.0.3.0</FileVersion>
   </PropertyGroup>
 
 	<ItemGroup>
