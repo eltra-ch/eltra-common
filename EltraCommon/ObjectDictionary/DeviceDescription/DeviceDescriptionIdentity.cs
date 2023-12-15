@@ -13,19 +13,18 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
         /// </summary>
         public DeviceDescriptionIdentity()
         {
-            Header = DefaultHeader;
         }
 
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "AIP5";
+        private const string DefaultDiscriminator = "DeviceDescriptionIdentity";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// Hash code encoding algorithm

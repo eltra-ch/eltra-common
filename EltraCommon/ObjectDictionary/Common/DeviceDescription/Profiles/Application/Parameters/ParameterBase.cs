@@ -24,6 +24,10 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
         #region Constructors
 
+        public ParameterBase()
+        {
+        }
+
         public ParameterBase(EltraDevice device, XmlNode source)
         {
             _source = source;
@@ -32,8 +36,19 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         }
 
         #endregion
-        
+
         #region Properties
+
+        /// <summary>
+        /// DefaultHeader
+        /// </summary>
+        private const string DefaultDiscriminator = "ParameterBase";
+
+        /// <summary>
+        /// Header
+        /// </summary>
+        [DataMember]
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         [IgnoreDataMember]
         [JsonIgnore]
@@ -83,15 +98,6 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                                 result = true;
                             }
                         }
-                        /*else if (childNode.Name == "label")
-                        {
-                            var label = new XddLabel(childNode);
-
-                            if (label.Parse())
-                            {
-                                Labels.Add(label);
-                            }
-                        }*/
                         
                         if (!result)
                         {

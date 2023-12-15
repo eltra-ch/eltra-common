@@ -29,13 +29,10 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Device
 
             foreach (XmlNode childNode in node.ChildNodes)
             {
-                if (childNode.Name == "userLevelList")
+                if (childNode.Name == "userLevelList" && !UserLevelList.Parse(childNode))
                 {
-                    if (!UserLevelList.Parse(childNode))
-                    {
-                        result = false;
-                        break;
-                    }
+                    result = false;
+                    break;
                 }
             }
 

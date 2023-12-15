@@ -15,7 +15,6 @@ namespace EltraCommon.Contracts.ToolSet
         /// </summary>
         public DeviceToolPayload()
         {
-            Header = DefaultHeader;
             Modified = DateTime.MinValue;
             Created = DateTime.MinValue;
         }
@@ -27,13 +26,13 @@ namespace EltraCommon.Contracts.ToolSet
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "ASP4";
+        private const string DefaultDiscriminator = "DeviceToolPayload";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// Channel Id

@@ -12,6 +12,8 @@ using System.Runtime.InteropServices;
  * to keep the compatibility with .NETSTANDARD 2.0/UWP I used code from dotnet repo licensed under MIT
  */
 
+#pragma warning disable S907
+
 namespace EltraCommon.Converters
 {
     /// <summary>

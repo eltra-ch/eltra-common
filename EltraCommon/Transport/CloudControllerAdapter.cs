@@ -15,7 +15,7 @@ namespace EltraCommon.Transport
         #region Private fields
 
         private bool _good;
-        private List<CloudControllerAdapter> _children;
+        private readonly List<CloudControllerAdapter> _children;
         private static CloudTransporter _cloudTransporter;
 
         #endregion
@@ -80,7 +80,7 @@ namespace EltraCommon.Transport
 
         #region Events handling
 
-        private void OnSocketErrorChanged(object sender, SocketErrorChangedEventAgs e)
+        private void OnSocketErrorChanged(object sender, SocketErrorRaisedEventArgs e)
         {
             Good = e.SocketError == SocketError.Success;
         }

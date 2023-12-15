@@ -7,7 +7,7 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Identity
 {
     public class XddDeviceIdentity
     {
-        private EltraDevice _device;
+        private readonly EltraDevice _device;
 
         private XddDeviceFamily _deviceFamily;
         private XddProductText _productText;
@@ -84,13 +84,10 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Identity
                     {
                         OrderNumber = childNode.InnerXml;
                     }
-                    else if (childNode.Name == "version")
+                    else if (childNode.Name == "version" && !DeviceVersion.Parse(childNode))
                     {
-                        if (!DeviceVersion.Parse(childNode))
-                        {
-                            result = false;
-                            break;
-                        }
+                        result = false;
+                        break;
                     }
                 }
 

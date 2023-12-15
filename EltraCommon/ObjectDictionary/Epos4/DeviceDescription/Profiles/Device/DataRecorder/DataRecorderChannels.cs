@@ -75,7 +75,6 @@ namespace EltraCommon.ObjectDictionary.Epos4.DeviceDescription.Profiles.Device.D
             }
 
             return result;
-            ;
         }
     }
 }

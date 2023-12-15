@@ -16,19 +16,18 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         /// </summary>
         public ParameterValueList()
         {
-            Header = DefaultHeader;
         }
 
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "AFJ3";
+        private const string DefaultDiscriminator = "ParameterValueList";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// Items

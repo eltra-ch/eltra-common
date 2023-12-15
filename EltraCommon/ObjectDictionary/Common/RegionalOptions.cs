@@ -2,8 +2,8 @@
 {
     static class RegionalOptions
     {
-        public static string DefaultLanguage = "en-TT";
+        public const string DefaultLanguage = "en-TT";
 
-        public static string Language = DefaultLanguage;
+        public const string Language = DefaultLanguage;
     }
 }

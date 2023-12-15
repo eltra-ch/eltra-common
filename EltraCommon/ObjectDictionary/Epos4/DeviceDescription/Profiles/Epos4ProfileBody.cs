@@ -40,13 +40,10 @@ namespace EltraCommon.ObjectDictionary.Epos4.DeviceDescription.Profiles
                         break;
                     }
                 }
-                else if (childNode.Name == "DeviceManager")
+                else if (childNode.Name == "DeviceManager" && !DeviceManager.Parse(childNode))
                 {
-                    if (!DeviceManager.Parse(childNode))
-                    {
-                        result = false;
-                        break;
-                    }
+                    result = false;
+                    break;
                 }
             }
 

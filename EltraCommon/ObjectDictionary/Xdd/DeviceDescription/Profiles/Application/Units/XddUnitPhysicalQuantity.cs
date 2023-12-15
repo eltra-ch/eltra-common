@@ -42,7 +42,7 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
             }
             else
             {
-                throw new Exception($"{GetType().Name} - missing uniqueID attribute");
+                throw new ArgumentException($"{GetType().Name} - missing uniqueID attribute");
             }
 
             if (typeAttribute != null)
@@ -51,7 +51,7 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
             }
             else
             {
-                throw new Exception($"{GetType().Name} - missing type attribute");
+                throw new ArgumentException($"{GetType().Name} - missing type attribute");
             }
 
             foreach (XmlNode childNode in node.ChildNodes)

@@ -17,6 +17,7 @@ namespace EltraCommon.Contracts.Channels
         #region Private fields
 
         private const uint DefaultUpdateInterval = 30;
+        private const string DefaultDiscriminator = "Channel";
 
         private string _userName;
         private GeoLocation _location;
@@ -32,7 +33,7 @@ namespace EltraCommon.Contracts.Channels
         /// </summary>
         public Channel()
         {
-            Header = DefaultHeader;
+            Discriminator = DefaultDiscriminator;
 
             Modified = DateTime.Now;
             Created = DateTime.Now;
@@ -49,7 +50,7 @@ namespace EltraCommon.Contracts.Channels
         /// <param name="channelBase"></param>
         public Channel(ChannelBase channelBase)
         {
-            Header = DefaultHeader;
+            Discriminator = DefaultDiscriminator;
 
             Modified = DateTime.Now;
             Created = DateTime.Now;
@@ -79,17 +80,6 @@ namespace EltraCommon.Contracts.Channels
         #endregion
 
         #region Properties
-
-        /// <summary>
-        /// DefaultHeader
-        /// </summary>
-        public static string DefaultHeader = "AMA2";
-
-        /// <summary>
-        /// Header
-        /// </summary>
-        [DataMember]
-        public string Header { get; set; }
 
         /// <summary>
         /// Channel User Name

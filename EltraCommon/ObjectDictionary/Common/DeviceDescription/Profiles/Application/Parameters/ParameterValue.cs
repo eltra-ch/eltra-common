@@ -4,55 +4,51 @@ using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application
 using EltraCommon.Logger;
 using System.Text;
 using EltraCommon.Converters;
+using System.Collections.Generic;
 
-#pragma warning disable 1591
+#pragma warning disable 1591, S3897, S4035
 
 namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters
 {
     [DataContract]
-    public class ParameterValue : IEquatable<ParameterValue>
+    public class ParameterValue : IEqualityComparer<ParameterValue>
     {
         private string _value;
 
         public ParameterValue()
         {
-            Header = DefaultHeader;
         }
 
         public ParameterValue(byte[] data)
         {
-            Header = DefaultHeader;
             Value = Convert.ToBase64String(data, Base64FormattingOptions.None);
         }
 
         public ParameterValue(ParameterValue parameterValue)
         {
-            Header = DefaultHeader;
             Value = parameterValue.Value;
         }
 
         public ParameterValue(TypeCode type, string defaultValue)
         {
-            Header = DefaultHeader;
             SetDefaultValue(type, defaultValue);
         }
 
         public ParameterValue(DataType type, string defaultValue)
         {
-            Header = DefaultHeader;
             SetDefaultValue(type, defaultValue);
         }
 
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "AJQ7";
+        private const string DefaultDiscriminator = "ParameterValue";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         [DataMember]
         public string Value
@@ -462,7 +458,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                         }
                         else if (byteArray.Length == sizeof(float))
                         {
-                            value = (T)(object)(double)BitConverter.ToDouble(byteArray, 0);
+                            value = (T)(object)BitConverter.ToSingle(byteArray, 0);
                             result = true;
                         }
                     }
@@ -521,6 +517,16 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         protected virtual void OnValueChanged()
         {
             Modified = DateTime.Now;
+        }
+
+        public bool Equals(ParameterValue x, ParameterValue y)
+        {
+            return x.Value == y.Value;
+        }
+
+        public int GetHashCode(ParameterValue obj)
+        {
+            return obj.GetHashCode();
         }
     }
 }

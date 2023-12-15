@@ -14,19 +14,18 @@ namespace EltraCommon.Contracts.History
         /// </summary>
         public ParameterValueHistoryStatistics()
         {
-            Header = DefaultHeader;
         }
 
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "AJF2";
+        private const string DefaultDiscriminator = "ParameterValueHistoryStatistics";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// EntriesCount

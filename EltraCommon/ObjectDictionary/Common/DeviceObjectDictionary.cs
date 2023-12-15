@@ -19,7 +19,7 @@ namespace EltraCommon.ObjectDictionary.Common
 
         #region Constructors
 
-        public DeviceObjectDictionary(EltraDevice device)
+        protected DeviceObjectDictionary(EltraDevice device)
         {
             Device = device;
             _xdd = device?.DeviceDescription;
@@ -41,7 +41,7 @@ namespace EltraCommon.ObjectDictionary.Common
         
         #region Private fields
 
-        private IDeviceDescription _xdd;
+        private readonly IDeviceDescription _xdd;
 
         #endregion
 

@@ -12,16 +12,14 @@ namespace EltraCommon.ObjectDictionary.Epos4.DeviceDescription.Profiles.Device.D
     {
         #region Private fields
         
-        private readonly XddDeviceManager _deviceManager;
         private List<DataRecorder> _dataRecorder;
 
         #endregion
 
         #region Constructors
 
-        public DataRecorderList(XddDeviceManager deviceManager)
+        public DataRecorderList()
         {
-            _deviceManager = deviceManager;
         }
 
         #endregion

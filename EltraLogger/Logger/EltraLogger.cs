@@ -4,8 +4,9 @@ using EltraCommon.Logger.Output;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 
-#pragma warning disable 1591
+#pragma warning disable 1591, S3267
 
 namespace EltraCommon.Logger
 {
@@ -81,15 +82,15 @@ namespace EltraCommon.Logger
         {
             get
             {
-                string result = string.Empty;
-
-                foreach(var output in _logOutputs)
-                {
-                    result += output.Name;
-                    result += ";";
-                }
+                var range = new StringBuilder();
                 
-                return result;
+                foreach (var output in _logOutputs)
+                {
+                    range.Append(output.Name);
+                    range.Append(";");
+                }
+
+                return range.ToString();
             }
         }
         
@@ -171,16 +172,13 @@ namespace EltraCommon.Logger
 
         public void EndTimeMeasure(string source, Stopwatch stopWatch, string msg)
         {
-            if (IsLogTypeActive(LogMsgType.Timing))
+            if (IsLogTypeActive(LogMsgType.Timing) && stopWatch != null)
             {
-                if (stopWatch != null)
-                {
-                    stopWatch.Stop();
+                stopWatch.Stop();
 
-                    if (!string.IsNullOrEmpty(msg))
-                    {
-                        LogMsg(source, LogMsgType.Timing, $" '{msg}' [time={stopWatch.ElapsedMilliseconds} ms]");                        
-                    }
+                if (!string.IsNullOrEmpty(msg))
+                {
+                    LogMsg(source, LogMsgType.Timing, $" '{msg}' [time={stopWatch.ElapsedMilliseconds} ms]");
                 }
             }
         }
@@ -229,6 +227,7 @@ namespace EltraCommon.Logger
 
             if (!string.IsNullOrEmpty(source))
             {
+#pragma warning disable S3267 // Loops should be simplified with "LINQ" expressions
                 foreach (var filterOutSource in FilterOutSources)
                 {
                     if (source.Contains(filterOutSource))
@@ -237,6 +236,7 @@ namespace EltraCommon.Logger
                         break;
                     }
                 }
+#pragma warning restore S3267 // Loops should be simplified with "LINQ" expressions
             }
 
             return result;

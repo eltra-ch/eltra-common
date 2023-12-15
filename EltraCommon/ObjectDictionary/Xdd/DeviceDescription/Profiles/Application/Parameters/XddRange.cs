@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Xml;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common;
 
-#pragma warning disable 1591
+#pragma warning disable 1591, S3267
 
 namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Parameters
 {

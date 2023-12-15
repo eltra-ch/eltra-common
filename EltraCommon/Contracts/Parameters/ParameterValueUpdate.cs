@@ -14,19 +14,18 @@ namespace EltraCommon.Contracts.Parameters
         /// </summary>
         public ParameterValueUpdate()
         {
-            Header = DefaultHeader;
         }
 
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "ACB6";
+        private const string DefaultDiscriminator = "ParameterValueUpdate";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// ChannelId

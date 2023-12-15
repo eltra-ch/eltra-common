@@ -23,7 +23,6 @@ namespace EltraCommon.Contracts.CommandSets
         /// </summary>
         public DeviceCommandList()
         {
-            Header = DefaultHeader;
         }
 
         #endregion
@@ -33,13 +32,13 @@ namespace EltraCommon.Contracts.CommandSets
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "AOP5";
+        private const string DefaultDiscriminator = "DeviceCommandList";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// Commands list

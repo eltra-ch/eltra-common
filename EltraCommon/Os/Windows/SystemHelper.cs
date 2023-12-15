@@ -26,32 +26,33 @@ namespace EltraCommon.Os.Windows
         /// <summary>
         /// GetDllInstance
         /// </summary>
-        /// <param name="dllFileName"></param>
+        /// <param name="dllName"></param>
         /// <returns></returns>
-        public IntPtr GetDllInstance(string dllFileName)
+        public IntPtr GetDllInstance(string dllName)
         {
             Assembly asm = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
             string directory = Path.GetDirectoryName(asm.Location);
 
             // Working Directory
-            FileInfo workingDirectory = new FileInfo(dllFileName);
+            var workingDirectory = new FileInfo(dllName);
+
             if (!File.Exists(workingDirectory.FullName))
             {
                 // Application Directory
-                FileInfo applicationDirectory = new FileInfo(directory + "\\" + dllFileName);
+                var applicationDirectory = new FileInfo(Path.Combine(directory, $"{Path.PathSeparator}", dllName));
                 if (!File.Exists(applicationDirectory.FullName))
                 {
-                    throw new Exception(string.Format("File {0} not found!\n\nWorking Directory: {1}\nApplication Directory: {2}", dllFileName, workingDirectory.FullName, applicationDirectory.FullName));
+                    throw new FileNotFoundException(string.Format("File {0} not found!\n\nWorking Directory: {1}\nApplication Directory: {2}", dllName, workingDirectory.FullName, applicationDirectory.FullName));
                 }
 
-                dllFileName = directory + "\\" + dllFileName;
+                dllName = directory + "\\" + dllName;
             }
 
-            var _eposCmdDll = KernelDll.LoadLibrary(dllFileName);
+            var _eposCmdDll = KernelDll.LoadLibrary(dllName);
 
             if (_eposCmdDll == IntPtr.Zero)
             {
-                throw new Exception(string.Format("{0} could not be loaded!", dllFileName));
+                throw new NotSupportedException(string.Format("{0} could not be loaded!", dllName));
             }
 
             return _eposCmdDll;

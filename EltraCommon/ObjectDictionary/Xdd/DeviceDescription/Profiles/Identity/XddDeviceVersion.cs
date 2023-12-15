@@ -8,7 +8,7 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Identity
 {
     public class XddDeviceVersion
     {
-        private EltraDevice _device;
+        private readonly EltraDevice _device;
 
         public XddDeviceVersion(EltraDevice device)
         {

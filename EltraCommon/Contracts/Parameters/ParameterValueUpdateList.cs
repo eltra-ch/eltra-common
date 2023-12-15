@@ -16,19 +16,18 @@ namespace EltraCommon.Contracts.Parameters
         /// </summary>
         public ParameterValueUpdateList()
         {
-            Header = DefaultHeader;
         }
 
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "AC12";
+        private const string DefaultDiscriminator = "ParameterValueUpdateList";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// Items

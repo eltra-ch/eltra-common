@@ -14,7 +14,6 @@ namespace EltraCommon.Contracts.CommandSets
         /// </summary>
         public ExecuteCommandStatus()
         {
-            Header = DefaultHeader;
         }
 
         /// <summary>
@@ -24,8 +23,6 @@ namespace EltraCommon.Contracts.CommandSets
         /// <param name="execCommand"></param>
         public ExecuteCommandStatus(string channelId, ExecuteCommand execCommand)
         {
-            Header = DefaultHeader;
-
             ChannelId = channelId;
             NodeId = execCommand.NodeId;
             CommandId = execCommand.CommandId;
@@ -46,13 +43,13 @@ namespace EltraCommon.Contracts.CommandSets
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "ACA1";
+        private const string DefaultDiscriminator = "ExecuteCommandStatus";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// CommandId

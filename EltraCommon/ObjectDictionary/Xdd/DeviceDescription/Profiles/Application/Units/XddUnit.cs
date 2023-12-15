@@ -117,13 +117,13 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
             return result;
         }
 
-        protected override string GetLabel(string lang)
+        protected override string GetLabel(string language)
         {
             string result = string.Empty;
 
             foreach (var label in Labels)
             {
-                if (label.Lang == lang)
+                if (label.Lang == language)
                 {
                     result = label.Content;
                     break;
@@ -145,12 +145,9 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
             string configurationValue = Configuration.GetConfigurationValue();
             var actualValue = parameter?.ActualValue;
 
-            if (actualValue != null)
+            if (actualValue != null && configurationValue == actualValue.Value)
             {
-                if (configurationValue == actualValue.Value)
-                {
-                    result = true;
-                }
+                result = true;
             }
 
             return result;

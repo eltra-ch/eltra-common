@@ -16,19 +16,30 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
     {
         #region Private fields
 
+        private const string DefaultDiscriminator = "XddParameter";
+
         private XddUserLevelList _userLevels;
 
         private readonly XddTemplateList _templateList;
-        private readonly XddDataTypeList _dataTypeList;        
+        private readonly XddDataTypeList _dataTypeList;
         private readonly XddDeviceManager _deviceManager;
-                        
+
         #endregion
 
         #region Constructors
 
+        public XddParameter()
+            : base()
+        {
+            Discriminator = DefaultDiscriminator;
+            Unit = new XddUnit();
+        }
+
         public XddParameter(EltraDevice device, XmlNode source, XddDeviceManager deviceManager, XddDataTypeList dataTypeList, XddTemplateList templateList)
             : base(device, source)
         {
+            Discriminator = DefaultDiscriminator;
+
             _deviceManager = deviceManager;
             _templateList = templateList;
             _dataTypeList = dataTypeList;
@@ -141,18 +152,15 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
 
                                 AllowedValues.Add(allowedValues);
                             }
-                            else if (childNode.Name == "allowedValuesIDRef")
+                            else if (childNode.Name == "allowedValuesIDRef" && childNode.Attributes != null)
                             {
-                                if (childNode.Attributes != null)
+                                var uniqueIdRef = childNode.Attributes["uniqueIDRef"].InnerXml;
+
+                                var allowedValues = _templateList.FindAllowedValues(uniqueIdRef);
+
+                                if (allowedValues != null)
                                 {
-                                    var uniqueIdRef = childNode.Attributes["uniqueIDRef"].InnerXml;
-
-                                    var allowedValues = _templateList.FindAllowedValues(uniqueIdRef);
-
-                                    if (allowedValues != null)
-                                    {
-                                        AllowedValues.Add(allowedValues);
-                                    }
+                                    AllowedValues.Add(allowedValues);
                                 }
                             }
 

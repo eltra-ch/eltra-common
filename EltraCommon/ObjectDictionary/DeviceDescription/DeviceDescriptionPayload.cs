@@ -20,13 +20,10 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
 
         public DeviceDescriptionPayload()
         {
-            Header = DefaultHeader;
         }
 
         public DeviceDescriptionPayload(EltraDevice device)
         {
-            Header = DefaultHeader;
-
             Init(device);
         }
 
@@ -37,13 +34,13 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "AYR2";
+        private const string DefaultDiscriminator = "DeviceDescriptionPayload";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         [DataMember]
         public string ChannelId { get; set; }

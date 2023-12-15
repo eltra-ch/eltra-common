@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using EltraCommon.Os.Linux;
 
@@ -11,18 +12,18 @@ namespace EltraCommon.Dll
     /// <summary>
     /// EltraDllWrapper
     /// </summary>
-    public class EltraDllWrapper
+    public static class EltraDllWrapper
     {
         #region Constants
 
         /// <summary>
         /// RtldNow
         /// </summary>
-        protected const int RtldNow = 2;
+        public const int RtldNow = 2;
         /// <summary>
         /// RtldGlobal
         /// </summary>
-        protected const int RtldGlobal = 8;
+        public const int RtldGlobal = 8;
 
         #endregion
 
@@ -35,8 +36,8 @@ namespace EltraCommon.Dll
         /// <param name="flags"></param>
         /// <returns></returns>
         [DllImport("libdl.so")]
-                
-        protected static extern IntPtr dlopen(string fileName, int flags);
+
+        public static extern IntPtr dlopen(string fileName, int flags);
 
         /// <summary>
         /// dlsym
@@ -45,7 +46,7 @@ namespace EltraCommon.Dll
         /// <param name="symbol"></param>
         /// <returns></returns>
         [DllImport("libdl.so")]
-        protected static extern IntPtr dlsym(IntPtr handle, [MarshalAs(UnmanagedType.LPStr)] string symbol);
+        public static extern IntPtr dlsym(IntPtr handle, [MarshalAs(UnmanagedType.LPStr)] string symbol);
 
         /// <summary>
         /// dlclose
@@ -53,21 +54,21 @@ namespace EltraCommon.Dll
         /// <param name="handle"></param>
         /// <returns></returns>
         [DllImport("libdl.so")]
-        protected static extern int dlclose(IntPtr handle);
+        public static extern int dlclose(IntPtr handle);
 
         /// <summary>
         /// dlerror
         /// </summary>
         /// <returns></returns>
         [DllImport("libdl.so")]
-        protected static extern IntPtr dlerror();
+        public static extern IntPtr dlerror();
 
         /// <summary>
         /// GetDllInstance
         /// </summary>
         /// <param name="libName"></param>
         /// <returns></returns>
-        protected static IntPtr GetDllInstance(string libName)
+        public static IntPtr GetDllInstance(string libName)
         {
             IntPtr dll;
             string fileName;
@@ -82,7 +83,7 @@ namespace EltraCommon.Dll
                 {
                     var errPtr = dlerror();
 
-                    throw new Exception($"{fileName} not found: " + Marshal.PtrToStringAnsi(errPtr));
+                    throw new FileNotFoundException($"{fileName} not found: " + Marshal.PtrToStringAnsi(errPtr));
                 }
             }
             else
@@ -93,7 +94,7 @@ namespace EltraCommon.Dll
 
                 if (dll == IntPtr.Zero)
                 {
-                    throw new Exception($"{fileName} not found!");
+                    throw new ArgumentNullException($"{fileName} not found!");
                 }
             }
 
@@ -106,7 +107,7 @@ namespace EltraCommon.Dll
         /// <param name="dllHandle"></param>
         /// <param name="funcName"></param>
         /// <returns></returns>
-        protected static IntPtr GetProcAddress(IntPtr dllHandle, string funcName)
+        public static IntPtr GetProcAddress(IntPtr dllHandle, string funcName)
         {
             IntPtr result;
 
@@ -129,7 +130,7 @@ namespace EltraCommon.Dll
         /// </summary>
         /// <param name="dllHandle"></param>
         /// <returns></returns>
-        protected static bool FreeLibrary(IntPtr dllHandle)
+        public static bool FreeLibrary(IntPtr dllHandle)
         {
             bool result;
 

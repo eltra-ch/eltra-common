@@ -15,7 +15,6 @@ namespace EltraCommon.Contracts.Users
         /// </summary>
         public UserIdentity()
         {
-            Header = DefaultHeader;
         }
 
         #region Properties
@@ -23,13 +22,13 @@ namespace EltraCommon.Contracts.Users
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "ABA0";
+        private const string DefaultDiscriminator = "UserIdentity";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// Login

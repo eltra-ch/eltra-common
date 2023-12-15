@@ -25,7 +25,7 @@ namespace EltraCommon.Logger.Output
 
         #region Methods
 
-        public void Write(string source, LogMsgType type, string msg, bool newLine)
+        public void Write(string source, LogMsgType type, string msg, bool newLine = true)
         {
             Lock();
             

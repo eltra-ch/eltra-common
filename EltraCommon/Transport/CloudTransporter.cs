@@ -27,8 +27,9 @@ namespace EltraCommon.Transport
         private const int DefaultRetryTimeout = 100;
 
         private SocketError _socketError;
+        private readonly object _lock = new object();
 
-        private Dictionary<string, HttpClient> _clients;
+        private readonly Dictionary<string, HttpClient> _clients;
 
         #endregion
 
@@ -90,7 +91,7 @@ namespace EltraCommon.Transport
         /// <summary>
         /// SocketErrorChanged
         /// </summary>
-        public event EventHandler<SocketErrorChangedEventAgs> SocketErrorChanged;
+        public event EventHandler<SocketErrorRaisedEventArgs> SocketErrorChanged;
 
         #endregion
 
@@ -98,7 +99,7 @@ namespace EltraCommon.Transport
 
         private void OnSocketErrorChanged()
         {
-            SocketErrorChanged?.Invoke(this, new SocketErrorChangedEventAgs() { SocketError = SocketError });
+            SocketErrorChanged?.Invoke(this, new SocketErrorRaisedEventArgs() { SocketError = SocketError });
         }
 
         #endregion
@@ -145,7 +146,7 @@ namespace EltraCommon.Transport
 
             if (identity != null)
             {
-                lock (this)
+                lock (_lock)
                 {
                     if (_clients.ContainsKey(identity.Login))
                     {
@@ -161,7 +162,7 @@ namespace EltraCommon.Transport
             }
             else
             {
-                throw new Exception("Identity not specified!");
+                throw new ArgumentException("Identity not specified!");
             }
 
             return result;

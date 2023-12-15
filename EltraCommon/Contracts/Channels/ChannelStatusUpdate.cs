@@ -13,19 +13,18 @@ namespace EltraCommon.Contracts.Channels
         /// </summary>
         public ChannelStatusUpdate()
         {
-            Header = DefaultHeader;
         }
 
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "ACF5";
+        private const string DefaultDiscriminator = "ChannelStatusUpdate";
 
         /// <summary>
-        /// Header
+        /// Discriminator
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// Channel id

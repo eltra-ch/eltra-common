@@ -32,12 +32,9 @@ namespace EltraCommon.ObjectDictionary.Epos4.DeviceDescription
         {
             bool result = base.Parse();
 
-            if (result)
+            if (result && Profile is Epos4Profile epos4Profile)
             {
-                if (Profile is Epos4Profile epos4Profile)
-                {
-                    DataRecorders = epos4Profile.DataRecorderList.DataRecorders;
-                }
+                DataRecorders = epos4Profile.DataRecorderList.DataRecorders;
             }
 
             return result;

@@ -13,19 +13,18 @@ namespace EltraCommon.Contracts.Channels
         /// </summary>
         public ChannelIdentification()
         {
-            Header = DefaultHeader;
         }
 
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "AKR3";
+        private const string DefaultDiscriminator = "ChannelIdentification";
 
         /// <summary>
-        /// Header
+        /// Discriminator
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        public string Discriminator { get; set; } = DefaultDiscriminator;
         /// <summary>
         /// Id
         /// </summary>

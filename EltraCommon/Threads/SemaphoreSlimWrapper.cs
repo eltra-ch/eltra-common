@@ -29,19 +29,30 @@ namespace EltraCommon.Threads
         #endregion
 
         #region Dispose
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if(disposing)
+            {
+                if (_isDisposed)
+                {
+                    return;
+                }
+
+                _semaphore.Release();
+
+                _isDisposed = true;
+            }
+        }
+
         /// <summary>
         /// Dispose
         /// </summary>
         public void Dispose()
         {
-            if (_isDisposed)
-            {
-                return;
-            }
+            Dispose(true);
 
-            _semaphore.Release();
-
-            _isDisposed = true;
+            GC.SuppressFinalize(this);
         }
 
         #endregion

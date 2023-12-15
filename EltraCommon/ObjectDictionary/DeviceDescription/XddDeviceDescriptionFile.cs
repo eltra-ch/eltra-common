@@ -64,6 +64,7 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
         protected override bool ReadDeviceTools()
         {
             bool result = true;
+            const string method = "ReadDeviceTools";
 
             try
             {
@@ -83,9 +84,10 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
                             {
                                 ReadPayloadList(childNode, ref payloadList);
                             }
-                            else if (childNode.Name.ToLower() == "devicetools")
+                            else if (childNode.Name.ToLower() == "devicetools" && 
+                                !ReadDeviceTools(childNode))
                             {
-                                ReadDeviceTools(childNode);
+                                MsgLogger.WriteError($"{GetType().Name} - {method}", "read device tools failed!");
                             }
                         }
 
@@ -95,7 +97,7 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
             }
             catch (Exception e)
             {
-                MsgLogger.Exception($"{GetType().Name} - ReadDeviceTools", e);
+                MsgLogger.Exception($"{GetType().Name} - {method}", e);
                 
                 result = false;
             }
@@ -106,23 +108,25 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
         private bool ReadDeviceTools(XmlNode deviceToolsNode)
         {
             bool result = true;
+            const string method = "ReadDeviceTools";
 
             try
             {
                 if (Device != null)
                 {
                     foreach (XmlNode childNode in deviceToolsNode.ChildNodes)
-                    {                        
-                        if (childNode.Name.ToLower() == "devicetool")
+                    {
+                        if (childNode.Name.ToLower() == "devicetool" && 
+                            !ReadDeviceTool(childNode))
                         {
-                            ReadDeviceTool(childNode);
+                            MsgLogger.WriteError($"{GetType().Name} - {method}", "read device tool failed!");
                         }
                     }
                 }
             }
             catch (Exception e)
             {
-                MsgLogger.Exception($"{GetType().Name} - ReadDeviceTools", e);
+                MsgLogger.Exception($"{GetType().Name} - {method}", e);
 
                 result = false;
             }
@@ -210,21 +214,20 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
 
                 foreach (XmlAttribute att in toolNode.Attributes)
                 {
-                    if (att.Name.ToLower() == "uuid")
+                    switch(att.Name.ToLower())
                     {
-                        uniqueIdAttribute = att;
-                        break;
-                    }
-                    else if (att.Name.ToLower() == "uniqueid")
-                    {
-                        uniqueIdAttribute = att;
-                        break;
+                        case "uuid":
+                            uniqueIdAttribute = att;
+                            break;
+                        case "uniqueid":
+                            uniqueIdAttribute = att;
+                            break;
                     }
                 }
 
                 if (uniqueIdAttribute == null)
                 {
-                    throw new Exception("device tool uniqueID attribute not specified!");
+                    throw new ArgumentException("device tool uniqueID attribute not specified!");
                 }
 
                 var deviceTool = Device.FindTool(uniqueIdAttribute.InnerXml);
@@ -251,12 +254,12 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
                 }
 
                 AddDeviceTool(toolNode, deviceTool, uniqueIdAttribute, nameAttribute, statusAttribute);
+
+                result = true;
             }
             catch (Exception e)
             {
                 MsgLogger.Exception($"{GetType().Name} - ReadDeviceTool", e);
-
-                result = false;
             }
 
             return result;

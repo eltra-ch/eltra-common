@@ -16,7 +16,7 @@ namespace EltraCommon.Threads
         private readonly ManualResetEvent _stopRequestEvent;
         private readonly ManualResetEvent _running;
         private Thread _workingThread;
-        private object _lock = new object();
+        private readonly object _lock = new object();
 
         #endregion
 
@@ -188,7 +188,7 @@ namespace EltraCommon.Threads
 
             if (!IsRunning)
             {
-                lock (this)
+                lock (_lock)
                 {
                     if (_workingThread == null)
                     {

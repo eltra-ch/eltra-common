@@ -2,7 +2,7 @@
 
 namespace EltraCommon.Helpers
 {
-    internal class LogTypeHelper
+    internal static class LogTypeHelper
     {
         public static string TypeToString(LogMsgType type)
         {

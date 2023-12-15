@@ -48,7 +48,7 @@ namespace EltraCommon.Contracts.Location
         {
             bool result = true;
 
-            if (result && location.CountryCode != CountryCode)
+            if (location.CountryCode != CountryCode)
             {
                 result = false;
             }

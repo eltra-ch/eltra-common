@@ -8,6 +8,14 @@ namespace EltraCommon.Contracts.Channels
     [DataContract]
     public class ChannelBase
     {
+        private const string DefaultDiscriminator = "ChannelBase";
+
+        /// <summary>
+        /// Discriminator
+        /// </summary>
+        [DataMember]
+        public string Discriminator { get; set; } = DefaultDiscriminator;
+
         /// <summary>
         /// Id
         /// </summary>
