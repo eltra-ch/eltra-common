@@ -141,48 +141,45 @@ namespace EltraCommon.Logger.Output
             return result;
         }
 
-        public void Write(string source, LogMsgType type, string msg, bool newLine)
+        public void Write(string source, LogMsgType type, string msg, bool newLine = true)
         {
             string formattedMsg = Formatter.Format(source, type, msg);
 
-            if(!string.IsNullOrEmpty(formattedMsg))
+            if (!string.IsNullOrEmpty(formattedMsg) && !_unauthorizedAccess)
             {
-                if (!_unauthorizedAccess)
+                if (ValidateLogPath())
                 {
-                    if (ValidateLogPath())
+                    var currentProcess = Process.GetCurrentProcess();
+
+                    string errorLogPath = Path.Combine(LogPath, $"{LogFilePrefix}_{currentProcess.Id}.log");
+
+                    Lock();
+
+                    try
                     {
-                        var currentProcess = Process.GetCurrentProcess();
-
-                        string errorLogPath = Path.Combine(LogPath, $"{LogFilePrefix}_{currentProcess.Id}.log");
-
-                        Lock();
-
-                        try
+                        if (!formattedMsg.EndsWith(Environment.NewLine))
                         {
-                            if (!formattedMsg.EndsWith(Environment.NewLine))
-                            {
-                                formattedMsg += Environment.NewLine;
-                            }
-
-                            File.AppendAllText(errorLogPath, formattedMsg);
-                        }
-                        catch (UnauthorizedAccessException e)
-                        {
-                            _unauthorizedAccess = true;
-
-                            _fallback?.Write(source, LogMsgType.Exception, e.Message);
-                        }
-                        catch (Exception e)
-                        {
-                            _fallback?.Write(source, LogMsgType.Exception, e.Message);
+                            formattedMsg += Environment.NewLine;
                         }
 
-                        Unlock();
+                        File.AppendAllText(errorLogPath, formattedMsg);
                     }
-                    else
+                    catch (UnauthorizedAccessException e)
                     {
-                        _fallback.Write($"{GetType().Name} - Write", LogMsgType.Error, "log path validation failed!");
+                        _unauthorizedAccess = true;
+
+                        _fallback?.Write(source, LogMsgType.Exception, e.Message);
                     }
+                    catch (Exception e)
+                    {
+                        _fallback?.Write(source, LogMsgType.Exception, e.Message);
+                    }
+
+                    Unlock();
+                }
+                else
+                {
+                    _fallback.Write($"{GetType().Name} - Write", LogMsgType.Error, "log path validation failed!");
                 }
             }
         }

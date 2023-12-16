@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace EltraCommon.Helpers
 {
-    public class AppHelper
+    public static class AppHelper
     {
         public static string GetProductName()
         {

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-#pragma warning disable 1591
+#pragma warning disable 1591, S3267
 
 namespace EltraCommon.Logger
 {
@@ -171,16 +171,13 @@ namespace EltraCommon.Logger
 
         public void EndTimeMeasure(string source, Stopwatch stopWatch, string msg)
         {
-            if (IsLogTypeActive(LogMsgType.Timing))
+            if (IsLogTypeActive(LogMsgType.Timing) && stopWatch != null)
             {
-                if (stopWatch != null)
-                {
-                    stopWatch.Stop();
+                stopWatch.Stop();
 
-                    if (!string.IsNullOrEmpty(msg))
-                    {
-                        LogMsg(source, LogMsgType.Timing, $" '{msg}' [time={stopWatch.ElapsedMilliseconds} ms]");                        
-                    }
+                if (!string.IsNullOrEmpty(msg))
+                {
+                    LogMsg(source, LogMsgType.Timing, $" '{msg}' [time={stopWatch.ElapsedMilliseconds} ms]");
                 }
             }
         }
