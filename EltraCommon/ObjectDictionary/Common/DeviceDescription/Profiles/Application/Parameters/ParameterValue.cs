@@ -5,6 +5,7 @@ using EltraCommon.Logger;
 using System.Text;
 using EltraCommon.Converters;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 #pragma warning disable 1591, S3897, S4035
 
@@ -48,6 +49,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         /// Header
         /// </summary>
         [DataMember]
+        [DefaultValue(DefaultDiscriminator)]
         public string Discriminator { get; set; } = DefaultDiscriminator;
 
         [DataMember]

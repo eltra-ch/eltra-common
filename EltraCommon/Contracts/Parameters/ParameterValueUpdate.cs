@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.ComponentModel;
+using System.Runtime.Serialization;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters;
 
 namespace EltraCommon.Contracts.Parameters
@@ -25,6 +26,7 @@ namespace EltraCommon.Contracts.Parameters
         /// Header
         /// </summary>
         [DataMember]
+        [DefaultValue(DefaultDiscriminator)]
         public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>

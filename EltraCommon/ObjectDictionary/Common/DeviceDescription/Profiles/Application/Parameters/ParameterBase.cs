@@ -6,6 +6,7 @@ using EltraCommon.ObjectDictionary.Common.DeviceDescription.Common;
 using EltraCommon.Logger;
 using EltraCommon.Contracts.Devices;
 using System.Text.Json.Serialization;
+using System.ComponentModel;
 
 #pragma warning disable 1591
 
@@ -48,6 +49,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         /// Header
         /// </summary>
         [DataMember]
+        [DefaultValue(DefaultDiscriminator)]
         public string Discriminator { get; set; } = DefaultDiscriminator;
 
         [IgnoreDataMember]

@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.ComponentModel;
+using System.Runtime.Serialization;
 
 namespace EltraCommon.Contracts.Channels
 {
@@ -14,6 +15,7 @@ namespace EltraCommon.Contracts.Channels
         /// Discriminator
         /// </summary>
         [DataMember]
+        [DefaultValue(DefaultDiscriminator)]
         public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>

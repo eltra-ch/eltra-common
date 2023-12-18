@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 
 namespace EltraCommon.Contracts.CommandSets
@@ -49,6 +50,7 @@ namespace EltraCommon.Contracts.CommandSets
         /// Header
         /// </summary>
         [DataMember]
+        [DefaultValue(DefaultDiscriminator)]
         public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>

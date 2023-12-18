@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 
 namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters
@@ -27,6 +28,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         /// Header
         /// </summary>
         [DataMember]
+        [DefaultValue(DefaultDiscriminator)]
         public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using EltraCommon.Contracts.Devices;
 using EltraCommon.Helpers;
 using System;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 
 #pragma warning disable 1591
@@ -40,6 +41,7 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
         /// Header
         /// </summary>
         [DataMember]
+        [DefaultValue(DefaultDiscriminator)]
         public string Discriminator { get; set; } = DefaultDiscriminator;
 
         [DataMember]

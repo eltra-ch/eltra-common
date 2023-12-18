@@ -1,5 +1,6 @@
 ﻿using EltraCommon.Contracts.Users;
 using System;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 
 namespace EltraCommon.Contracts.Ws
@@ -27,6 +28,7 @@ namespace EltraCommon.Contracts.Ws
         /// Header
         /// </summary>
         [DataMember]
+        [DefaultValue(DefaultDiscriminator)]
         public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>

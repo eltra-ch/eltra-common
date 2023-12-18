@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.ComponentModel;
+using System.Runtime.Serialization;
 
 namespace EltraCommon.ObjectDictionary.DeviceDescription
 {
@@ -24,6 +25,7 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
         /// Header
         /// </summary>
         [DataMember]
+        [DefaultValue(DefaultDiscriminator)]
         public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>

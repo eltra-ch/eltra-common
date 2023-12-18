@@ -7,6 +7,7 @@ using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application
 using EltraCommon.Contracts.Devices;
 using System.Threading.Tasks;
 using System.Text.Json.Serialization;
+using System.ComponentModel;
 
 namespace EltraCommon.Contracts.CommandSets
 {
@@ -60,6 +61,7 @@ namespace EltraCommon.Contracts.CommandSets
         /// Discriminator
         /// </summary>
         [DataMember]
+        [DefaultValue(DefaultDiscriminator)]
         public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
