@@ -197,91 +197,98 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         {
             bool result = true;
 
-            if (typeof(T) == typeof(bool))
+            if (value != null)
             {
-                var byteArray = BitConverter.GetBytes((bool)(object)value);
+                if (typeof(T) == typeof(bool))
+                {
+                    var byteArray = BitConverter.GetBytes((bool)(object)value);
 
-                Value = Convert.ToBase64String(byteArray);
-            }
-            else if (typeof(T) == typeof(byte))
-            {
-                var byteArray = BitConverter.GetBytes((byte)(object)value);
+                    Value = Convert.ToBase64String(byteArray);
+                }
+                else if (typeof(T) == typeof(byte))
+                {
+                    var byteArray = BitConverter.GetBytes((byte)(object)value);
 
-                Value = Convert.ToBase64String(byteArray);
-            }
-            else if (typeof(T) == typeof(sbyte))
-            {
-                var byteArray = BitConverter.GetBytes((sbyte)(object)value);
+                    Value = Convert.ToBase64String(byteArray);
+                }
+                else if (typeof(T) == typeof(sbyte))
+                {
+                    var byteArray = BitConverter.GetBytes((sbyte)(object)value);
 
-                Value = Convert.ToBase64String(byteArray);
-            }
-            else if (typeof(T) == typeof(char))
-            {
-                var byteArray = BitConverter.GetBytes((char)(object)value);
+                    Value = Convert.ToBase64String(byteArray);
+                }
+                else if (typeof(T) == typeof(char))
+                {
+                    var byteArray = BitConverter.GetBytes((char)(object)value);
 
-                Value = Convert.ToBase64String(byteArray);
-            }
-            else if (typeof(T) == typeof(short))
-            {
-                var byteArray = BitConverter.GetBytes((short)(object)value);
+                    Value = Convert.ToBase64String(byteArray);
+                }
+                else if (typeof(T) == typeof(short))
+                {
+                    var byteArray = BitConverter.GetBytes((short)(object)value);
 
-                Value = Convert.ToBase64String(byteArray);
-            }
-            else if (typeof(T) == typeof(int))
-            {
-                var byteArray = BitConverter.GetBytes((int)(object)value);
+                    Value = Convert.ToBase64String(byteArray);
+                }
+                else if (typeof(T) == typeof(int))
+                {
+                    var byteArray = BitConverter.GetBytes((int)(object)value);
 
-                Value = Convert.ToBase64String(byteArray);
-            }
-            else if (typeof(T) == typeof(long))
-            {
-                var byteArray = BitConverter.GetBytes((Int64)(object)value);
+                    Value = Convert.ToBase64String(byteArray);
+                }
+                else if (typeof(T) == typeof(long))
+                {
+                    var byteArray = BitConverter.GetBytes((Int64)(object)value);
 
-                Value = Convert.ToBase64String(byteArray);
-            }
-            else if (typeof(T) == typeof(ushort))
-            {
-                var byteArray = BitConverter.GetBytes((ushort)(object)value);
+                    Value = Convert.ToBase64String(byteArray);
+                }
+                else if (typeof(T) == typeof(ushort))
+                {
+                    var byteArray = BitConverter.GetBytes((ushort)(object)value);
 
-                Value = Convert.ToBase64String(byteArray);
-            }
-            else if (typeof(T) == typeof(uint))
-            {
-                var byteArray = BitConverter.GetBytes((uint)(object)value);
+                    Value = Convert.ToBase64String(byteArray);
+                }
+                else if (typeof(T) == typeof(uint))
+                {
+                    var byteArray = BitConverter.GetBytes((uint)(object)value);
 
-                Value = Convert.ToBase64String(byteArray);
-            }
-            else if (typeof(T) == typeof(ulong))
-            {
-                var byteArray = BitConverter.GetBytes((ulong)(object)value);
+                    Value = Convert.ToBase64String(byteArray);
+                }
+                else if (typeof(T) == typeof(ulong))
+                {
+                    var byteArray = BitConverter.GetBytes((ulong)(object)value);
 
-                Value = Convert.ToBase64String(byteArray);
-            }
-            else if (typeof(T) == typeof(double))
-            {
-                var byteArray = BitConverter.GetBytes((double)(object)value);
+                    Value = Convert.ToBase64String(byteArray);
+                }
+                else if (typeof(T) == typeof(double))
+                {
+                    var byteArray = BitConverter.GetBytes((double)(object)value);
 
-                Value = Convert.ToBase64String(byteArray);
-            }
-            else if (typeof(T) == typeof(string))
-            {
-                string s = (string)(object)value;
+                    Value = Convert.ToBase64String(byteArray);
+                }
+                else if (typeof(T) == typeof(string))
+                {
+                    string s = (string)(object)value;
 
-                var byteArray = Encoding.Unicode.GetBytes(s);
+                    var byteArray = Encoding.Unicode.GetBytes(s);
 
-                Value = Convert.ToBase64String(byteArray);
-            }
-            else if (typeof(T) == typeof(byte[]))
-            {
-                byte[] s = (byte[])(object)value;
+                    Value = Convert.ToBase64String(byteArray);
+                }
+                else if (typeof(T) == typeof(byte[]))
+                {
+                    byte[] s = (byte[])(object)value;
 
-                Value = Convert.ToBase64String(s);
-            }
-            else if (typeof(T) == typeof(DateTime))
-            {
-                DateTime dt = (DateTime)(object)value;
+                    Value = Convert.ToBase64String(s);
+                }
+                else if (typeof(T) == typeof(DateTime))
+                {
+                    DateTime dt = (DateTime)(object)value;
 
-                Value = Convert.ToBase64String(BitConverter.GetBytes(dt.Ticks));
+                    Value = Convert.ToBase64String(BitConverter.GetBytes(dt.Ticks));
+                }
+                else
+                {
+                    result = false;
+                }
             }
             else
             {

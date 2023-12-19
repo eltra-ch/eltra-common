@@ -166,18 +166,6 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             return result;
         }
 
-        public bool SetValue(byte[] data)
-        {
-            bool result = false;
-
-            if (data != null && (data.Length > 0 || DataType.Type == TypeCode.Object || DataType.Type == TypeCode.String || DataType.Type == TypeCode.DateTime))
-            {
-                result = SetValue(new ParameterValue(data));
-            }
-
-            return result;
-        }
-
         private bool IsParameterValueValid(ParameterValue newValue)
         {
             bool result = false;
@@ -277,6 +265,18 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             return result;
         }
 
+        public bool SetValue(byte[] data)
+        {
+            bool result = false;
+
+            if (data != null && (data.Length > 0 || DataType.Type == TypeCode.Object || DataType.Type == TypeCode.String || DataType.Type == TypeCode.DateTime))
+            {
+                result = SetValue(new ParameterValue(data));
+            }
+
+            return result;
+        }
+
         public bool SetValue(ParameterValue newValue)
         {
             bool result = false;
@@ -296,7 +296,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             bool result = false;
             var parameterValue = new ParameterValue();
 
-            if (parameterValue.SetValue(value) && IsValueInRange(value))
+            if (IsValueInRange(value) && parameterValue.SetValue(value))
             {
                 ActualValue = parameterValue;
                 result = true;
@@ -793,16 +793,16 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             return result;
         }
 
-        public bool GetValue<T>(out T value)
+        public bool GetDefaultValue<T>(out T value)
         {
-            var result = GetValue(ActualValue, out value);
+            var result = GetValue(DefaultValue, out value);
 
             return result;
         }
 
-        public bool GetDefaultValue<T>(out T value)
+        public bool GetValue<T>(out T value)
         {
-            var result = GetValue(DefaultValue, out value);
+            var result = GetValue(ActualValue, out value);
 
             return result;
         }
@@ -1185,7 +1185,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         {
             bool result = true;
 
-            if (DataType != null)
+            if (DataType != null && value != null)
             {
                 switch (DataType.Type)
                 {
@@ -1331,6 +1331,10 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                         } break;
 
                 }
+            }
+            else if(DataType != null && value == null)
+            {
+                result = false;
             }
 
             return result;
