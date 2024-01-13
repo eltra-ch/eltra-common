@@ -16,6 +16,7 @@ namespace EltraCommon.Transport
 
         private bool _good;
         private readonly List<CloudControllerAdapter> _children;
+        private readonly IHttpClient _httpClient;
         private static CloudTransporter _cloudTransporter;
 
         #endregion
@@ -25,9 +26,12 @@ namespace EltraCommon.Transport
         /// <summary>
         /// CloudControllerAdapter
         /// </summary>
+        /// <param name="httpClient"></param>
         /// <param name="url"></param>
-        public CloudControllerAdapter(string url)
+        public CloudControllerAdapter(IHttpClient httpClient, string url)
         {
+            _httpClient = httpClient;
+
             Url = url;
 
             _good = true;
@@ -48,7 +52,7 @@ namespace EltraCommon.Transport
         /// <summary>
         /// Transporter
         /// </summary>
-        public CloudTransporter Transporter => _cloudTransporter ?? (_cloudTransporter = new CloudTransporter());
+        public CloudTransporter Transporter => _cloudTransporter ?? (_cloudTransporter = new CloudTransporter(_httpClient));
 
         /// <summary>
         /// State
