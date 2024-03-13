@@ -23,6 +23,15 @@ namespace EltraCommon.Transport
         protected HttpClient Client => _client ?? (_client = new HttpClient() { Timeout = TimeSpan.FromSeconds(Timeout) });
 
         /// <summary>
+        /// Clone
+        /// </summary>
+        /// <returns></returns>
+        public IHttpClient Clone()
+        {
+            return new EltraHttpClient() { Timeout = Timeout };
+        }
+
+        /// <summary>
         /// DeleteAsync
         /// </summary>
         /// <param name="url"></param>

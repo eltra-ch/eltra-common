@@ -15,6 +15,12 @@ namespace EltraCommon.Transport
         int Timeout { get; set; }
 
         /// <summary>
+        /// Clone
+        /// </summary>
+        /// <returns></returns>
+        IHttpClient Clone();
+
+        /// <summary>
         /// DeleteAsync
         /// </summary>
         /// <param name="url"></param>
