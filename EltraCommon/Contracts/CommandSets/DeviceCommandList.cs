@@ -46,7 +46,11 @@ namespace EltraCommon.Contracts.CommandSets
         /// Commands list
         /// </summary>
         [DataMember]
-        public List<DeviceCommand> Commands => _commands ?? (_commands = new List<DeviceCommand>());
+        public List<DeviceCommand> Commands
+        {
+            get => _commands ?? (_commands = new List<DeviceCommand>());
+            set => _commands = value;
+        }
 
         #endregion
 
