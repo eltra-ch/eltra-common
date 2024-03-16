@@ -93,7 +93,15 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common
                 {
                     MsgLogger.WriteWarning($"{GetType().Name} - ToDouble", $"Cannot convert base64 value = {Value}, unknown data type!");
 
-                    result = BitConverter.ToInt32(byteArray, 0);
+                    if(byteArray.Length == sizeof(int)) 
+                    {
+                        result = BitConverter.ToInt32(byteArray, 0);
+                    }
+                    else if(byteArray.Length == sizeof(short))
+                    {
+                        result = BitConverter.ToInt16(byteArray, 0);
+                    }
+                    
                 }
             }
             catch (Exception e)
