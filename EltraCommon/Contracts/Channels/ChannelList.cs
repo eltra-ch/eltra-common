@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 
 namespace EltraCommon.Contracts.Channels
@@ -22,7 +23,6 @@ namespace EltraCommon.Contracts.Channels
         /// </summary>
         public ChannelList()
         {
-            Header = DefaultHeader;
         }
 
         #endregion
@@ -32,13 +32,14 @@ namespace EltraCommon.Contracts.Channels
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "AJF9";
+        private const string DefaultDiscriminator = "ChannelList";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        [DefaultValue(DefaultDiscriminator)]
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// Items

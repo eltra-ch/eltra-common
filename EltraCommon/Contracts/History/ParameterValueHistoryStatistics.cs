@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 
 namespace EltraCommon.Contracts.History
@@ -14,19 +15,19 @@ namespace EltraCommon.Contracts.History
         /// </summary>
         public ParameterValueHistoryStatistics()
         {
-            Header = DefaultHeader;
         }
 
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "AJF2";
+        private const string DefaultDiscriminator = "ParameterValueHistoryStatistics";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        [DefaultValue(DefaultDiscriminator)]
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// EntriesCount

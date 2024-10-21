@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 
 namespace EltraCommon.Contracts.CommandSets
@@ -22,7 +23,6 @@ namespace EltraCommon.Contracts.CommandSets
         /// </summary>
         public ExecuteCommandList()
         {
-            Header = DefaultHeader;
         }
 
         #endregion
@@ -32,13 +32,14 @@ namespace EltraCommon.Contracts.CommandSets
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "AOE8";
+        private const string DefaultDiscriminator = "ExecuteCommandList";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        [DefaultValue(DefaultDiscriminator)]
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// Items

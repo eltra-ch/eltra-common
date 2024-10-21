@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using EltraCommon.Contracts.Interfaces;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using System.ComponentModel;
 
 namespace EltraCommon.Contracts.Devices
 {
@@ -25,6 +26,8 @@ namespace EltraCommon.Contracts.Devices
     {
         #region Private fields
 
+        private readonly object _lock = new object();
+
         private DeviceVersion _version;
         private DeviceCommandList _commandSet;
         private DeviceToolSet _toolSet;
@@ -32,7 +35,7 @@ namespace EltraCommon.Contracts.Devices
         private DeviceStatus _status;
         private IDeviceDescription _deviceDescription;
         private ICloudConnector _cloudConnector;
-
+        
         #endregion
 
         #region Constructors
@@ -42,8 +45,6 @@ namespace EltraCommon.Contracts.Devices
         /// </summary>
         public EltraDevice()
         {
-            Header = DefaultHeader;
-
             Modified = DateTime.Now;
             Created = DateTime.Now;
         }
@@ -139,13 +140,14 @@ namespace EltraCommon.Contracts.Devices
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "ALR8";
+        private const string DefaultDiscriminator = "EltraDevice";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        [DefaultValue(DefaultDiscriminator)]
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// ChannelId
@@ -408,7 +410,7 @@ namespace EltraCommon.Contracts.Devices
         {
             bool result = false;
 
-            lock (this)
+            lock (_lock)
             {
                 if (Status != DeviceStatus.Ready || ObjectDictionary == null)
                 {

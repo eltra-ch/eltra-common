@@ -6,6 +6,7 @@ using EltraCommon.ObjectDictionary.Common.DeviceDescription.Common;
 using EltraCommon.Logger;
 using EltraCommon.Contracts.Devices;
 using System.Text.Json.Serialization;
+using System.ComponentModel;
 
 #pragma warning disable 1591
 
@@ -24,6 +25,10 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
         #region Constructors
 
+        public ParameterBase()
+        {
+        }
+
         public ParameterBase(EltraDevice device, XmlNode source)
         {
             _source = source;
@@ -32,8 +37,20 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         }
 
         #endregion
-        
+
         #region Properties
+
+        /// <summary>
+        /// DefaultHeader
+        /// </summary>
+        private const string DefaultDiscriminator = "ParameterBase";
+
+        /// <summary>
+        /// Header
+        /// </summary>
+        [DataMember]
+        [DefaultValue(DefaultDiscriminator)]
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         [IgnoreDataMember]
         [JsonIgnore]
@@ -83,15 +100,6 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                                 result = true;
                             }
                         }
-                        /*else if (childNode.Name == "label")
-                        {
-                            var label = new XddLabel(childNode);
-
-                            if (label.Parse())
-                            {
-                                Labels.Add(label);
-                            }
-                        }*/
                         
                         if (!result)
                         {

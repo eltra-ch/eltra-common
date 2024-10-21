@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 
 namespace EltraCommon.Contracts.CommandSets
@@ -17,19 +17,19 @@ namespace EltraCommon.Contracts.CommandSets
         /// </summary>
         public ExecuteCommandStatusList()
         {
-            Header = DefaultHeader;
         }
 
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "AHJ7";
+        private const string DefaultDiscriminator = "ExecuteCommandStatusList";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        [DefaultValue(DefaultDiscriminator)]
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// Items

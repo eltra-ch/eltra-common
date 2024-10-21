@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 
 namespace EltraCommon.Contracts.Parameters
@@ -16,19 +17,19 @@ namespace EltraCommon.Contracts.Parameters
         /// </summary>
         public ParameterValueUpdateList()
         {
-            Header = DefaultHeader;
         }
 
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "AC12";
+        private const string DefaultDiscriminator = "ParameterValueUpdateList";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        [DefaultValue(DefaultDiscriminator)]
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// Items

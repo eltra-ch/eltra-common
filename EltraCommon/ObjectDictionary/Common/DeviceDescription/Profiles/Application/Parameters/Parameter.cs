@@ -25,6 +25,8 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
     {
         #region Private fields
 
+        private const string DefaultDiscriminator = "Parameter";
+
         private ParameterValue _defaultValue;
         private ParameterValue _actualValue;
         private List<XddAllowedValues> _allowedValues;
@@ -32,27 +34,24 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         #endregion
 
         #region Constructors
+
+        public Parameter()
+            : base()
+        {
+            Discriminator = DefaultDiscriminator;
+            DateTimeFormat = "dd MMM HH:mm:ss";
+        }
+
         public Parameter(EltraDevice device, XmlNode source)
             : base(device, source)
         {
-            Header = DefaultHeader;
+            Discriminator = DefaultDiscriminator;
             DateTimeFormat = "dd MMM HH:mm:ss";
         }
 
         #endregion
 
         #region Properties
-
-        /// <summary>
-        /// DefaultHeader
-        /// </summary>
-        public static string DefaultHeader = "AGG7";
-
-        /// <summary>
-        /// Header
-        /// </summary>
-        [DataMember]
-        public string Header { get; set; }
 
         [DataMember]
         public byte SubIndex { get; set; }
@@ -167,21 +166,6 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             return result;
         }
 
-        public bool SetValue(byte[] data)
-        {
-            bool result = false;
-
-            if (data != null)
-            {
-                if(data.Length > 0 || DataType.Type == TypeCode.Object || DataType.Type == TypeCode.String || DataType.Type == TypeCode.DateTime)
-                {
-                    result = SetValue(new ParameterValue(data));
-                }
-            }
-
-            return result;
-        }
-
         private bool IsParameterValueValid(ParameterValue newValue)
         {
             bool result = false;
@@ -281,18 +265,27 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             return result;
         }
 
+        public bool SetValue(byte[] data)
+        {
+            bool result = false;
+
+            if (data != null && (data.Length > 0 || DataType.Type == TypeCode.Object || DataType.Type == TypeCode.String || DataType.Type == TypeCode.DateTime))
+            {
+                result = SetValue(new ParameterValue(data));
+            }
+
+            return result;
+        }
+
         public bool SetValue(ParameterValue newValue)
         {
             bool result = false;
 
-            if (newValue != null)
+            if (newValue != null && IsParameterValueValid(newValue))
             {
-                if(IsParameterValueValid(newValue))
-                {
-                    ActualValue = newValue;
+                ActualValue = newValue;
 
-                    result = true;
-                }
+                result = true;
             }
 
             return result;
@@ -303,13 +296,10 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             bool result = false;
             var parameterValue = new ParameterValue();
 
-            if (parameterValue.SetValue(value))
+            if (IsValueInRange(value) && parameterValue.SetValue(value))
             {
-                if (IsValueInRange(value))
-                {
-                    ActualValue = parameterValue;
-                    result = true;
-                }
+                ActualValue = parameterValue;
+                result = true;
             }
 
             return result;
@@ -556,16 +546,11 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
             refLabel = string.Empty;
 
-            if (DataType.Reference != null)
+            if (DataType != null && DataType.Reference is XddEnumDataTypeReference enumReference &&
+                    enumReference.GetValueLabel(value, out var label))
             {
-                if (DataType.Reference is XddEnumDataTypeReference enumReference)
-                {
-                    if (enumReference.GetValueLabel(value, out var label))
-                    {
-                        refLabel = label;
-                        result = true;
-                    }
-                }
+                refLabel = label;
+                result = true;
             }
 
             return result;
@@ -808,16 +793,16 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             return result;
         }
 
-        public bool GetValue<T>(out T value)
+        public bool GetDefaultValue<T>(out T value)
         {
-            var result = GetValue(ActualValue, out value);
+            var result = GetValue(DefaultValue, out value);
 
             return result;
         }
 
-        public bool GetDefaultValue<T>(out T value)
+        public bool GetValue<T>(out T value)
         {
-            var result = GetValue(DefaultValue, out value);
+            var result = GetValue(ActualValue, out value);
 
             return result;
         }
@@ -830,9 +815,10 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
             if (DataType.Type == TypeCode.Byte)
             {
                 var bytesArray = Base64Converter.AllocateBase64Buffer(ActualValue.Value);
+                
                 if (Base64Converter.TryFromBase64String(ActualValue.Value, bytesArray, out int bytesWritten) && bytesWritten >= sizeof(byte))
                 {
-                    value = (byte)bytesArray[0];
+                    value = bytesArray[0];
                     result = true;
                 }
             }
@@ -1199,7 +1185,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         {
             bool result = true;
 
-            if (DataType != null)
+            if (DataType != null && value != null)
             {
                 switch (DataType.Type)
                 {
@@ -1346,6 +1332,10 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
                 }
             }
+            else if(DataType != null && value == null)
+            {
+                result = false;
+            }
 
             return result;
         }
@@ -1399,16 +1389,17 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
         public async Task<bool> SetParameterValue(ParameterValue parameterValue)
         {
             bool result = false;
-            var claudConnector = Device?.CloudConnector;
 
-            if (claudConnector != null && Device != null)
+            if (Device != null && Device.SearchParameter(UniqueId) is Parameter parameter)
             {
-                if (Device.SearchParameter(UniqueId) is Parameter parameter)
+                var claudConnector = Device.CloudConnector;
+
+                if (claudConnector != null)
                 {
                     result = await claudConnector.SetParameterValue(Device, parameter.Index, parameter.SubIndex, parameterValue);
 
                     OnParameterWritten(new ParameterWrittenEventArgs(parameter, result));
-                }   
+                }
             }
 
             return result;

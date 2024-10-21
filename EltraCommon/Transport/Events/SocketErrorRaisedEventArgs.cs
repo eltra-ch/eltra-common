@@ -4,9 +4,9 @@ using System.Net.Sockets;
 namespace EltraCommon.Transport.Events
 {
     /// <summary>
-    /// SocketErrorChangedEventAgs
+    /// SocketErrorChangedEventArgs
     /// </summary>
-    public class SocketErrorChangedEventAgs : EventArgs
+    public class SocketErrorRaisedEventArgs : EventArgs
     {
         /// <summary>
         /// SocketError

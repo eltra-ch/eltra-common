@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
 
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Common;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Templates;
@@ -42,13 +43,11 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
                             break;
                     }
 
-                    //TODO access WriteRestrictions att
-
-                    result = true;    
+                    result = true;
                 }
                 else if (childNode.Name == "PdoMapping")
                 {
-                    //TODO flags PdoMapping
+                    throw new NotSupportedException($"{childNode.Name} is not supported");
                 }
                 else if (childNode.Name == "Backup")
                 {
@@ -74,9 +73,11 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
                 }
                 else if (childNode.Name == "Fieldbus1")
                 {
+                    throw new NotSupportedException($"{childNode.Name} is not supported");
                 }
                 else if (childNode.Name == "Fieldbus2")
                 {
+                    throw new NotSupportedException($"{childNode.Name} is not supported");
                 }
             }
 

@@ -7,6 +7,7 @@ using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application
 using EltraCommon.Contracts.Devices;
 using System.Threading.Tasks;
 using System.Text.Json.Serialization;
+using System.ComponentModel;
 
 namespace EltraCommon.Contracts.CommandSets
 {
@@ -34,7 +35,6 @@ namespace EltraCommon.Contracts.CommandSets
         /// </summary>
         public DeviceCommand()
         {
-            Header = DefaultHeader;
             Timeout = DefaultTimeout;
         }
 
@@ -43,8 +43,7 @@ namespace EltraCommon.Contracts.CommandSets
         /// </summary>
         /// <param name="device">{EltraDevice}</param>
         public DeviceCommand(EltraDevice device)
-        {
-            Header = DefaultHeader;
+        {  
             Timeout = DefaultTimeout;
             Device = device;
         }
@@ -56,13 +55,14 @@ namespace EltraCommon.Contracts.CommandSets
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "ARP9";
+        private const string DefaultDiscriminator = "DeviceCommand";
 
         /// <summary>
-        /// Header
+        /// Discriminator
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        [DefaultValue(DefaultDiscriminator)]
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// Command Id

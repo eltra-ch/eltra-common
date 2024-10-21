@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
@@ -15,7 +16,6 @@ namespace EltraCommon.Contracts.Users
         /// </summary>
         public UserIdentity()
         {
-            Header = DefaultHeader;
         }
 
         #region Properties
@@ -23,13 +23,14 @@ namespace EltraCommon.Contracts.Users
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "ABA0";
+        private const string DefaultDiscriminator = "UserIdentity";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        [DefaultValue(DefaultDiscriminator)]
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// Login

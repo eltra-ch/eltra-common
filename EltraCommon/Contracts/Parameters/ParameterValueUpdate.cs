@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.ComponentModel;
+using System.Runtime.Serialization;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters;
 
 namespace EltraCommon.Contracts.Parameters
@@ -14,19 +15,19 @@ namespace EltraCommon.Contracts.Parameters
         /// </summary>
         public ParameterValueUpdate()
         {
-            Header = DefaultHeader;
         }
 
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "ACB6";
+        private const string DefaultDiscriminator = "ParameterValueUpdate";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        [DefaultValue(DefaultDiscriminator)]
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// ChannelId

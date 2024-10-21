@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Xml;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters;
 
+#pragma warning disable 
+
 namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.DataTypes
 {
     class XddStructDataType : XddDataTypeReference

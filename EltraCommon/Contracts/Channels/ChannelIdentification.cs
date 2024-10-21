@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.ComponentModel;
+using System.Runtime.Serialization;
 
 namespace EltraCommon.Contracts.Channels
 {
@@ -13,19 +14,19 @@ namespace EltraCommon.Contracts.Channels
         /// </summary>
         public ChannelIdentification()
         {
-            Header = DefaultHeader;
         }
 
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "AKR3";
+        private const string DefaultDiscriminator = "ChannelIdentification";
 
         /// <summary>
-        /// Header
+        /// Discriminator
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        [DefaultValue(DefaultDiscriminator)]
+        public string Discriminator { get; set; } = DefaultDiscriminator;
         /// <summary>
         /// Id
         /// </summary>

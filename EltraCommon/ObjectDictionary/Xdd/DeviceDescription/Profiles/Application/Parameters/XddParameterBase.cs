@@ -9,9 +9,17 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
 {
     public class XddParameterBase : Parameter
     {
+        private const string DefaultDiscriminator = "XddParameterBase";
+
+        public XddParameterBase()
+        {
+            Discriminator = DefaultDiscriminator;
+        }
+
         public XddParameterBase(EltraDevice device, XmlNode source)
             : base(device, source)
-        {            
+        {
+            Discriminator = DefaultDiscriminator;
         }
 
         public override bool Parse()

@@ -75,12 +75,9 @@ namespace EltraCommon.Contracts.Location
         {
             IsPrivateAddress = CountryCode == "-" || Ip == "127.0.0.1" || Ip.StartsWith("0.0.0");
 
-            if (!IsPrivateAddress && _address != null)
+            if (!IsPrivateAddress && _address != null && _address.Equals(IPAddress.IPv6Loopback))
             {
-                if (_address.Equals(IPAddress.IPv6Loopback))
-                {
-                    IsPrivateAddress = true;
-                }
+                IsPrivateAddress = true;
             }
         }
 

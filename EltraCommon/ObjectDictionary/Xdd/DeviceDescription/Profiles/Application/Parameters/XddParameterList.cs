@@ -9,7 +9,7 @@ using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Te
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Units;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Device;
 
-#pragma warning disable 1591
+#pragma warning disable 1591, S3267
 
 namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Parameters
 {
@@ -22,8 +22,6 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
 
         private readonly XddDataTypeList _dataTypeList;
         private readonly XddTemplateList _templateList;
-        private XddUnitsList _unitsList;
-
         private readonly XddDeviceManager _deviceManager;
         private readonly EltraDevice _device;
 
@@ -48,11 +46,7 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
         
         public List<ParameterBase> Parameters => _parameters ?? (_parameters = new List<ParameterBase>());
 
-        public XddUnitsList UnitsList
-        {
-            get => _unitsList;
-            set => _unitsList = value;
-        }
+        public XddUnitsList UnitsList { get; set; }
 
         #endregion
 
@@ -124,12 +118,9 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
         {
             foreach (var parameter in parameters)
             {
-                if (parameter is XddParameter epos4Parameter)
+                if (parameter is XddParameter epos4Parameter && epos4Parameter.Unit is XddUnitReference unitReference)
                 {
-                    if(epos4Parameter.Unit is XddUnitReference unitReference)
-                    {
-                        epos4Parameter.Unit = _unitsList.FindUnitReference(unitReference.UniqueId);
-                    }
+                    epos4Parameter.Unit = UnitsList.FindUnitReference(unitReference.UniqueId);
                 }
 
                 ResolveUnitsReferences(parameter.Parameters);
@@ -151,27 +142,20 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
                             foreach (var minValue in range.MinValues)
                             {
                                 var paramIdRef = minValue.ParamIdRef;
-                                if (paramIdRef != null)
+                                if (paramIdRef != null && FindParameter(paramIdRef.UniqueIdRef) is XddParameter refParam)
                                 {
-                                    if (FindParameter(paramIdRef.UniqueIdRef) is XddParameter refParam)
-                                    {
-                                        minValue.Value.Value = refParam.ActualValue.Value;
-                                    }
+                                    minValue.Value.Value = refParam.ActualValue.Value;
                                 }
                             }
 
                             foreach (var maxValue in range.MaxValues)
                             {
                                 var paramIdRef = maxValue.ParamIdRef;
-                                if (paramIdRef != null)
+                                if (paramIdRef != null && 
+                                    FindParameter(paramIdRef.UniqueIdRef) is XddParameter refParam && 
+                                    !string.IsNullOrEmpty(refParam.ActualValue.Value))
                                 {
-                                    if (FindParameter(paramIdRef.UniqueIdRef) is XddParameter refParam)
-                                    {
-                                        if(!string.IsNullOrEmpty(refParam.ActualValue.Value))
-                                        {
-                                            maxValue.Value = new XddValue(refParam.ActualValue, refParam.DataType);
-                                        }
-                                    }
+                                    maxValue.Value = new XddValue(refParam.ActualValue, refParam.DataType);
                                 }
                             }
                         }
@@ -186,20 +170,15 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
         {
             foreach (var parameter in parameters)
             {
-                if (parameter is XddParameter epos4Parameter)
+                if (parameter is XddParameter epos4Parameter && 
+                    epos4Parameter.DefaultValue is XddDefaultValue epos4DefaultValue)
                 {
-                    if(epos4Parameter.DefaultValue is XddDefaultValue epos4DefaultValue)
-                    {
-                        var paramIdRef = epos4DefaultValue.ParamIdRef;
+                    var paramIdRef = epos4DefaultValue.ParamIdRef;
 
-                        if (paramIdRef != null)
-                        {
-                            if (FindParameter(paramIdRef.UniqueIdRef) is XddParameter refParam)
-                            {
-                                epos4DefaultValue.Value = refParam.DefaultValue.Value;
-                            }
-                        }
-                    }                    
+                    if (paramIdRef != null && FindParameter(paramIdRef.UniqueIdRef) is XddParameter refParam)
+                    {
+                        epos4DefaultValue.Value = refParam.DefaultValue.Value;
+                    }
                 }
 
                 ResolveDefaultValuesReferences(parameter.Parameters);
@@ -226,13 +205,11 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
 
             foreach (var parameter in Parameters)
             {
-                if (parameter is StructuredParameter structuredParameter)
+                if (parameter is StructuredParameter structuredParameter && 
+                    structuredParameter.Index == index)
                 {
-                    if (structuredParameter.Index == index)
-                    {
-                        result = structuredParameter;
-                        break;
-                    }
+                    result = structuredParameter;
+                    break;
                 }
             }
 
@@ -267,13 +244,10 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
                         break;
                     }
                 }
-                else if (parameter is Parameter parameterEntry)
+                else if (parameter is Parameter parameterEntry && parameterEntry.UniqueId == uniqueIdRef)
                 {
-                    if (parameterEntry.UniqueId == uniqueIdRef)
-                    {
-                        result = parameterEntry;
-                        break;
-                    }
+                    result = parameterEntry;
+                    break;
                 }
             }
 

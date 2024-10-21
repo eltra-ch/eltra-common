@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.ComponentModel;
+using System.Runtime.Serialization;
 
 namespace EltraCommon.Contracts.Results
 {
@@ -13,7 +14,6 @@ namespace EltraCommon.Contracts.Results
         /// </summary>
         public RequestResult()
         {
-            Header = DefaultHeader;
             Result = true;
             Message = "Success";
             ErrorCode = ErrorCodes.Success;
@@ -22,13 +22,14 @@ namespace EltraCommon.Contracts.Results
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "AZF7";
+        private const string DefaultDiscriminator = "RequestResult";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        [DefaultValue(DefaultDiscriminator)]
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// Result

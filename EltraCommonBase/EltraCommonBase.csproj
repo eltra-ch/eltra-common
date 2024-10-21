@@ -24,6 +24,14 @@
 	<FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;S3267</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702;S3267</NoWarn>
+  </PropertyGroup>
+
 	<ItemGroup>
 		<None Include="..\EltraResources\png\eltra_logo.png">
 			<Pack>True</Pack>

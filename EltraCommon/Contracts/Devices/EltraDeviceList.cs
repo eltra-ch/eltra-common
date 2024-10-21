@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Serialization;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace EltraCommon.Contracts.Devices
 {
@@ -22,7 +23,6 @@ namespace EltraCommon.Contracts.Devices
         /// </summary>
         public EltraDeviceList()
         {
-            Header = DefaultHeader;
         }
 
         #endregion
@@ -32,13 +32,14 @@ namespace EltraCommon.Contracts.Devices
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "AWR9";
+        private const string DefaultDiscriminator = "EltraDeviceList";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        [DefaultValue(DefaultDiscriminator)]
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// Items

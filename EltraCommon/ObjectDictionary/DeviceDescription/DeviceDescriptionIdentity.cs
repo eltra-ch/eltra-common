@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.ComponentModel;
+using System.Runtime.Serialization;
 
 namespace EltraCommon.ObjectDictionary.DeviceDescription
 {
@@ -13,19 +14,19 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
         /// </summary>
         public DeviceDescriptionIdentity()
         {
-            Header = DefaultHeader;
         }
 
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "AIP5";
+        private const string DefaultDiscriminator = "DeviceDescriptionIdentity";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        [DefaultValue(DefaultDiscriminator)]
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// Hash code encoding algorithm

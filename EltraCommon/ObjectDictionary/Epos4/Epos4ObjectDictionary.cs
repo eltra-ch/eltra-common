@@ -22,12 +22,9 @@ namespace EltraCommon.ObjectDictionary.Epos4
         {
             bool result = base.Open();
 
-            if (result)
+            if (result && GetDeviceDescription() is Epos4DeviceDescription xdd)
             {
-                if (GetDeviceDescription() is Epos4DeviceDescription xdd)
-                {
-                    DataRecorders = xdd.DataRecorders;
-                }
+                DataRecorders = xdd.DataRecorders;
             }
 
             return result;

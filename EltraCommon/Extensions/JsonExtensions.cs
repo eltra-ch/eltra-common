@@ -9,6 +9,7 @@ using EltraCommon.Contracts.Users;
 using EltraCommon.ObjectDictionary.DeviceDescription;
 using EltraCommon.Contracts.ToolSet;
 using EltraCommon.Contracts.Parameters;
+using System.Text.Json.Nodes;
 
 namespace EltraCommon.Extensions
 {
@@ -17,42 +18,6 @@ namespace EltraCommon.Extensions
     /// </summary>
     public static class JsonExtensions
     {
-        /// <summary>
-        /// FromJson
-        /// </summary>
-        /// <param name="device"></param>
-        /// <param name="json"></param>
-        public static void FromJson(this EltraDevice device, string json)
-        {
-            if (device == null) throw new ArgumentNullException(nameof(device));
-
-            device = TryDeserializeObject<EltraDevice>(json);
-        }
-
-        /// <summary>
-        /// FromJson
-        /// </summary>
-        /// <param name="session"></param>
-        /// <param name="json"></param>
-        public static void FromJson(this Channel session, string json)
-        {
-            if (session == null) throw new ArgumentNullException(nameof(session));
-
-            session = TryDeserializeObject<Channel>(json);
-        }
-
-        /// <summary>
-        /// FromJson
-        /// </summary>
-        /// <param name="sessionDevices"></param>
-        /// <param name="json"></param>
-        public static void FromJson(this EltraDeviceSet sessionDevices, string json)
-        {
-            if (sessionDevices == null) throw new ArgumentNullException(nameof(sessionDevices));
-
-            sessionDevices = TryDeserializeObject<EltraDeviceSet>(json);
-        }
-
         /// <summary>
         /// ToJson
         /// </summary>
@@ -153,34 +118,42 @@ namespace EltraCommon.Extensions
         {
             T result = default;
 
+            const string className = "JsonExtensions";
+            const string method = "TryDeserializeObject";
+
             try
             {
                 if (!string.IsNullOrEmpty(json))
                 {
-                    string headerIdentification = string.Empty;
+                    dynamic jsonNodes = JsonNode.Parse(json);
 
-                    headerIdentification = GetClassIdentification<T>();
-
-                    if (!string.IsNullOrEmpty(headerIdentification))
+                    if (jsonNodes != null)
                     {
-                        if (json.Contains($"\"Header\":\"{headerIdentification}\""))
+                        string classDiscriminator = GetClassIdentification<T>();
+
+                        if (!string.IsNullOrEmpty(classDiscriminator))
                         {
-                            result = JsonSerializer.Deserialize<T>(json);
+                            string jsonDiscriminator = (string)jsonNodes["Discriminator"];
+
+                            if (classDiscriminator == jsonDiscriminator)
+                            {
+                                result = JsonSerializer.Deserialize<T>(json);
+                            }
                         }
                         else
                         {
-                            MsgLogger.WriteDebug("JsonExtensions - TryDeserializeObject", $"json, doesn't contain header {headerIdentification}");
+                            MsgLogger.WriteError($"{className} - {method}", $"json, doesn't contain class identification");
                         }
                     }
                     else
                     {
-                        MsgLogger.WriteError("JsonExtensions - TryDeserializeObject", $"json, doesn't contain class identification");
+                        MsgLogger.WriteError($"{className} - {method}", $"json parsing failed");
                     }
                 }
             }
             catch (Exception e)
             {
-                MsgLogger.Exception($"JsonExtensions - TryDeserializeObject", e);
+                MsgLogger.Exception($"{className} - {method}", e);
             }
 
             return result;
@@ -192,7 +165,7 @@ namespace EltraCommon.Extensions
             
             var instance = (T)Activator.CreateInstance(typeof(T));
             var type = instance?.GetType();
-            var headerProperty = type?.GetProperty("Header");
+            var headerProperty = type?.GetProperty("Discriminator");
             var headerValue = headerProperty?.GetValue(instance);
 
             if (headerValue != null)

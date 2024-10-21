@@ -14,7 +14,7 @@ namespace EltraCommon.ObjectDictionary.Epos4.DeviceDescription.Profiles.Device
 
         private DataRecorderList _dataRecorderList;
 
-        public DataRecorderList DataRecorderList => _dataRecorderList ?? (_dataRecorderList = new DataRecorderList(this));
+        public DataRecorderList DataRecorderList => _dataRecorderList ?? (_dataRecorderList = new DataRecorderList());
 
         #endregion
 
@@ -26,13 +26,10 @@ namespace EltraCommon.ObjectDictionary.Epos4.DeviceDescription.Profiles.Device
 
             foreach (XmlNode childNode in node.ChildNodes)
             {
-                if (childNode.Name == "dataRecorderList")
+                if (childNode.Name == "dataRecorderList" && !DataRecorderList.Parse(childNode))
                 {
-                    if (!DataRecorderList.Parse(childNode))
-                    {
-                        result = false;
-                        break;
-                    }
+                    result = false;
+                    break;
                 }
             }
 

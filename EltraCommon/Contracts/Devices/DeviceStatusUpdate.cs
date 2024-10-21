@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 
 namespace EltraCommon.Contracts.Devices
@@ -16,7 +17,6 @@ namespace EltraCommon.Contracts.Devices
         /// </summary>
         public DeviceStatusUpdate()
         {
-            Header = DefaultHeader;
         }
 
         #endregion
@@ -25,13 +25,14 @@ namespace EltraCommon.Contracts.Devices
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "AKD2";
+        private const string DefaultDiscriminator = "DeviceStatusUpdate";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        [DefaultValue(DefaultDiscriminator)]
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// Status

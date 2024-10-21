@@ -1,5 +1,6 @@
 ﻿using EltraCommon.Contracts.Users;
 using System;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 
 namespace EltraCommon.Contracts.Ws
@@ -15,20 +16,20 @@ namespace EltraCommon.Contracts.Ws
         /// </summary>
         public WsMessage()
         {
-            Header = DefaultHeader;
             Timestamp = DateTime.Now;
         }
 
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "366B0F3";
+        private const string DefaultDiscriminator = "WsMessage";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        [DefaultValue(DefaultDiscriminator)]
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// User authorization data

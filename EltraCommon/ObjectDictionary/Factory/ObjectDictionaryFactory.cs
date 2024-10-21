@@ -8,7 +8,7 @@ using System;
 
 namespace EltraCommon.ObjectDictionary.Factory
 {
-    public class ObjectDictionaryFactory
+    public static class ObjectDictionaryFactory
     {
         public static DeviceObjectDictionary CreateObjectDictionary(EltraDevice device)
         {

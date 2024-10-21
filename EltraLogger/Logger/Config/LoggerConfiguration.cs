@@ -131,7 +131,7 @@ namespace EltraCommon.Logger.Config
 
         [IgnoreDataMember]
         [JsonIgnore]
-        protected string ConfigPath
+        protected static string ConfigPath
         {
             get
             {
@@ -191,7 +191,7 @@ namespace EltraCommon.Logger.Config
 
         #region Methods
 
-        private bool CreateLogConfigurationPath(string folderPath, out string path)
+        private static bool CreateLogConfigurationPath(string folderPath, out string path)
         {
             bool result = false;
             const string method = "CreateLogConfigurationPath";
@@ -213,17 +213,17 @@ namespace EltraCommon.Logger.Config
             }
             catch(UnauthorizedAccessException)
             {
-                Console.WriteLine($"{GetType().Name} - {method}, {LogMsgType.Exception}, unauthorized");
+                Console.WriteLine($"LoggerConfiguration -  {method}, {LogMsgType.Exception}, unauthorized");
             }
             catch (Exception e)
             {
-                Console.WriteLine($"{GetType().Name} - {method}, {LogMsgType.Exception}, {e.Message}");
+                Console.WriteLine($"LoggerConfiguration -  {method}, {LogMsgType.Exception}, {e.Message}");
             }
 
             return result;
         }
 
-        private bool CreateLogConfigurationPath(Environment.SpecialFolder folder, out string path)
+        private static bool CreateLogConfigurationPath(Environment.SpecialFolder folder, out string path)
         {
             bool result = false;
             const string method = "CreateLogConfigurationPath";
@@ -238,7 +238,7 @@ namespace EltraCommon.Logger.Config
             }
             catch (Exception e)
             {
-                Console.WriteLine($"{GetType().Name} - {method}, {LogMsgType.Exception}, {e.Message}");
+                Console.WriteLine($"LoggerConfiguration - {method}, {LogMsgType.Exception}, {e.Message}");
             }
 
             return result;

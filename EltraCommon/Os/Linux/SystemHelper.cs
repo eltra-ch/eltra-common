@@ -61,16 +61,16 @@ namespace EltraCommon.Os.Linux
         /// <summary>
         /// GetDllInstance
         /// </summary>
-        /// <param name="dllFileName"></param>
+        /// <param name="dllName"></param>
         /// <returns></returns>
-        public IntPtr GetDllInstance(string dllFileName)
+        public IntPtr GetDllInstance(string dllName)
         {
-            IntPtr dll = dlopen(dllFileName, RtldNow | RtldGlobal);
+            IntPtr dll = dlopen(dllName, RtldNow | RtldGlobal);
             
             if (dll == IntPtr.Zero)
             {
                 var errPtr = dlerror();
-                throw new Exception($"{dllFileName} not found: " + Marshal.PtrToStringAnsi(errPtr));
+                throw new NotSupportedException($"{dllName} not found: " + Marshal.PtrToStringAnsi(errPtr));
             }
 
             return dll;

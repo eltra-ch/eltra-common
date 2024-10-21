@@ -48,16 +48,11 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
 
             refLabel = string.Empty;
 
-            if (DataType.Reference != null)
+            if (DataType.Reference is XddEnumDataTypeReference enumReference && 
+                enumReference.GetValueLabel(value, out var label))
             {
-                if (DataType.Reference is XddEnumDataTypeReference enumReference)
-                {
-                    if (enumReference.GetValueLabel(value, out var label))
-                    {
-                        refLabel = label;
-                        result = true;
-                    }
-                }
+                refLabel = label;
+                result = true;
             }
 
             return result;

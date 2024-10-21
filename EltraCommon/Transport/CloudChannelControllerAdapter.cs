@@ -12,10 +12,11 @@ namespace EltraCommon.Transport
         /// <summary>
         /// CloudChannelControllerAdapter
         /// </summary>
+        /// <param name="httpClient"></param>
         /// <param name="url"></param>
         /// <param name="channel"></param>
-        public CloudChannelControllerAdapter(string url, Channel channel)
-            : base(url)
+        public CloudChannelControllerAdapter(IHttpClient httpClient, string url, Channel channel)
+            : base(httpClient, url)
         {
             Channel = channel;
         }

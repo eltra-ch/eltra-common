@@ -26,9 +26,11 @@ namespace EltraCommon.Transport
         private const int DefaultMaxWaitTimeInSec = 15;
         private const int DefaultRetryTimeout = 100;
 
-        private SocketError _socketError;
+        private readonly object _lock = new object();
+        private readonly Dictionary<string, IHttpClient> _clients;
+        private readonly IHttpClient _httpClient;
 
-        private Dictionary<string, HttpClient> _clients;
+        private SocketError _socketError;
 
         #endregion
 
@@ -37,9 +39,10 @@ namespace EltraCommon.Transport
         /// <summary>
         /// CloudTransporter
         /// </summary>
-        public CloudTransporter()
+        public CloudTransporter(IHttpClient httpClient)
         {
-            _clients = new Dictionary<string, HttpClient>();
+            _httpClient = httpClient;
+            _clients = new Dictionary<string, IHttpClient>();
 
             MaxRetryTimeout = DefaultRetryTimeout;
             MaxRetryCount = DefaultMaxRetryCount;
@@ -90,7 +93,7 @@ namespace EltraCommon.Transport
         /// <summary>
         /// SocketErrorChanged
         /// </summary>
-        public event EventHandler<SocketErrorChangedEventAgs> SocketErrorChanged;
+        public event EventHandler<SocketErrorRaisedEventArgs> SocketErrorChanged;
 
         #endregion
 
@@ -98,7 +101,7 @@ namespace EltraCommon.Transport
 
         private void OnSocketErrorChanged()
         {
-            SocketErrorChanged?.Invoke(this, new SocketErrorChangedEventAgs() { SocketError = SocketError });
+            SocketErrorChanged?.Invoke(this, new SocketErrorRaisedEventArgs() { SocketError = SocketError });
         }
 
         #endregion
@@ -108,13 +111,6 @@ namespace EltraCommon.Transport
         private void ResetSocketError()
         {
             SocketError = SocketError.Success;
-        }
-
-        private HttpClient CreateHttpClient()
-        {
-            var client = new HttpClient { Timeout = TimeSpan.FromSeconds(MaxWaitTimeInSec) };
-
-            return client;
         }
 
         private void ExceptionHandling(Exception e)
@@ -139,13 +135,13 @@ namespace EltraCommon.Transport
             }
         }
 
-        private HttpClient GetHttpClient(UserIdentity identity)
+        private IHttpClient GetHttpClient(UserIdentity identity)
         {
-            HttpClient result = null;
+            IHttpClient result = null;
 
             if (identity != null)
             {
-                lock (this)
+                lock (_lock)
                 {
                     if (_clients.ContainsKey(identity.Login))
                     {
@@ -153,15 +149,17 @@ namespace EltraCommon.Transport
                     }
                     else
                     {
-                        result = CreateHttpClient();
+                        _httpClient.Timeout = MaxWaitTimeInSec;
 
-                        _clients.Add(identity.Login, result);
+                        _clients.Add(identity.Login, _httpClient);
+
+                        result = _httpClient;
                     }
                 }
             }
             else
             {
-                throw new Exception("Identity not specified!");
+                throw new ArgumentException("Identity not specified!");
             }
 
             return result;

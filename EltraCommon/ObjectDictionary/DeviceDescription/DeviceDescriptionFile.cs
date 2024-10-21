@@ -106,54 +106,6 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
 
         #region Methods
 
-        private async Task<string> Get(string url)
-        {
-            string result = string.Empty;
-            
-            try
-            {
-                int maxTryCount = 1;
-                int tryCount = 0;
-                
-                do
-                {
-                    tryCount++;
-
-                    using (var client = new HttpClient())
-                    {
-                        using (var response = await client.GetAsync(url))
-                        {
-                            if (response.IsSuccessStatusCode)
-                            {
-                                using (var stream = await response.Content.ReadAsStreamAsync())
-                                {
-                                    using (var streamReader = new StreamReader(stream))
-                                    {
-                                        result = await streamReader.ReadToEndAsync();
-                                    }
-                                }
-                            }
-                            else if(response.StatusCode == HttpStatusCode.Redirect)
-                            {
-                                tryCount = 0;
-                            }
-                        }
-                    }
-                }
-                while (tryCount < maxTryCount);
-            }
-            catch (HttpRequestException e)
-            {
-                MsgLogger.Exception($"{GetType().Name} - Get", e.InnerException != null ? e.InnerException : e);
-            }
-            catch (Exception e)
-            {
-                MsgLogger.Exception($"{GetType().Name} - Get", e);
-            }
-            
-            return result;
-        }
-        
         private async Task<DeviceDescriptionPayload> Download(ICloudConnector connector, DeviceVersion deviceVersion)
         {
             DeviceDescriptionPayload result = null;

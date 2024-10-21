@@ -1,5 +1,6 @@
 ﻿using EltraCommon.Logger;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 
 namespace EltraCommon.Contracts.CommandSets
@@ -23,7 +24,6 @@ namespace EltraCommon.Contracts.CommandSets
         /// </summary>
         public DeviceCommandList()
         {
-            Header = DefaultHeader;
         }
 
         #endregion
@@ -33,19 +33,24 @@ namespace EltraCommon.Contracts.CommandSets
         /// <summary>
         /// DefaultHeader
         /// </summary>
-        public static string DefaultHeader = "AOP5";
+        private const string DefaultDiscriminator = "DeviceCommandList";
 
         /// <summary>
         /// Header
         /// </summary>
         [DataMember]
-        public string Header { get; set; }
+        [DefaultValue(DefaultDiscriminator)]
+        public string Discriminator { get; set; } = DefaultDiscriminator;
 
         /// <summary>
         /// Commands list
         /// </summary>
         [DataMember]
-        public List<DeviceCommand> Commands => _commands ?? (_commands = new List<DeviceCommand>());
+        public List<DeviceCommand> Commands
+        {
+            get => _commands ?? (_commands = new List<DeviceCommand>());
+            set => _commands = value;
+        }
 
         #endregion
 
