@@ -8,7 +8,7 @@
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 	<PackageLicenseFile>LICENSE</PackageLicenseFile>
-	<Copyright>Dawid Sienkiewicz, (c) 2020-2023</Copyright>
+	<Copyright>Dawid Sienkiewicz, (c) 2020-2024</Copyright>
 	<PackageProjectUrl>www.eltra.ch</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/eltra-ch/eltra-common</RepositoryUrl>
 	<RepositoryType>GIT</RepositoryType>
