@@ -100,10 +100,8 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                         switch (type)
                         {
                             case TypeCode.Byte:
-                                Value = Convert.ToBase64String(BitConverter.GetBytes(Convert.ToByte(defaultValue.Substring(2), 16)), Base64FormattingOptions.None);
-                                break;
                             case TypeCode.SByte:
-                                Value = Convert.ToBase64String(BitConverter.GetBytes(Convert.ToSByte(defaultValue.Substring(2), 16)), Base64FormattingOptions.None);
+                                Value = Convert.ToBase64String(new byte[] { Convert.ToByte(defaultValue.Substring(2), 16) }, Base64FormattingOptions.None);
                                 break;
                             case TypeCode.UInt16:
                                 Value = Convert.ToBase64String(BitConverter.GetBytes(Convert.ToUInt16(defaultValue.Substring(2), 16)), Base64FormattingOptions.None);
@@ -139,10 +137,8 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                         switch (type)
                         {
                             case TypeCode.Byte:
-                                Value = Convert.ToBase64String(BitConverter.GetBytes(Convert.ToByte(defaultValue)), Base64FormattingOptions.None);
-                                break;
                             case TypeCode.SByte:
-                                Value = Convert.ToBase64String(BitConverter.GetBytes(Convert.ToSByte(defaultValue)), Base64FormattingOptions.None);
+                                Value = Convert.ToBase64String(new byte[] { Convert.ToByte(defaultValue) }, Base64FormattingOptions.None);
                                 break;
                             case TypeCode.UInt16:
                                 Value = Convert.ToBase64String(BitConverter.GetBytes(Convert.ToUInt16(defaultValue)), Base64FormattingOptions.None);
@@ -205,15 +201,9 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
 
                     Value = Convert.ToBase64String(byteArray);
                 }
-                else if (typeof(T) == typeof(byte))
+                else if (typeof(T) == typeof(byte) || typeof(T) == typeof(sbyte))
                 {
-                    var byteArray = BitConverter.GetBytes((byte)(object)value);
-
-                    Value = Convert.ToBase64String(byteArray);
-                }
-                else if (typeof(T) == typeof(sbyte))
-                {
-                    var byteArray = BitConverter.GetBytes((sbyte)(object)value);
+                    var byteArray = new byte[] { (byte)(object)value };
 
                     Value = Convert.ToBase64String(byteArray);
                 }

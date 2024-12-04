@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net472;net8.0</TargetFrameworks>
 	<LangVersion>7.2</LangVersion>
 	<Company>eltra.ch</Company>
 	<Authors>Dawid Sienkiewicz</Authors>
@@ -20,12 +20,12 @@
 	<Product>Eltra.Common</Product>	
 	<Description>Eltra - CANOpen based IoT Framework - SDK</Description>
 	<PackageTags>CANOpen IoT Eltra OPCUA OPC</PackageTags>
-    <Version>3.1.1</Version>
+    <Version>3.1.2</Version>
     <PackageIcon>eltra_logo.png</PackageIcon>
-    <AssemblyVersion>3.1.1.0</AssemblyVersion>
+    <AssemblyVersion>3.1.2.0</AssemblyVersion>
     <PackageReleaseNotes></PackageReleaseNotes>
 	<PackageReadmeFile>readme.md</PackageReadmeFile>
-    <FileVersion>3.1.1.0</FileVersion>
+    <FileVersion>3.1.2.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

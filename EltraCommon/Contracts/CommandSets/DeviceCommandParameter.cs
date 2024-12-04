@@ -254,15 +254,19 @@ namespace EltraCommon.Contracts.CommandSets
             {
                 DataType = new DataType { Type = TypeCode.Byte };
 
-                var byteArray = BitConverter.GetBytes((byte)(object)value);
-                
+                byte[] byteArray = new byte[1];
+
+                byteArray[0] = (byte)(object)value;
+
                 Value = Convert.ToBase64String(byteArray);
             }
             else if (typeof(T) == typeof(sbyte))
             {
                 DataType = new DataType { Type = TypeCode.SByte };
 
-                var byteArray = BitConverter.GetBytes((sbyte)(object)value);
+                byte[] byteArray = new byte[1];
+
+                byteArray[0] = (byte)(object)value;
 
                 Value = Convert.ToBase64String(byteArray);
             }
