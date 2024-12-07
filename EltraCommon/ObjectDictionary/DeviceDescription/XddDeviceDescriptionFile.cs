@@ -4,6 +4,7 @@ using EltraCommon.Logger;
 using EltraCommon.Contracts.Devices;
 using System.Collections.Generic;
 using EltraCommon.Contracts.ToolSet;
+using System.IO;
 
 #pragma warning disable 1591
 
@@ -37,6 +38,47 @@ namespace EltraCommon.ObjectDictionary.DeviceDescription
         #endregion
 
         #region Methods
+
+        public string ReadFamily()
+        {
+            string result = string.Empty;
+            const string methodName = "ReadFamily";
+            const string productFamilyNodeName = "Profile/ProfileBody/DeviceIdentity/productFamily";
+
+            if (File.Exists(SourceFile))
+            {
+                try
+                {
+                    var doc = new XmlDocument();
+                    doc.Load(SourceFile);
+                    var rootNode = doc.DocumentElement;
+                    var productFamilyNode = rootNode?.SelectSingleNode(productFamilyNodeName);
+                    if (productFamilyNode != null)
+                    {
+                        result = productFamilyNode.InnerXml;
+
+                        if (string.IsNullOrEmpty(result))
+                        {
+                            MsgLogger.WriteError($"{GetType().Name} - {methodName}", "family name is not defined!");
+                        }
+                    }
+                    else
+                    {
+                        MsgLogger.WriteError($"{GetType().Name} - {methodName}", $"node {productFamilyNodeName} doesn't exist!");
+                    }
+                }
+                catch (Exception e)
+                {
+                    MsgLogger.Exception($"{GetType().Name} - {methodName}", e);
+                }
+            }
+            else
+            {
+                MsgLogger.WriteError($"{GetType().Name} - {methodName}", $"{SourceFile} doesn't exist!");
+            }
+
+            return result;
+        }
 
         private XmlElement GetRootNode()
         {
