@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Xml;
 using EltraCommon.ObjectDictionary.Common;
+using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.DataTypes;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.DataTypes;
 
@@ -11,12 +12,19 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
 {
     public class XddAllowedValues
     {
+        private readonly DataType _dataType;
         private readonly XddDataTypeList _dataTypeList;
         private List<XddValueEntry> _valueEntries;
         private List<XddEnumEntry> _enumEntries;
 
         public XddAllowedValues(XddDataTypeList dataTypeList)
         {
+            _dataTypeList = dataTypeList;
+        }
+
+        public XddAllowedValues(XddDataTypeList dataTypeList, DataType dataType)
+        {
+            _dataType = dataType;
             _dataTypeList = dataTypeList;
         }
 
@@ -50,7 +58,7 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
                 {
                     if (childNode.Name == "range")
                     {
-                        var range = new XddRange();
+                        var range = new XddRange(_dataType);
 
                         if (!range.Parse(childNode))
                         {
@@ -80,7 +88,7 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
                     }
                     else if (childNode.Name == "valueEntry")
                     {
-                        var valueEntry = new XddValueEntry();
+                        var valueEntry = new XddValueEntry(_dataType);
 
                         if (!valueEntry.Parse(childNode))
                         {

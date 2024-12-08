@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Xml;
+using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.DataTypes;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Units;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common;
@@ -12,9 +13,24 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
     {
         #region Private fields
 
+        private readonly DataType _dataType;
+
         private List<XddLabel> _labels;
         private XddDecimalPlaces _epos4DecimalPlaces;
         private XddMultiplier _epos4Multiplier;
+
+        #endregion
+
+        #region Constructors
+
+        public XddUnit()
+        {   
+        }
+
+        public XddUnit(DataType dataType)
+        {
+            _dataType = dataType;
+        }
 
         #endregion
 
@@ -88,7 +104,7 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
                 }
                 else if(childNode.Name == "configuration")
                 {
-                    Configuration = new XddUnitConfiguration();
+                    Configuration = new XddUnitConfiguration(_dataType);
 
                     if (!Configuration.Parse(childNode))
                     {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Xml;
 using EltraCommon.Logger;
+using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.DataTypes;
 using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.Parameters;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Parameters;
@@ -12,10 +13,11 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
 {
     public class XddUnitPhysicalQuantity
     {
+        private readonly XddParameterList _parameterList;
+        
         private List<XddLabel> _labels;
         private List<XddUnit> _units;
-        private readonly XddParameterList _parameterList;
-
+        
         public XddUnitPhysicalQuantity(XddParameterList parameterList)
         {
             _parameterList = parameterList;

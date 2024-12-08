@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
+using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.DataTypes;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common;
 
 #pragma warning disable 1591, S3267
@@ -9,8 +10,15 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
 {
     public class XddRange
     {
+        private readonly DataType _dataType;
+
         private List<XddValueEntry> _minValues;
         private List<XddValueEntry> _maxValues;
+        
+        public XddRange(DataType dataType)
+        {
+            _dataType = dataType;
+        }
 
         public List<XddValueEntry> MinValues { get => _minValues ?? (_minValues = new List<XddValueEntry>()); }
         public List<XddValueEntry> MaxValues { get => _maxValues ?? (_maxValues = new List<XddValueEntry>()); }
@@ -23,7 +31,7 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
             {
                 if (childNode.Name == "minValue")
                 {
-                    var minValue = new XddValueEntry();
+                    var minValue = new XddValueEntry(_dataType);
 
                     if (!minValue.Parse(childNode))
                     {
@@ -35,7 +43,7 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
                 }
                 else if (childNode.Name == "maxValue")
                 {
-                    var minValue = new XddValueEntry();
+                    var minValue = new XddValueEntry(_dataType);
 
                     if (!minValue.Parse(childNode))
                     {

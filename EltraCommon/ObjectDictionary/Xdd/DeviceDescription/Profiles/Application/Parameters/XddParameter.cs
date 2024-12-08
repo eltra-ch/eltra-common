@@ -7,6 +7,7 @@ using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Device;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Device.UserLevels;
 using EltraCommon.Logger;
 using EltraCommon.Contracts.Devices;
+using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.DataTypes;
 
 #pragma warning disable 1591
 
@@ -32,19 +33,21 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
             : base()
         {
             Discriminator = DefaultDiscriminator;
-            Unit = new XddUnit();
+            DataType = new DataType();
+            Unit = new XddUnit(DataType);
         }
 
         public XddParameter(EltraDevice device, XmlNode source, XddDeviceManager deviceManager, XddDataTypeList dataTypeList, XddTemplateList templateList)
             : base(device, source)
         {
             Discriminator = DefaultDiscriminator;
+            DataType = new DataType();
 
             _deviceManager = deviceManager;
             _templateList = templateList;
             _dataTypeList = dataTypeList;
 
-            Unit = new XddUnit();
+            Unit = new XddUnit(DataType);
         }
 
         #endregion
@@ -121,7 +124,7 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
                             }
                             else if (childNode.Name == "unit")
                             {
-                                var unit = new XddUnit();
+                                var unit = new XddUnit(DataType);
 
                                 if (!unit.Parse(childNode))
                                 {
@@ -142,7 +145,7 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
                             }
                             else if (childNode.Name == "allowedValues")
                             {
-                                var allowedValues = new XddAllowedValues(_dataTypeList);
+                                var allowedValues = new XddAllowedValues(_dataTypeList, DataType);
 
                                 if (!allowedValues.Parse(childNode))
                                 {

@@ -12,10 +12,11 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
     {
         #region Private fields
 
+        private readonly XddDataTypeList _dataTypeList;
+        
         private List<XddFlags> _flags;
         private List<XddAllowedValues> _allowedValueses;
-        private readonly XddDataTypeList _dataTypeList;
-
+        
         #endregion
 
         #region Constructors

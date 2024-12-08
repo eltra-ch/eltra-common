@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Xml;
+using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.DataTypes;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Application.Parameters;
 
 #pragma warning disable 1591
@@ -8,9 +9,10 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
 {
     public class XddUnits
     {
-        private List<XddUnitPhysicalQuantity> _unitPhysicalQuantityList;
         private readonly XddParameterList _parameterList;
-
+        
+        private List<XddUnitPhysicalQuantity> _unitPhysicalQuantityList;
+        
         public XddUnits(XddParameterList parameterList)
         {
             _parameterList = parameterList;
