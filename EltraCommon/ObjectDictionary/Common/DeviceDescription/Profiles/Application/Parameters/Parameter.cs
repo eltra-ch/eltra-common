@@ -978,9 +978,27 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                 }
                 else
                 {
-                    if(DataType.Type == TypeCode.String || DataType.Type == TypeCode.Object || DataType.Type == TypeCode.DateTime)
+                    if(DataType.Type == TypeCode.String || 
+                       DataType.Type == TypeCode.Object)
                     {
-                        value = new byte[0];
+                        if(DataType.SizeInBytes > 0)
+                        {
+                            value = new byte[DataType.SizeInBytes];
+                            result = true;
+                        }
+                        else if (DataType.SizeInBits > 0)
+                        {
+                            int sizeInBytes = (int)(double)(DataType.SizeInBits / 8);
+                            value = new byte[sizeInBytes];
+                            result = true;
+                        }
+                    }
+                    else if (DataType.Type == TypeCode.DateTime)
+                    {
+                        DateTime dt = DateTime.MinValue;
+                        var dtBytes = BitConverter.GetBytes(dt.Ticks);
+
+                        value = new byte[dtBytes.Length];
                         result = true;
                     }
                 }
