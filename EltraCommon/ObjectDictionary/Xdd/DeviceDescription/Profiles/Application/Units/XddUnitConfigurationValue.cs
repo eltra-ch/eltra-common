@@ -1,4 +1,5 @@
 ﻿using System.Xml;
+using EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Application.DataTypes;
 using EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common;
 
 #pragma warning disable 1591
@@ -7,6 +8,13 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
 {
     public class XddUnitConfigurationValue
     {
+        private readonly DataType _dataType;
+
+        public XddUnitConfigurationValue(DataType dataType)
+        {
+            _dataType = dataType;
+        }
+
         public XddParamIdRef ParamIdRef { get; set; }
 
         public XddValueEntry ValueEntry { get; set; }
@@ -31,7 +39,7 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Profiles.Applicatio
                 }
                 else if (childNode.Name == "valueEntry")
                 {
-                    var valueEntry = new XddValueEntry();
+                    var valueEntry = new XddValueEntry(_dataType);
 
                     if (!valueEntry.Parse(childNode))
                     {

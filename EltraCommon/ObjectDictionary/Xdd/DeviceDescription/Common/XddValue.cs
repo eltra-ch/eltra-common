@@ -23,6 +23,11 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common
         {
         }
 
+        public XddValue(DataType dataType)
+        {
+            _dataType = dataType;
+        }
+
         public XddValue(ParameterValue actualValue, DataType dataType)
         {
             _actualValue = actualValue;
@@ -93,7 +98,11 @@ namespace EltraCommon.ObjectDictionary.Xdd.DeviceDescription.Common
                 {
                     MsgLogger.WriteWarning($"{GetType().Name} - ToDouble", $"Cannot convert base64 value = {Value}, unknown data type!");
 
-                    if(byteArray.Length == sizeof(int)) 
+                    if (byteArray.Length == sizeof(double))
+                    {
+                        result = BitConverter.ToDouble(byteArray, 0);
+                    }
+                    else if (byteArray.Length == sizeof(int)) 
                     {
                         result = BitConverter.ToInt32(byteArray, 0);
                     }
