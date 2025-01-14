@@ -8,20 +8,20 @@
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 	<PackageLicenseFile>LICENSE</PackageLicenseFile>
-	<Copyright>Dawid Sienkiewicz, (c) 2020-2024</Copyright>
+	<Copyright>Dawid Sienkiewicz, (c) 2020-2025</Copyright>
 	<PackageProjectUrl>www.eltra.ch</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/eltra-ch/eltra-common</RepositoryUrl>
 	<RepositoryType>GIT</RepositoryType>
 	<PackageId>Eltra.Common.Base</PackageId>
 	<Product>Eltra.Common.Base</Product>
 	<Description>Eltra - CANOpen based IoT Framework - SDK</Description>
-	<PackageTags>CANOpen IoT Eltra OPCUA OPC</PackageTags>
-	<Version>3.1.2</Version>
+	<PackageTags>CANOpen IoT Eltra OPCUA OPC SiLA2</PackageTags>
+	<Version>3.2.0</Version>
 	<PackageIcon>eltra_logo.png</PackageIcon>
-	<AssemblyVersion>3.1.2.0</AssemblyVersion>
+	<AssemblyVersion>3.2.0.0</AssemblyVersion>
 	<PackageReleaseNotes>initial release</PackageReleaseNotes>
 	<PackageReadmeFile>readme.md</PackageReadmeFile>
-	<FileVersion>3.1.2.0</FileVersion>
+	<FileVersion>3.2.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

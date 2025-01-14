@@ -569,7 +569,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                     case TypeCode.Boolean:
                         {
                             var byteArray = Convert.FromBase64String(parameterValue.Value);
-                            if (byteArray.Length > 0)
+                            if (byteArray.Length > 0 && typeof(T) == typeof(bool))
                             {
                                 value = (T)(object)(byteArray[0] > 0);
                                 result = true;
@@ -586,13 +586,13 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                                 if (GetReferenceLabel(signed[0], out string label) && typeof(T) == typeof(string))
                                 {
                                     value = (T)(object)label;
+                                    result = true;
                                 }
-                                else
+                                else if(typeof(T) == typeof(sbyte))
                                 {
                                     value = (T)(object)signed[0];
+                                    result = true;
                                 }
-
-                                result = true;
                             }
                         }
                         break;
@@ -604,20 +604,20 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                                 if (GetReferenceLabel(byteArray[0], out string label) && typeof(T) == typeof(string))
                                 {
                                     value = (T)(object)label;
+                                    result = true;
                                 }
-                                else
+                                else if(typeof(T) == typeof(byte))
                                 {
                                     value = (T)(object)byteArray[0];
+                                    result = true;
                                 }
-
-                                result = true;
                             }
                         }
                         break;
                     case TypeCode.Char:
                         {
                             var byteArray = Convert.FromBase64String(parameterValue.Value);
-                            if (byteArray.Length > 0)
+                            if (byteArray.Length > 0 && typeof(T) == typeof(char))
                             {
                                 value = (T)(object)BitConverter.ToChar(byteArray, 0);
                                 result = true;
@@ -632,13 +632,13 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                                 if (GetReferenceLabel(BitConverter.ToInt16(byteArray, 0), out string label) && typeof(T) == typeof(string))
                                 {
                                     value = (T)(object)label;
+                                    result = true;
                                 }
-                                else
+                                else if(typeof(T) == typeof(Int16))
                                 {
                                     value = (T)(object)BitConverter.ToInt16(byteArray, 0);
+                                    result = true;
                                 }
-
-                                result = true;
                             }
                         }
                         break;
@@ -650,20 +650,20 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                                 if (GetReferenceLabel(BitConverter.ToInt32(byteArray, 0), out string label) && typeof(T) == typeof(string))
                                 {
                                     value = (T)(object)label;
+                                    result = true;
                                 }
-                                else
+                                else if (typeof(T) == typeof(Int32))
                                 {
                                     value = (T)(object)BitConverter.ToInt32(byteArray, 0);
+                                    result = true;
                                 }
-
-                                result = true;
                             }
                         }
                         break;
                     case TypeCode.Int64:
                         {
                             var byteArray = Convert.FromBase64String(parameterValue.Value);
-                            if (byteArray.Length > 0)
+                            if (byteArray.Length > 0 && typeof(T) == typeof(Int64))
                             {
                                 value = (T)(object)BitConverter.ToInt64(byteArray, 0);
                                 result = true;
@@ -678,13 +678,13 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                                 if (GetReferenceLabel(BitConverter.ToUInt16(byteArray, 0), out string label) && typeof(T) == typeof(string))
                                 {
                                     value = (T)(object)label;
+                                    result = true;
                                 }
-                                else
+                                else if (typeof(T) == typeof(UInt16))
                                 {
                                     value = (T)(object)BitConverter.ToUInt16(byteArray, 0);
+                                    result = true;
                                 }
-
-                                result = true;
                             }
                         }
                         break;
@@ -696,20 +696,20 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                                 if (GetReferenceLabel(BitConverter.ToUInt32(byteArray, 0), out string label) && typeof(T) == typeof(string))
                                 {
                                     value = (T)(object)label;
+                                    result = true;
                                 }
-                                else
+                                else if(typeof(T) == typeof(UInt16))
                                 {
                                     value = (T)(object)BitConverter.ToUInt32(byteArray, 0);
+                                    result = true;
                                 }
-
-                                result = true;
                             }
                         }
                         break;
                     case TypeCode.UInt64:
                         {
                             var byteArray = Convert.FromBase64String(parameterValue.Value);
-                            if (byteArray.Length > 0)
+                            if (byteArray.Length > 0 && typeof(T) == typeof(UInt64))
                             {
                                 value = (T)(object)BitConverter.ToUInt64(byteArray, 0);
                                 result = true;
@@ -739,7 +739,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                     case TypeCode.Double:
                         {
                             var byteArray = Convert.FromBase64String(parameterValue.Value);
-                            if (byteArray.Length > 0)
+                            if (byteArray.Length > 0 && typeof(T) == typeof(double))
                             {
                                 var doubleValue = BitConverter.ToDouble(byteArray, 0);
 
@@ -757,7 +757,7 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                     case TypeCode.DateTime:
                         {
                             var byteArray = Convert.FromBase64String(parameterValue.Value);
-                            if (byteArray.Length > 0)
+                            if (byteArray.Length > 0 && typeof(T) == typeof(DateTime))
                             {
                                 long dateData = BitConverter.ToInt64(byteArray, 0);
 
