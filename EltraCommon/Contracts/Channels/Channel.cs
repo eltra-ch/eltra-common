@@ -35,8 +35,8 @@ namespace EltraCommon.Contracts.Channels
         {
             Discriminator = DefaultDiscriminator;
 
-            Modified = DateTime.Now;
-            Created = DateTime.Now;
+            Modified = DateTime.Now.ToUniversalTime();
+            Created = DateTime.Now.ToUniversalTime();
 
             _status = ChannelStatus.Offline;
 
@@ -52,8 +52,8 @@ namespace EltraCommon.Contracts.Channels
         {
             Discriminator = DefaultDiscriminator;
 
-            Modified = DateTime.Now;
-            Created = DateTime.Now;
+            Modified = DateTime.Now.ToUniversalTime();
+            Created = DateTime.Now.ToUniversalTime();
             Status = ChannelStatus.Offline;
 
             Id = channelBase.Id;
