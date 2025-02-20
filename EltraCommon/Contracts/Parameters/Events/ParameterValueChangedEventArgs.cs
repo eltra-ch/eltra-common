@@ -11,17 +11,24 @@ namespace EltraCommon.Contracts.Parameters.Events
         /// <summary>
         /// ParameterValueChangedEventArgs
         /// </summary>
+        /// <param name="channelId"></param>
         /// <param name="nodeId"></param>
         /// <param name="index"></param>
         /// <param name="subIndex"></param>
         /// <param name="parameterValue"></param>
-        public ParameterValueChangedEventArgs(int nodeId, ushort index, byte subIndex, ParameterValue parameterValue)
+        public ParameterValueChangedEventArgs(string channelId, int nodeId, ushort index, byte subIndex, ParameterValue parameterValue)
         {
+            ChannelId = channelId;
             NodeId = nodeId;
             Index = index;
             SubIndex = subIndex;
             ParameterValue = parameterValue;
         }
+
+        /// <summary>
+        /// ChannelId
+        /// </summary>
+        public string ChannelId { get; set; }
 
         /// <summary>
         /// NodeId
