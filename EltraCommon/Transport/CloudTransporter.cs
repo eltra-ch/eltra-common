@@ -149,11 +149,13 @@ namespace EltraCommon.Transport
                     }
                     else
                     {
-                        _httpClient.Timeout = MaxWaitTimeInSec;
+                        var httpClient = _httpClient.Clone();
 
-                        _clients.Add(identity.Login, _httpClient);
+                        httpClient.Timeout = MaxWaitTimeInSec;
 
-                        result = _httpClient;
+                        _clients.Add(identity.Login, httpClient);
+
+                        result = httpClient;
                     }
                 }
             }

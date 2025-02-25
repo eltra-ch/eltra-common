@@ -992,6 +992,12 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                             value = new byte[sizeInBytes];
                             result = true;
                         }
+                        else
+                        {
+                            const int sizeInBytes = 255;
+                            value = new byte[sizeInBytes];
+                            result = true;
+                        }
                     }
                     else if (DataType.Type == TypeCode.DateTime)
                     {
