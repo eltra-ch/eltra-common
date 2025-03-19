@@ -6,6 +6,7 @@ using System.Text;
 using EltraCommon.Converters;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 #pragma warning disable 1591, S3897, S4035
 
@@ -465,9 +466,18 @@ namespace EltraCommon.ObjectDictionary.Common.DeviceDescription.Profiles.Applica
                     {
                         var bytesArray = Base64Converter.AllocateBase64Buffer(Value);
 
-                        if (Base64Converter.TryFromBase64String(Value, bytesArray, out int bytesWritten))
+                        if (Base64Converter.TryFromBase64String(Value, bytesArray, out int bytesWritten) && bytesWritten > 0)
                         {
-                            value = (T)(object)Encoding.Unicode.GetString(bytesArray.ToArray());
+                            string text = string.Empty;
+                            var bytes = bytesArray.ToArray();
+                            var isEmptyText = bytes.All(o => o == 0);
+                            
+                            if (!isEmptyText)
+                            {
+                                text = Encoding.Unicode.GetString(bytes);
+                            }
+
+                            value = (T)(object)text;
                             result = true;
                         }
                         else
