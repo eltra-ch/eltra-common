@@ -17,12 +17,12 @@
 	<Product>Eltra.Common</Product>	
 	<Description>Eltra - CANOpen based IoT Framework - SDK</Description>
 	<PackageTags>CANOpen IoT Eltra OPCUA OPC SiLA2</PackageTags>
-    <Version>3.2.4</Version>
+    <Version>3.2.5</Version>
     <PackageIcon>eltra_logo.png</PackageIcon>
-    <AssemblyVersion>3.2.4.0</AssemblyVersion>
+    <AssemblyVersion>3.2.5.0</AssemblyVersion>
     <PackageReleaseNotes></PackageReleaseNotes>
 	<PackageReadmeFile>readme.md</PackageReadmeFile>
-    <FileVersion>3.2.4.0</FileVersion>
+    <FileVersion>3.2.5.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -45,10 +45,10 @@
 
   <ItemGroup>
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />    
-    <PackageReference Include="System.Memory" Version="4.6.0" />      
-    <PackageReference Include="System.Buffers" Version="4.6.0" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.0" />
-    <PackageReference Include="System.Text.Json" Version="9.0.2" />
+    <PackageReference Include="System.Memory" Version="4.6.3" />      
+    <PackageReference Include="System.Buffers" Version="4.6.1" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
+    <PackageReference Include="System.Text.Json" Version="9.0.4" />
 	<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
   </ItemGroup>
   
